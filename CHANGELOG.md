@@ -8,26 +8,27 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M0 - Projektsetup & Dokumentation 🚧
+## M0 - Projektsetup & Dokumentation ✅🚧
 > **Ziel:** Repository bereit, Dokumentation vollständig, Issues angelegt
 | Task | Status | Issue |
 |------|--------|-------|
 | Repository erstellen | ✅ | - |
 | Dokumentationsstruktur anlegen | ✅ | - |
-| Epics/Use Cases als GitHub Issues | 🔲 | - |
+| Epics/Use Cases als GitHub Issues | ✅ | - |
 | .gitignore, .env.example | ✅ | - |
 
 **Checkpoint:** Alle Docs vorhanden, Issues angelegt, ready for code.
 
 ---
 
-## M1 - Kern-Flow E2E (ohne UI) 🔲
+## M1 - Kern-Flow E2E (ohne UI) 🚧
 > **Ziel:** Transkript hochladen → LLM extrahiert Use Cases → in DB gespeichert
 | Task | Status | Issue |
 |------|--------|-------|
-| Docker + FastAPI Skeleton | 🔲 | #TBD |
-| SQLAlchemy Models | 🔲 | #TBD |
-| Seed-Daten (Industries, Companies) | 🔲 | #TBD |
+| Docker + FastAPI Skeleton | ✅ | - |
+| SQLAlchemy Models | ✅ | #1 |
+| Pydantic Schemas | ✅ | #1 |
+| Seed-Daten (Industries, Companies) | ✅ | #1 |
 | Transkript-Upload Endpoint | 🔲 | #TBD |
 | OpenRouter Client + Logging | 🔲 | #TBD |
 | LLM-Extraktion mit Schema-Validierung | 🔲 | #TBD |
