@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Stadtwerke Musterstadt GmbH",
+    "industry_id": 1
+  },
+  {
+    "id": 2,
+    "name": "Müller Maschinenbau AG",
+    "industry_id": 2
+  },
+  {
+    "id": 3,
+    "name": "Klinikum Schwarzwald",
+    "industry_id": 3
+  }
+]

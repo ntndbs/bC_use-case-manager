@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "name": "Energieversorgung",
+    "description": "Stadtwerke, Netzbetreiber, erneuerbare Energien"
+  },
+  {
+    "id": 2,
+    "name": "Maschinenbau",
+    "description": "Produktionsunternehmen, Anlagenbau"
+  },
+  {
+    "id": 3,
+    "name": "Gesundheitswesen",
+    "description": "Kliniken, Medizintechnik, Pflege"
+  }
+]

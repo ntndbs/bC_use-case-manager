@@ -1,0 +1,18 @@
+Workshop: Digitalisierung im Vertrieb
+Unternehmen: Müller Maschinenbau GmbH
+Branche: Maschinenbau
+Datum: 2025-01-15
+Teilnehmer:
+- Hans Müller (Geschäftsführer)
+- Sabine Weber (Vertriebsleiterin)
+- Thomas Klein (IT-Leiter)
+
+[00:05:12] Sabine Weber: Unser größtes Problem ist, dass Kundenanfragen oft tagelang liegen bleiben. Wir bräuchten ein System, das eingehende Anfragen automatisch kategorisiert und priorisiert.
+
+[00:08:34] Thomas Klein: Technisch wäre das machbar. Wir könnten die E-Mails analysieren und nach Dringlichkeit sortieren.
+
+[00:12:45] Hans Müller: Ein weiterer Punkt: Unsere Angebotserstellung dauert zu lange. Jedes Angebot wird manuell erstellt. Könnte man da nicht Vorlagen intelligent vorschlagen?
+
+[00:18:22] Sabine Weber: Ja, und was mich noch beschäftigt: Wir haben keine Übersicht, welche Kunden kurz vor einem Abschluss stehen. Ein Predictive-Scoring wäre super.
+
+[00:25:00] Thomas Klein: Ich würde auch gerne unsere Wartungsprotokolle digitalisieren. Die liegen alle auf Papier.
