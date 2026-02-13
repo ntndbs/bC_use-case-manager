@@ -8,7 +8,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M0 - Projektsetup & Dokumentation ✅🚧
+## M0 - Projektsetup & Dokumentation ✅
 > **Ziel:** Repository bereit, Dokumentation vollständig, Issues angelegt
 | Task | Status | Issue |
 |------|--------|-------|
@@ -29,7 +29,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | SQLAlchemy Models | ✅ | #1 |
 | Pydantic Schemas | ✅ | #1 |
 | Seed-Daten (Industries, Companies) | ✅ | #1 |
-| Transkript-Upload Endpoint | 🔲 | #TBD |
+| Transkript-Upload Endpoint | ✅ | remove DB row if file write fails |
 | OpenRouter Client + Logging | 🔲 | #TBD |
 | LLM-Extraktion mit Schema-Validierung | 🔲 | #TBD |
 | Use Cases persistieren | 🔲 | #TBD |
