@@ -8,6 +8,15 @@ from db.database import get_db
 from db.models import Transcript, Company
 from schemas.transcript import TranscriptResponse, TranscriptWithContent
 
+from pathlib import Path
+import uuid
+
+TRANSCRIPTS_DIR = Path(__file__).resolve().parents[1] / "data" / "transcripts"
+TRANSCRIPTS_DIR.mkdir(parents=True, exist_ok=True)
+
+def _safe_filename(name: str) -> str:
+    return Path(name).name
+
 router = APIRouter(prefix="/transcripts", tags=["transcripts"])
 
 
@@ -34,7 +43,7 @@ async def upload_transcript(
     # Read content
     content = await file.read()
     try:
-        content_str = content.decode("utf-8")
+        content_str = content.decode("utf-8-sig")
     except UnicodeDecodeError:
         raise HTTPException(status_code=400, detail="File must be UTF-8 encoded")
     
@@ -49,6 +58,13 @@ async def upload_transcript(
     db.add(transcript)
     await db.commit()
     await db.refresh(transcript)
+
+    stored_name = f"{transcript.id}_{uuid.uuid4().hex}_{_safe_filename(file.filename)}"
+    stored_path = TRANSCRIPTS_DIR / stored_name
+    try:
+        stored_path.write_bytes(content)
+    except Exception:
+        raise HTTPException(status_code=500, detail="Failed to persist transcript file")
     
     return transcript
 
