@@ -21,7 +21,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M1 - Kern-Flow E2E (ohne UI) 🚧
+## M1 - Kern-Flow E2E (ohne UI) ✅
 > **Ziel:** Transkript hochladen → LLM extrahiert Use Cases → in DB gespeichert
 | Task | Status | Issue |
 |------|--------|-------|
@@ -30,21 +30,21 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | Pydantic Schemas | ✅ | #1 |
 | Seed-Daten (Industries, Companies) | ✅ | #1 |
 | Transkript-Upload Endpoint | ✅ | remove DB row if file write fails |
-| OpenRouter Client + Logging | 🔲 | #TBD |
-| LLM-Extraktion mit Schema-Validierung | 🔲 | #TBD |
-| Use Cases persistieren | 🔲 | #TBD |
+| OpenRouter Client + Logging | ✅ | - |
+| LLM-Extraktion mit Schema-Validierung | ✅ | - |
+| Use Cases persistieren | ✅ | - |
 
 **Checkpoint:** `curl` Upload → Use Cases in DB sichtbar via `sqlite3`
 
 ---
 
-## M2 - Use Case CRUD API 🔲
+## M2 - Use Case CRUD API 🚧
 > **Ziel:** Vollständige REST-API für Use Cases
 | Task | Status | Issue |
 |------|--------|-------|
-| GET /use-cases (Liste + Filter) | 🔲 | #TBD |
-| GET /use-cases/{id} | 🔲 | #TBD |
-| POST /use-cases | 🔲 | #TBD |
+| GET /use-cases (Liste + Filter) | ✅ | - |
+| GET /use-cases/{id} | ✅ | - |
+| POST /use-cases | ✅ | #TBD |
 | PATCH /use-cases/{id} | 🔲 | #TBD |
 | DELETE /use-cases/{id} (Soft Delete / Archive) | 🔲 | #TBD |
 | Status-Änderung validieren | 🔲 | #TBD |

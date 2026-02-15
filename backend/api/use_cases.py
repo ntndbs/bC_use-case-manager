@@ -107,3 +107,26 @@ async def create_use_case(
     await db.commit()
     await db.refresh(use_case)
     return use_case
+
+
+# ---------- E2-UC4: Update use case ----------
+
+@router.patch("/{use_case_id}", response_model=UseCaseResponse)
+async def update_use_case(
+    use_case_id: int,
+    payload: UseCaseUpdate,
+    db: AsyncSession = Depends(get_db),
+):
+    """Update a use case (partial update)."""
+    use_case = await db.get(UseCase, use_case_id)
+    if not use_case:
+        raise HTTPException(status_code=404, detail="Use case not found")
+
+    update_data = payload.model_dump(exclude_unset=True)
+
+    for field, value in update_data.items():
+        setattr(use_case, field, value)
+
+    await db.commit()
+    await db.refresh(use_case)
+    return use_case
