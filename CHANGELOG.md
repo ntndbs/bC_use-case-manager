@@ -58,16 +58,16 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 > **Ziel:** Chat-Interface mit funktionierenden Tools
 | Task | Status | Issue |
 |------|--------|-------|
-| Tool-Calling Loop implementieren | 🔲 | #TBD |
-| Tool: list_use_cases | 🔲 | #TBD |
-| Tool: get_use_case | 🔲 | #TBD |
-| Tool: create_use_case | 🔲 | #TBD |
-| Tool: update_use_case | 🔲 | #TBD |
-| Tool: set_status | 🔲 | #TBD |
-| Tool: archive_use_case | 🔲 | #TBD |
-| Tool: analyze_transcript | 🔲 | #TBD |
-| Tool: list_companies | 🔲 | #TBD |
-| Chat-Endpoint POST /chat | 🔲 | #TBD |
+| Tool-Calling Loop implementieren | ✅ | #TBD |
+| Tool: list_use_cases | ✅ | #TBD |
+| Tool: get_use_case | ✅ | #TBD |
+| Tool: create_use_case | ✅ | #TBD |
+| Tool: update_use_case | ✅ | #TBD |
+| Tool: set_status | ✅ | #TBD |
+| Tool: archive_use_case | ✅ | #TBD |
+| Tool: analyze_transcript | ✅ | #TBD |
+| Tool: list_companies | ✅| #TBD |
+| Chat-Endpoint POST /chat | ✅ | #TBD |
 | Disambiguation bei Mehrdeutigkeit | 🔲 | #TBD |
 
 **Checkpoint:** Chat funktioniert via curl/Postman; alle Tools aufrufbar.

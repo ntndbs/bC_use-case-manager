@@ -252,15 +252,15 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 
 4. **[Epic] E3: Agent** (epic, must, agent) ✅
 4a. [E3-UC1] Chat-Endpoint | Must | POST /chat nimmt Message, gibt Agent-Response zurück ✅
-4b. [E3-UC2] Tool: list_use_cases | Must | Agent kann Use Cases auflisten mit Filtern 
-4c. [E3-UC3] Tool: get_use_case | Must | Agent kann einzelnen Use Case abrufen 
-4d. [E3-UC4] Tool: create_use_case | Must | Agent kann Use Case anlegen 
-4e. [E3-UC5] Tool: update_use_case | Must | Agent kann Felder ändern 
-4f. [E3-UC6] Tool: set_status | Must | Agent kann Status ändern 
-4g. [E3-UC7] Tool: archive_use_case | Must | Agent kann archivieren
-4h. [E3-UC8] Tool: analyze_transcript | Must | Agent kann Transkript-Extraktion triggern
+4b. [E3-UC2] Tool: list_use_cases | Must | Agent kann Use Cases auflisten mit Filtern ✅
+4c. [E3-UC3] Tool: get_use_case | Must | Agent kann einzelnen Use Case abrufen ✅
+4d. [E3-UC4] Tool: create_use_case | Must | Agent kann Use Case anlegen ✅
+4e. [E3-UC5] Tool: update_use_case | Must | Agent kann Felder ändern ✅
+4f. [E3-UC6] Tool: set_status | Must | Agent kann Status ändern ✅
+4g. [E3-UC7] Tool: archive_use_case | Must | Agent kann archivieren ✅
+4h. [E3-UC8] Tool: analyze_transcript | Must | Agent kann Transkript-Extraktion triggern ✅
 4i. [E3-UC9] Disambiguation | Must | Agent fragt nach bei mehrdeutigen Referenzen ("Meinst du [Epic] E2: Use Case CRUD #3 oder [Epic] E7: Robustheit & Observability #7?")
-4j. [E3-UC10] Tool: list_companies | Should | Agent kann Unternehmen auflisten
+4j. [E3-UC10] Tool: list_companies | Should | Agent kann Unternehmen auflisten ✅
 4k. [E3-UC11] Conversation Memory | Should | Agent merkt sich Kontext innerhalb einer Session ✅
 
 5. **[Epic] E5: Frontend** (epic, must, frontend)

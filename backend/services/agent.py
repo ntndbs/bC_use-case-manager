@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import get_settings
 from services.tools import TOOL_DEFINITIONS, execute_tool
+import services.tool_handlers  # noqa: F401 — registers all tools on import
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +88,7 @@ async def run_agent(
 
             for tool_call in choice.message.tool_calls:
                 fn_name = tool_call.function.name
-                fn_args = json.loads(tool_call.function.arguments)
+                fn_args = json.loads(tool_call.function.arguments or "{}")
 
                 logger.info("Tool call: %s(%s)", fn_name, fn_args)
                 tools_called.append(fn_name)
