@@ -20,6 +20,17 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/use-cases", tags=["use-cases"])
 
+# ---------- E2-UC5: Valid status transitions ----------
+
+ALLOWED_TRANSITIONS: dict[UseCaseStatus, set[UseCaseStatus]] = {
+    UseCaseStatus.NEW: {UseCaseStatus.IN_REVIEW},
+    UseCaseStatus.IN_REVIEW: {UseCaseStatus.APPROVED, UseCaseStatus.NEW},
+    UseCaseStatus.APPROVED: {UseCaseStatus.IN_PROGRESS, UseCaseStatus.IN_REVIEW},
+    UseCaseStatus.IN_PROGRESS: {UseCaseStatus.COMPLETED, UseCaseStatus.APPROVED},
+    UseCaseStatus.COMPLETED: {UseCaseStatus.ARCHIVED},
+    UseCaseStatus.ARCHIVED: set(),  # restore via dedicated endpoint (UC7)
+}
+
 
 # ---------- E2-UC1: List use cases with filters ----------
 
@@ -123,6 +134,17 @@ async def update_use_case(
         raise HTTPException(status_code=404, detail="Use case not found")
 
     update_data = payload.model_dump(exclude_unset=True)
+
+    # Validate status transition (E2-UC5)
+    if "status" in update_data:
+        new_status = UseCaseStatus(update_data["status"])
+        allowed = ALLOWED_TRANSITIONS.get(use_case.status, set())
+        if new_status not in allowed:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Cannot transition from '{use_case.status.value}' to '{new_status.value}'. "
+                       f"Allowed: {[s.value for s in allowed]}",
+            )
 
     for field, value in update_data.items():
         setattr(use_case, field, value)
