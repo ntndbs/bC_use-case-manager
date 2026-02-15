@@ -38,7 +38,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M2 - Use Case CRUD API 🚧
+## M2 - Use Case CRUD API ✅🚧
 > **Ziel:** Vollständige REST-API für Use Cases
 | Task | Status | Issue |
 |------|--------|-------|
@@ -48,12 +48,13 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | PATCH /use-cases/{id} | ✅ | - |
 | DELETE /use-cases/{id} (Soft Delete / Archive) | ✅ | - |
 | Status-Änderung validieren | ✅ | - |
+| Restore /use-cases/{id}/restore (Archive -> New) | ✅ | - |
 
 **Checkpoint:** Swagger UI unter `/docs` zeigt alle Endpoints; CRUD funktioniert.
 
 ---
 
-## M3 - Agent mit Tools 🔲
+## M3 - Agent mit Tools 🚧
 > **Ziel:** Chat-Interface mit funktionierenden Tools
 | Task | Status | Issue |
 |------|--------|-------|
