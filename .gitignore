@@ -3,6 +3,7 @@ venv/
 __pycache__/
 *.pyc
 .env
+payload.json
 
 # Frontend
 frontend/node_modules/

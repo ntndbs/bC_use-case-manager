@@ -1,0 +1,118 @@
+"""Agent service: tool-calling loop with conversation memory."""
+
+import json
+import logging
+
+from openai import AsyncOpenAI
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.config import get_settings
+from services.tools import TOOL_DEFINITIONS, execute_tool
+
+logger = logging.getLogger(__name__)
+
+settings = get_settings()
+
+_client = AsyncOpenAI(
+    base_url=settings.openrouter_base_url,
+    api_key=settings.openrouter_api_key,
+)
+
+SYSTEM_PROMPT = """\
+Du bist ein hilfreicher Assistent für das BadenCampus Use-Case-Management-System.
+Du hilfst Nutzern dabei, Use Cases aus Workshop-Transkripten zu verwalten.
+
+Deine Fähigkeiten:
+- Use Cases auflisten, anzeigen, erstellen, bearbeiten, Status ändern, archivieren
+- Transkripte analysieren und Use Cases daraus extrahieren
+- Unternehmen auflisten
+
+Regeln:
+- Antworte auf Deutsch, es sei denn der Nutzer schreibt auf Englisch.
+- Wenn eine Anfrage mehrdeutig ist (z.B. "den Use Case" ohne ID oder klaren Bezug), \
+frag den Nutzer nach Klarstellung statt zu raten.
+- Verwende die verfügbaren Tools um Daten abzurufen oder zu ändern. \
+Erfinde keine Daten.
+- Fasse Tool-Ergebnisse in einer natürlichen Antwort zusammen.
+- Halte Antworten kurz und prägnant.
+"""
+
+MAX_TOOL_ROUNDS = 10
+
+# In-memory conversation storage (keyed by session_id)
+_sessions: dict[str, list[dict]] = {}
+
+
+def _get_history(session_id: str) -> list[dict]:
+    """Get or create conversation history for a session."""
+    if session_id not in _sessions:
+        _sessions[session_id] = []
+    return _sessions[session_id]
+
+
+async def run_agent(
+    user_message: str,
+    session_id: str,
+    db: AsyncSession,
+) -> tuple[str, list[str]]:
+    """Run the agent loop for a user message.
+
+    Returns:
+        Tuple of (assistant_reply, list_of_tool_names_called).
+    """
+    history = _get_history(session_id)
+    history.append({"role": "user", "content": user_message})
+
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}] + history
+
+    tools_called: list[str] = []
+
+    for _ in range(MAX_TOOL_ROUNDS):
+        kwargs = {
+            "model": settings.openrouter_model,
+            "messages": messages,
+            "temperature": 0.3,
+        }
+        if TOOL_DEFINITIONS:
+            kwargs["tools"] = TOOL_DEFINITIONS
+            kwargs["tool_choice"] = "auto"
+
+        response = await _client.chat.completions.create(**kwargs)
+        choice = response.choices[0]
+
+        # If the model wants to call tools
+        if choice.message.tool_calls:
+            # Append assistant message with tool calls
+            messages.append(choice.message.model_dump())
+
+            for tool_call in choice.message.tool_calls:
+                fn_name = tool_call.function.name
+                fn_args = json.loads(tool_call.function.arguments)
+
+                logger.info("Tool call: %s(%s)", fn_name, fn_args)
+                tools_called.append(fn_name)
+
+                result = await execute_tool(fn_name, fn_args, db)
+
+                messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "content": result,
+                })
+
+            continue  # Next round — let the LLM process tool results
+
+        # No tool calls — we have the final text response
+        reply = choice.message.content or ""
+        history.append({"role": "assistant", "content": reply})
+
+        logger.info(
+            "Agent reply (session=%s, tools=%d): %s",
+            session_id, len(tools_called), reply[:100],
+        )
+        return reply, tools_called
+
+    # Safety: max rounds exceeded
+    fallback = "Entschuldigung, ich konnte die Anfrage nicht abschließen. Bitte versuche es erneut."
+    history.append({"role": "assistant", "content": fallback})
+    return fallback, tools_called

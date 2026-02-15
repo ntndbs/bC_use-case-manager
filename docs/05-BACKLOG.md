@@ -200,6 +200,7 @@ Nach Repository-Erstellung werden folgende Issues angelegt:
 | Label | Farbe | Beschreibung |
 |-------|-------|--------------|
 | `epic` | #6f42c1 | Epic/Feature-Gruppe |
+| `usecase` | #be2e87 | Use Case/Feature |
 | `must` | #d73a4a | Priorität: Must-Have |
 | `should` | #fbca04 | Priorität: Should-Have |
 | `could` | #0e8a16 | Priorität: Could-Have |
@@ -207,6 +208,7 @@ Nach Repository-Erstellung werden folgende Issues angelegt:
 | `frontend` | #5319e7 | Frontend-Arbeit |
 | `agent` | #f9d0c4 | Agent/LLM-Arbeit |
 | `docs` | #0075ca | Dokumentation |
+| `improvement` | #a6a14c | Mögliche Verbesserung/Optimierung |
 
 ### Issue-Template
 ```markdown
@@ -226,39 +228,40 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 ```
 
 ### Issues (Reihenfolge = Implementierungsreihenfolge)
-1. **[Epic] E4: Domänenmodell** (epic, must, backend)
-1a. [E4-UC1] Industry CRUD | Must | Branchen können angelegt/gelistet werden
-1b. [E4-UC2] Company CRUD | Must | Unternehmen mit Branchenzuordnung|
-1c. [E4-UC3] Transcript speichern | Must | Transkript mit Content + Company-FK + Upload-Timestamp
-1d. [E4-UC4] Seed-Daten | Must | 3 Industries, 3 Companies initial vorhanden
+1. **[Epic] E4: Domänenmodell** (epic, must, backend) ✅
+1a. [E4-UC1] Industry CRUD | Must | Branchen können angelegt/gelistet werden ✅
+1b. [E4-UC2] Company CRUD | Must | Unternehmen mit Branchenzuordnung ✅
+1c. [E4-UC3] Transcript speichern | Must | Transkript mit Content + Company-FK + Upload-Timestamp ✅
+1d. [E4-UC4] Seed-Daten | Must | 3 Industries, 3 Companies initial vorhanden ✅
 
-2. **[Epic] E1: Transkript-Analyse** (epic, must, backend, agent)
-2a. [E1-UC1] Transkript hochladen | Must | POST /transcripts mit .txt-Datei gibt 201 zurück
-2b. [E1-UC2] Use Cases extrahieren | Must | LLM extrahiert mind. 1 Use Case mit Titel, Beschreibung, Stakeholders, Nutzen
-2c. [E1-UC3] Extraktion validieren | Must | JSON-Schema-Validierung; bei Fehler: Retry (max 2x)
-2d. [E1-UC4] Use Cases persistieren | Must | Extrahierte Use Cases in DB mit FK zu Transcript + Company
-2e. [E1-UC5] Extraktion via Agent | Must | Chat: "Analysiere Transkript X" → Agent führt Extraktion durch
+2. **[Epic] E1: Transkript-Analyse** (epic, must, backend, agent) ✅
+2a. [E1-UC1] Transkript hochladen | Must | POST /transcripts mit .txt-Datei gibt 201 zurück ✅
+2b. [E1-UC2] Use Cases extrahieren | Must | LLM extrahiert mind. 1 Use Case mit Titel, Beschreibung, Stakeholders, Nutzen ✅
+2c. [E1-UC3] Extraktion validieren | Must | JSON-Schema-Validierung; bei Fehler: Retry (max 2x) ✅
+2d. [E1-UC4] Use Cases persistieren | Must | Extrahierte Use Cases in DB mit FK zu Transcript + Company ✅
+2e. [E1-UC5] Extraktion via Agent | Must | Chat: "Analysiere Transkript X" → Agent führt Extraktion durch ✅
+ 
+3. **[Epic] E2: Use Case CRUD** (epic, must, backend) ✅
+3a. [E2-UC1] Use Cases auflisten | Must | GET /use-cases gibt Liste zurück; Filter: company, status, search ✅
+3b. [E2-UC2] Use Case Detail | Must | GET /use-cases/{id} gibt vollständigen Use Case zurück ✅
+3c. [E2-UC3] Use Case erstellen | Must | POST /use-cases mit Pflichtfeldern; validiert Company-FK ✅
+3d. [E2-UC4] Use Case bearbeiten | Must | PATCH /use-cases/{id} für Titel, Beschreibung, Stakeholders, Benefit ✅
+3e. [E2-UC5] Status ändern | Must | PATCH /use-cases/{id} mit neuem Status; nur valide Übergänge ✅
+3f. [E2-UC6] Use Case archivieren | Must | DELETE /use-cases/{id} setzt Status auf ARCHIVED (kein Hard Delete) ✅
+3g. [E2-UC7] Use Case wiederherstellen | Should | PATCH /use-cases/{id}/restore setzt Status auf vorherigen Wert ✅
 
-3. **[Epic] E2: Use Case CRUD** (epic, must, backend)
-3a. [E2-UC1] Use Cases auflisten | Must | GET /use-cases gibt Liste zurück; Filter: company, status, search
-3b. [E2-UC2] Use Case Detail | Must | GET /use-cases/{id} gibt vollständigen Use Case zurück
-3c. [E2-UC3] Use Case erstellen | Must | POST /use-cases mit Pflichtfeldern; validiert Company-FK
-3d. [E2-UC4] Use Case bearbeiten | Must | PATCH /use-cases/{id} für Titel, Beschreibung, Stakeholders, Benefit
-3e. [E2-UC5] Status ändern | Must | PATCH /use-cases/{id} mit neuem Status; nur valide Übergänge
-3f. [E2-UC6] Use Case archivieren | Must | DELETE /use-cases/{id} setzt Status auf ARCHIVED (kein Hard Delete)
-3g. [E2-UC7] Use Case wiederherstellen | Should | PATCH /use-cases/{id}/restore setzt Status auf vorherigen Wert
-
-4. **[Epic] E3: Agent** (epic, must, agent)
-4a. [E3-UC1] Chat-Endpoint | Must | POST /chat nimmt Message, gibt Agent-Response zurück 2. [E3-UC2] Tool: list_use_cases | Must | Agent kann Use Cases auflisten mit Filtern
-4b. [E3-UC3] Tool: get_use_case | Must | Agent kann einzelnen Use Case abrufen
-4c. [E3-UC4] Tool: create_use_case | Must | Agent kann Use Case anlegen
-4d. [E3-UC5] Tool: update_use_case | Must | Agent kann Felder ändern
-4e. [E3-UC6] Tool: set_status | Must | Agent kann Status ändern
-4f. [E3-UC7] Tool: archive_use_case | Must | Agent kann archivieren
-4g. [E3-UC8] Tool: analyze_transcript | Must | Agent kann Transkript-Extraktion triggern
-4h. [E3-UC9] Disambiguation | Must | Agent fragt nach bei mehrdeutigen Referenzen ("Meinst du [Epic] E2: Use Case CRUD #3 oder [Epic] E7: Robustheit & Observability #7?")
-4i. [E3-UC10] Tool: list_companies | Should | Agent kann Unternehmen auflisten
-4j. [E3-UC11] Conversation Memory | Should | Agent merkt sich Kontext innerhalb einer Session
+4. **[Epic] E3: Agent** (epic, must, agent) ✅
+4a. [E3-UC1] Chat-Endpoint | Must | POST /chat nimmt Message, gibt Agent-Response zurück ✅
+4b. [E3-UC2] Tool: list_use_cases | Must | Agent kann Use Cases auflisten mit Filtern 
+4c. [E3-UC3] Tool: get_use_case | Must | Agent kann einzelnen Use Case abrufen 
+4d. [E3-UC4] Tool: create_use_case | Must | Agent kann Use Case anlegen 
+4e. [E3-UC5] Tool: update_use_case | Must | Agent kann Felder ändern 
+4f. [E3-UC6] Tool: set_status | Must | Agent kann Status ändern 
+4g. [E3-UC7] Tool: archive_use_case | Must | Agent kann archivieren
+4h. [E3-UC8] Tool: analyze_transcript | Must | Agent kann Transkript-Extraktion triggern
+4i. [E3-UC9] Disambiguation | Must | Agent fragt nach bei mehrdeutigen Referenzen ("Meinst du [Epic] E2: Use Case CRUD #3 oder [Epic] E7: Robustheit & Observability #7?")
+4j. [E3-UC10] Tool: list_companies | Should | Agent kann Unternehmen auflisten
+4k. [E3-UC11] Conversation Memory | Should | Agent merkt sich Kontext innerhalb einer Session ✅
 
 5. **[Epic] E5: Frontend** (epic, must, frontend)
 5a. [E5-UC1] Use-Case-Liste | Must | Tabelle mit Titel, Company, Status; klickbar
