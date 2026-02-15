@@ -259,7 +259,7 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 4f. [E3-UC6] Tool: set_status | Must | Agent kann Status ändern ✅
 4g. [E3-UC7] Tool: archive_use_case | Must | Agent kann archivieren ✅
 4h. [E3-UC8] Tool: analyze_transcript | Must | Agent kann Transkript-Extraktion triggern ✅
-4i. [E3-UC9] Disambiguation | Must | Agent fragt nach bei mehrdeutigen Referenzen ("Meinst du [Epic] E2: Use Case CRUD #3 oder [Epic] E7: Robustheit & Observability #7?")
+4i. [E3-UC9] Disambiguation | Must | Agent fragt nach bei mehrdeutigen Referenzen ("Meinst du [Epic] E2: Use Case CRUD #3 oder [Epic] E7: Robustheit & Observability #7?") ✅
 4j. [E3-UC10] Tool: list_companies | Should | Agent kann Unternehmen auflisten ✅
 4k. [E3-UC11] Conversation Memory | Should | Agent merkt sich Kontext innerhalb einer Session ✅
 

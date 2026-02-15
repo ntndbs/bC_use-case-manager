@@ -54,7 +54,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M3 - Agent mit Tools 🚧
+## M3 - Agent mit Tools ✅🚧
 > **Ziel:** Chat-Interface mit funktionierenden Tools
 | Task | Status | Issue |
 |------|--------|-------|
@@ -68,13 +68,13 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | Tool: analyze_transcript | ✅ | #TBD |
 | Tool: list_companies | ✅| #TBD |
 | Chat-Endpoint POST /chat | ✅ | #TBD |
-| Disambiguation bei Mehrdeutigkeit | 🔲 | #TBD |
+| Disambiguation bei Mehrdeutigkeit | ✅ | #TBD |
 
 **Checkpoint:** Chat funktioniert via curl/Postman; alle Tools aufrufbar.
 
 ---
 
-## M4 - Frontend Kern 🔲
+## M4 - Frontend Kern 🚧
 > **Ziel:** Web-UI für Use-Case-Verwaltung + Chat
 | Task | Status | Issue |
 |------|--------|-------|
