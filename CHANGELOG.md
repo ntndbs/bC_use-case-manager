@@ -46,8 +46,8 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | GET /use-cases/{id} | ✅ | - |
 | POST /use-cases | ✅ | - |
 | PATCH /use-cases/{id} | ✅ | - |
-| DELETE /use-cases/{id} (Soft Delete / Archive) | 🔲 | #TBD |
-| Status-Änderung validieren | ✅ | Status Änderung von New -> Archived möglich? Über Delete realisiert. |
+| DELETE /use-cases/{id} (Soft Delete / Archive) | ✅ | - |
+| Status-Änderung validieren | ✅ | - |
 
 **Checkpoint:** Swagger UI unter `/docs` zeigt alle Endpoints; CRUD funktioniert.
 
