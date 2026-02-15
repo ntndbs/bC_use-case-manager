@@ -76,3 +76,34 @@ async def get_use_case(
     if not use_case:
         raise HTTPException(status_code=404, detail="Use case not found")
     return use_case
+
+
+# ---------- E2-UC3: Create use case manually ----------
+
+@router.post("/", response_model=UseCaseResponse, status_code=201)
+async def create_use_case(
+    payload: UseCaseCreate,
+    db: AsyncSession = Depends(get_db),
+):
+    """Create a new use case manually."""
+    company = await db.get(Company, payload.company_id)
+    if not company:
+        raise HTTPException(status_code=404, detail="Company not found")
+
+    use_case = UseCase(
+        title=payload.title,
+        description=payload.description,
+        stakeholders=(
+            [s.model_dump() for s in payload.stakeholders]
+            if payload.stakeholders
+            else None
+        ),
+        expected_benefit=payload.expected_benefit,
+        company_id=payload.company_id,
+        transcript_id=payload.transcript_id,
+    )
+
+    db.add(use_case)
+    await db.commit()
+    await db.refresh(use_case)
+    return use_case
