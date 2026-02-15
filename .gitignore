@@ -15,6 +15,9 @@ frontend/dist/
 .vscode/
 .idea/
 
+# Assets
+assets/task/*
+
 # Backend
 backend/data/upload/
 backend/data/transcripts/*
