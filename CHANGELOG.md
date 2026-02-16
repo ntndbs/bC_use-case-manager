@@ -99,9 +99,9 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | POST /auth/register | ✅ | - |
 | POST /auth/login (JWT) | ✅ | - |
 | GET /auth/me | ✅ | - |
-| JWT-Middleware | 🔲 | #TBD |
-| RBAC-Decorator für API-Endpoints | 🔲 | #TBD |
-| RBAC-Check im Agent | 🔲 | #TBD |
+| JWT-Middleware | ✅ | #TBD |
+| RBAC-Decorator für API-Endpoints | ✅ | - |
+| RBAC-Check im Agent | ✅ | - |
 | Login-Page im Frontend | 🔲 | #TBD |
 | Protected Routes | 🔲 | #TBD |
 | Conditional UI (Reader vs Maintainer) | 🔲 | #TBD |

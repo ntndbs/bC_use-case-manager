@@ -274,11 +274,11 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 5h. [E5-UC8] Agent→UI Sync | Should | Nach Agent-Aktion: Liste aktualisiert sich ✅
 
 6. **[Epic] E6: Auth & RBAC** (epic, must, backend, frontend)
-6a. [E6-UC1] User Registration | Must | POST /auth/register erstellt User mit Role=READER
-6b. [E6-UC2] User Login | Must | POST /auth/login gibt JWT zurück
-6c. [E6-UC3] Current User | Must | GET /auth/me gibt User-Daten zurück
-6d. [E6-UC4] RBAC API | Must | Endpoints prüfen Rolle; 403 bei fehlender Berechtigung
-6e. [E6-UC5] RBAC Agent | Must | Agent-Tools prüfen Rolle; verweigern bei fehlendem Recht
+6a. [E6-UC1] User Registration | Must | POST /auth/register erstellt User mit Role=READER ✅
+6b. [E6-UC2] User Login | Must | POST /auth/login gibt JWT zurück ✅
+6c. [E6-UC3] Current User | Must | GET /auth/me gibt User-Daten zurück ✅
+6d. [E6-UC4] RBAC API | Must | Endpoints prüfen Rolle; 403 bei fehlender Berechtigung ✅
+6e. [E6-UC5] RBAC Agent | Must | Agent-Tools prüfen Rolle; verweigern bei fehlendem Recht ✅
 6f. [E6-UC6] RBAC UI | Must | Edit-Buttons nur für Maintainer+ sichtbar
 6g. [E6-UC7] Login-Page | Must | UI für Login
 6h. [E6-UC8] Admin: Rollenvergabe | Could | Admin kann User-Rollen ändern

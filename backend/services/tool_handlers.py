@@ -6,10 +6,20 @@ Import this module to register all tools with the tool registry.
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import UseCase, UseCaseStatus, Company, Transcript
+from db.models import UseCase, UseCaseStatus, Company, Transcript, Role
 from db.models.use_case import UseCaseStatus as UseCaseStatusEnum
 from services.tools import register_tool
 from services.extraction import extract_use_cases, ExtractionError
+
+_ROLE_LEVEL = {Role.READER: 0, Role.MAINTAINER: 1, Role.ADMIN: 2}
+
+
+def _check_role(user, min_role: Role) -> dict | None:
+    """Return error dict if user lacks the required role, else None."""
+    if not user:
+        return {"error": "Nicht authentifiziert."}
+    if _ROLE_LEVEL.get(user.role, -1) < _ROLE_LEVEL[min_role]:
+        return {"error": f"Keine Berechtigung. Benötigte Rolle: {min_role.value}"}
 
 # Valid status transitions (reuse from API layer)
 ALLOWED_TRANSITIONS: dict[UseCaseStatusEnum, set[UseCaseStatusEnum]] = {
@@ -129,6 +139,8 @@ register_tool(
 # ---------- E3-UC4: create_use_case ----------
 
 async def _create_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
     company = await db.get(Company, args["company_id"])
     if not company:
         return {"error": f"Unternehmen mit ID {args['company_id']} nicht gefunden."}
@@ -184,6 +196,8 @@ register_tool(
 # ---------- E3-UC5: update_use_case ----------
 
 async def _update_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -233,6 +247,8 @@ register_tool(
 # ---------- E3-UC6: set_status ----------
 
 async def _set_status(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -281,6 +297,8 @@ register_tool(
 # ---------- E3-UC7: archive_use_case ----------
 
 async def _archive_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.ADMIN):
+        return err
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -318,6 +336,8 @@ register_tool(
 # ---------- E3-UC8: analyze_transcript ----------
 
 async def _analyze_transcript(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
     transcript = await db.get(Transcript, args["transcript_id"])
     if not transcript:
         return {"error": f"Transkript mit ID {args['transcript_id']} nicht gefunden."}
