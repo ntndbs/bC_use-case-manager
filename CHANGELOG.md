@@ -81,7 +81,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | React + Vite + Tailwind Setup | ✅ | #TBD |
 | API-Client (fetch wrapper) | ✅ | #TBD |
 | Use-Case-Liste Komponente | ✅ | #TBD |
-| Use-Case-Detail Komponente | 🔲 | #TBD |
+| Use-Case-Detail Komponente | ✅ | #TBD |
 | Use-Case-Edit Formular | 🔲 | #TBD |
 | Transkript-Upload Komponente | 🔲 | #TBD |
 | Chat-Panel Komponente | 🔲 | #TBD |
