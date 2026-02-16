@@ -24,7 +24,7 @@ ALLOWED_TRANSITIONS: dict[UseCaseStatusEnum, set[UseCaseStatusEnum]] = {
 
 # ---------- E3-UC2: list_use_cases ----------
 
-async def _list_use_cases(args: dict, db: AsyncSession) -> dict:
+async def _list_use_cases(args: dict, db: AsyncSession, user=None) -> dict:
     query = select(UseCase)
 
     if args.get("company_id"):
@@ -87,7 +87,7 @@ register_tool(
 
 # ---------- E3-UC3: get_use_case ----------
 
-async def _get_use_case(args: dict, db: AsyncSession) -> dict:
+async def _get_use_case(args: dict, db: AsyncSession, user=None) -> dict:
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -128,7 +128,7 @@ register_tool(
 
 # ---------- E3-UC4: create_use_case ----------
 
-async def _create_use_case(args: dict, db: AsyncSession) -> dict:
+async def _create_use_case(args: dict, db: AsyncSession, user=None) -> dict:
     company = await db.get(Company, args["company_id"])
     if not company:
         return {"error": f"Unternehmen mit ID {args['company_id']} nicht gefunden."}
@@ -183,7 +183,7 @@ register_tool(
 
 # ---------- E3-UC5: update_use_case ----------
 
-async def _update_use_case(args: dict, db: AsyncSession) -> dict:
+async def _update_use_case(args: dict, db: AsyncSession, user=None) -> dict:
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -232,7 +232,7 @@ register_tool(
 
 # ---------- E3-UC6: set_status ----------
 
-async def _set_status(args: dict, db: AsyncSession) -> dict:
+async def _set_status(args: dict, db: AsyncSession, user=None) -> dict:
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -280,7 +280,7 @@ register_tool(
 
 # ---------- E3-UC7: archive_use_case ----------
 
-async def _archive_use_case(args: dict, db: AsyncSession) -> dict:
+async def _archive_use_case(args: dict, db: AsyncSession, user=None) -> dict:
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -317,7 +317,7 @@ register_tool(
 
 # ---------- E3-UC8: analyze_transcript ----------
 
-async def _analyze_transcript(args: dict, db: AsyncSession) -> dict:
+async def _analyze_transcript(args: dict, db: AsyncSession, user=None) -> dict:
     transcript = await db.get(Transcript, args["transcript_id"])
     if not transcript:
         return {"error": f"Transkript mit ID {args['transcript_id']} nicht gefunden."}
@@ -372,7 +372,7 @@ register_tool(
 
 # ---------- E3-UC10: list_companies ----------
 
-async def _list_companies(args: dict, db: AsyncSession) -> dict:
+async def _list_companies(args: dict, db: AsyncSession, user=None) -> dict:
     query = select(Company).order_by(Company.name)
     result = await db.execute(query)
     companies = result.scalars().all()

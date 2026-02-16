@@ -7,6 +7,7 @@ from openai import AsyncOpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import get_settings
+from db.models import User
 from services.tools import TOOL_DEFINITIONS, execute_tool
 import services.tool_handlers  # noqa: F401 — registers all tools on import
 
@@ -55,6 +56,7 @@ async def run_agent(
     user_message: str,
     session_id: str,
     db: AsyncSession,
+    user: User | None = None,
 ) -> tuple[str, list[str]]:
     """Run the agent loop for a user message.
 
@@ -93,7 +95,7 @@ async def run_agent(
                 logger.info("Tool call: %s(%s)", fn_name, fn_args)
                 tools_called.append(fn_name)
 
-                result = await execute_tool(fn_name, fn_args, db)
+                result = await execute_tool(fn_name, fn_args, db, user)
 
                 messages.append({
                     "role": "tool",

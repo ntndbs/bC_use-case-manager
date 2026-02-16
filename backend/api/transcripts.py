@@ -8,8 +8,9 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.dependencies import get_current_user, require_role
 from db.database import get_db
-from db.models import Transcript, Company, UseCase
+from db.models import Transcript, Company, UseCase, User, Role
 from schemas.transcript import TranscriptResponse, TranscriptWithContent, TranscriptWithUseCases
 from schemas.use_case import UseCaseResponse
 from services.extraction import extract_use_cases, ExtractionError
@@ -56,6 +57,7 @@ async def upload_transcript(
     file: UploadFile = File(...),
     company_id: int = Form(...),
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.MAINTAINER)),
 ):
     """Upload a transcript file and automatically extract use cases via LLM."""
     # Validate company exists
@@ -114,6 +116,7 @@ async def upload_transcript(
 async def list_transcripts(
     company_id: int | None = None,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     """List all transcripts, optionally filtered by company."""
     query = select(Transcript)
@@ -131,6 +134,7 @@ async def list_transcripts(
 async def get_transcript(
     transcript_id: int,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     """Get a single transcript with full content."""
     transcript = await db.get(Transcript, transcript_id)
@@ -145,6 +149,7 @@ async def get_transcript(
 async def extract_use_cases_from_transcript(
     transcript_id: int,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.MAINTAINER)),
 ):
     """Extract use cases from a transcript via LLM.
 

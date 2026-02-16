@@ -6,8 +6,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from core.dependencies import get_current_user, require_role
 from db.database import get_db
-from db.models import UseCase, Company
+from db.models import UseCase, Company, User, Role
 from db.models.use_case import UseCaseStatus
 from schemas.use_case import (
     UseCaseCreate,
@@ -42,6 +43,7 @@ async def list_use_cases(
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     """List use cases with optional filters for company, status and search."""
     query = select(UseCase)
@@ -81,6 +83,7 @@ async def list_use_cases(
 async def get_use_case(
     use_case_id: int,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     """Get a single use case by ID."""
     use_case = await db.get(UseCase, use_case_id)
@@ -95,6 +98,7 @@ async def get_use_case(
 async def create_use_case(
     payload: UseCaseCreate,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.MAINTAINER)),
 ):
     """Create a new use case manually."""
     company = await db.get(Company, payload.company_id)
@@ -127,6 +131,7 @@ async def update_use_case(
     use_case_id: int,
     payload: UseCaseUpdate,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.MAINTAINER)),
 ):
     """Update a use case (partial update)."""
     use_case = await db.get(UseCase, use_case_id)
@@ -160,6 +165,7 @@ async def update_use_case(
 async def archive_use_case(
     use_case_id: int,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.ADMIN)),
 ):
     """Soft-delete a use case by setting status to ARCHIVED."""
     use_case = await db.get(UseCase, use_case_id)
@@ -181,6 +187,7 @@ async def archive_use_case(
 async def restore_use_case(
     use_case_id: int,
     db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.ADMIN)),
 ):
     """Restore an archived use case by setting status back to NEW."""
     use_case = await db.get(UseCase, use_case_id)
