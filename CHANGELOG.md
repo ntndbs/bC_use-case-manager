@@ -74,7 +74,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M4 - Frontend Kern 🚧
+## M4 - Frontend Kern ✅
 > **Ziel:** Web-UI für Use-Case-Verwaltung + Chat
 | Task | Status | Issue |
 |------|--------|-------|
@@ -84,21 +84,21 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | Use-Case-Detail Komponente | ✅ | - |
 | Use-Case-Edit Formular | ✅ | - |
 | Transkript-Upload Komponente | ✅ | - |
-| Chat-Panel Komponente | ✅ | #TBD |
-| Refetch nach Agent-Aktion | 🔲 | #TBD |
+| Chat-Panel Komponente | ✅ | Teilweise falsche Antworten, prüfen |
+| Refetch nach Agent-Aktion | ✅ | - |
 
 **Checkpoint:** Vollständiger Flow im Browser sichtbar (noch ohne Login).
 
 ---
 
-## M5 - Auth & RBAC 🔲
+## M5 - Auth & RBAC 🚧
 > **Ziel:** Login + Rollenbasierte Zugriffskontrolle
 | Task | Status | Issue |
 |------|--------|-------|
-| User-Model + Password-Hashing | 🔲 | #TBD |
-| POST /auth/register | 🔲 | #TBD |
-| POST /auth/login (JWT) | 🔲 | #TBD |
-| GET /auth/me | 🔲 | #TBD |
+| User-Model + Password-Hashing | ✅ | - |
+| POST /auth/register | ✅ | - |
+| POST /auth/login (JWT) | ✅ | - |
+| GET /auth/me | ✅ | - |
 | JWT-Middleware | 🔲 | #TBD |
 | RBAC-Decorator für API-Endpoints | 🔲 | #TBD |
 | RBAC-Check im Agent | 🔲 | #TBD |
