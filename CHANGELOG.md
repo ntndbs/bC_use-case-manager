@@ -83,8 +83,8 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | Use-Case-Liste Komponente | ✅ | - |
 | Use-Case-Detail Komponente | ✅ | - |
 | Use-Case-Edit Formular | ✅ | - |
-| Transkript-Upload Komponente | 🔲 | #TBD |
-| Chat-Panel Komponente | 🔲 | #TBD |
+| Transkript-Upload Komponente | ✅ | - |
+| Chat-Panel Komponente | ✅ | #TBD |
 | Refetch nach Agent-Aktion | 🔲 | #TBD |
 
 **Checkpoint:** Vollständiger Flow im Browser sichtbar (noch ohne Login).

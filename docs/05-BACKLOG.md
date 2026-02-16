@@ -269,7 +269,7 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 5c. [E5-UC3] Use-Case-Edit | Must | Formular zum Bearbeiten (nur Maintainer+) ✅
 5d. [E5-UC4] Status-Dropdown | Must | Status ändern via Dropdown ✅ (Anmerkung: Nicht als Dropdown umgesetzt, weil immer max. 2 Einträge pro Dropdown möglich wären. Umgesetzt über Use Case-Detail Seite)
 5e. [E5-UC5] Transkript-Upload | Must | Datei-Upload + Company-Auswahl ✅
-5f. [E5-UC6] Chat-Panel | Must | Sidebar/Modal für Agent-Interaktion
+5f. [E5-UC6] Chat-Panel | Must | Sidebar/Modal für Agent-Interaktion ✅
 5g. [E5-UC7] Filter/Suche | Should | Use Cases filtern nach Company, Status, Freitext ✅
 5h. [E5-UC8] Agent→UI Sync | Should | Nach Agent-Aktion: Liste aktualisiert sich
 
