@@ -10,6 +10,7 @@ from db.database import init_db
 from api.transcripts import router as transcripts_router
 from api.use_cases import router as use_cases_router
 from api.chat import router as chat_router
+from api.companies import router as companies_router
 
 settings = get_settings()
 
@@ -42,6 +43,7 @@ app.add_middleware(
 app.include_router(transcripts_router, prefix="/api")
 app.include_router(use_cases_router, prefix="/api")
 app.include_router(chat_router, prefix="/api")
+app.include_router(companies_router, prefix="/api")
 
 
 @app.get("/health")

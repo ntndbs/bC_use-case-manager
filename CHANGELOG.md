@@ -78,9 +78,9 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 > **Ziel:** Web-UI für Use-Case-Verwaltung + Chat
 | Task | Status | Issue |
 |------|--------|-------|
-| React + Vite + Tailwind Setup | 🔲 | #TBD |
-| API-Client (fetch wrapper) | 🔲 | #TBD |
-| Use-Case-Liste Komponente | 🔲 | #TBD |
+| React + Vite + Tailwind Setup | ✅ | #TBD |
+| API-Client (fetch wrapper) | ✅ | #TBD |
+| Use-Case-Liste Komponente | ✅ | #TBD |
 | Use-Case-Detail Komponente | 🔲 | #TBD |
 | Use-Case-Edit Formular | 🔲 | #TBD |
 | Transkript-Upload Komponente | 🔲 | #TBD |
