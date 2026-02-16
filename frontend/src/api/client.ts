@@ -1,8 +1,14 @@
 const BASE_URL = "/api";
+const TOKEN_KEY = "ucm_token";
+
+function authHeaders(): Record<string, string> {
+  const token = localStorage.getItem(TOKEN_KEY);
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     ...options,
   });
 
@@ -29,7 +35,7 @@ export const api = {
   upload: <T>(path: string, formData: FormData) =>
     request<T>(path, {
       method: "POST",
-      headers: {},  // Let browser set Content-Type with boundary
+      headers: { ...authHeaders() },  // No Content-Type — browser sets boundary
       body: formData,
     }),
 };

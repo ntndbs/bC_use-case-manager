@@ -3,10 +3,13 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { UseCase } from "../api/types";
 import StatusBadge from "../components/StatusBadge";
+import { useAuth } from "../context/AuthContext";
 
 export default function UseCaseDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const canEdit = user && (user.role === "maintainer" || user.role === "admin");
   const [uc, setUc] = useState<UseCase | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -38,12 +41,14 @@ export default function UseCaseDetailPage() {
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge status={uc.status} />
-            <button
-              onClick={() => navigate(`/use-cases/${uc.id}/edit`)}
-              className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Bearbeiten
-            </button>
+            {canEdit && (
+              <button
+                onClick={() => navigate(`/use-cases/${uc.id}/edit`)}
+                className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Bearbeiten
+              </button>
+            )}
           </div>
         </div>
 

@@ -91,7 +91,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M5 - Auth & RBAC 🚧
+## M5 - Auth & RBAC ✅
 > **Ziel:** Login + Rollenbasierte Zugriffskontrolle
 | Task | Status | Issue |
 |------|--------|-------|
@@ -102,15 +102,20 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 | JWT-Middleware | ✅ | #TBD |
 | RBAC-Decorator für API-Endpoints | ✅ | - |
 | RBAC-Check im Agent | ✅ | - |
-| Login-Page im Frontend | 🔲 | #TBD |
-| Protected Routes | 🔲 | #TBD |
-| Conditional UI (Reader vs Maintainer) | 🔲 | #TBD |
+| Login-Page im Frontend | ✅ | - |
+| Protected Routes | ✅ | #TBD |
+| Conditional UI (Reader vs Maintainer) | ✅ | - |
 
 **Checkpoint:** Reader kann nicht editieren – weder via UI noch via Agent.
 
 ---
 
-## M6 - Polish & Abgabe 🔲
+## TEST SPRINT ##
+tbd.
+
+---
+
+## M6 - Polish & Abgabe 🚧
 > **Ziel:** Abgabe-ready, Demo in 3 Minuten möglich
 | Task | Status | Issue |
 |------|--------|-------|

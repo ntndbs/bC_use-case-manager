@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { UseCase, UseCaseStatus } from "../api/types";
 import { STATUS_CONFIG } from "../components/StatusBadge";
+import { useAuth } from "../context/AuthContext";
 
 const ALLOWED_TRANSITIONS: Record<UseCaseStatus, UseCaseStatus[]> = {
   new: ["in_review"],
@@ -16,6 +17,11 @@ const ALLOWED_TRANSITIONS: Record<UseCaseStatus, UseCaseStatus[]> = {
 export default function UseCaseEditPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  if (user && user.role === "reader") {
+    return <Navigate to={`/use-cases/${id}`} replace />;
+  }
 
   const [uc, setUc] = useState<UseCase | null>(null);
   const [loading, setLoading] = useState(true);

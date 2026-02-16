@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { Company } from "../api/types";
+import { useAuth } from "../context/AuthContext";
 
 interface UploadResult {
   id: number;
@@ -11,7 +12,12 @@ interface UploadResult {
 
 export default function UploadPage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
+
+  if (user && user.role === "reader") {
+    return <Navigate to="/" replace />;
+  }
 
   const [companies, setCompanies] = useState<Company[]>([]);
   const [companyId, setCompanyId] = useState("");

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import ChatPanel from "./ChatPanel";
 
 const NAV_ITEMS = [
@@ -9,6 +10,7 @@ const NAV_ITEMS = [
 
 export default function Layout() {
   const location = useLocation();
+  const { user, logout } = useAuth();
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
@@ -33,12 +35,27 @@ export default function Layout() {
               </Link>
             ))}
           </div>
-          <button
-            onClick={() => setChatOpen(true)}
-            className="ml-auto text-sm px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-          >
-            KI-Chat
-          </button>
+          <div className="ml-auto flex items-center gap-3">
+            <button
+              onClick={() => setChatOpen(true)}
+              className="text-sm px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            >
+              KI-Chat
+            </button>
+            {user && (
+              <>
+                <span className="text-xs text-gray-500">
+                  {user.email} ({user.role})
+                </span>
+                <button
+                  onClick={logout}
+                  className="text-sm px-3 py-1.5 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                >
+                  Abmelden
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </nav>
 
