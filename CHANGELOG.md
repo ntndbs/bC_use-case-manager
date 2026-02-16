@@ -111,7 +111,9 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 ---
 
 ## TEST SPRINT ##
-tbd.
+Big test performed. Results see ./docs/06-TESTS.md
+
+Issue list: todo
 
 ---
 

@@ -280,7 +280,7 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 6d. [E6-UC4] RBAC API | Must | Endpoints prüfen Rolle; 403 bei fehlender Berechtigung ✅
 6e. [E6-UC5] RBAC Agent | Must | Agent-Tools prüfen Rolle; verweigern bei fehlendem Recht ✅
 6f. [E6-UC6] RBAC UI | Must | Edit-Buttons nur für Maintainer+ sichtbar
-6g. [E6-UC7] Login-Page | Must | UI für Login
+6g. [E6-UC7] Login-Page | Must | UI für Login ✅
 6h. [E6-UC8] Admin: Rollenvergabe | Could | Admin kann User-Rollen ändern
 
 7. **[Epic] E7: Robustheit** (epic, should, backend)
@@ -290,9 +290,3 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 7d. [E7-UC4] Health Check | Should | GET /health gibt Status zurück
 
 ---
-
-## Testbarkeit
-| Epic | Minimaler Test |
-|------|----------------|
-| E1 | Upload Transkript → Use Cases in DB (Integration) |
-|
