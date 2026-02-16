@@ -271,7 +271,7 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 5e. [E5-UC5] Transkript-Upload | Must | Datei-Upload + Company-Auswahl ✅
 5f. [E5-UC6] Chat-Panel | Must | Sidebar/Modal für Agent-Interaktion ✅
 5g. [E5-UC7] Filter/Suche | Should | Use Cases filtern nach Company, Status, Freitext ✅
-5h. [E5-UC8] Agent→UI Sync | Should | Nach Agent-Aktion: Liste aktualisiert sich
+5h. [E5-UC8] Agent→UI Sync | Should | Nach Agent-Aktion: Liste aktualisiert sich ✅
 
 6. **[Epic] E6: Auth & RBAC** (epic, must, backend, frontend)
 6a. [E6-UC1] User Registration | Must | POST /auth/register erstellt User mit Role=READER

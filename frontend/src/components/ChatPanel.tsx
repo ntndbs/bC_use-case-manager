@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { api } from "../api/client";
 import type { ChatResponse } from "../api/types";
+import { useRefresh } from "../context/RefreshContext";
+
+const MUTATING_TOOLS = new Set([
+  "create_use_case",
+  "update_use_case",
+  "set_status",
+  "archive_use_case",
+  "analyze_transcript",
+]);
 
 interface Message {
   role: "user" | "assistant";
@@ -18,6 +27,7 @@ function generateSessionId() {
 }
 
 export default function ChatPanel({ open, onClose }: Props) {
+  const { triggerRefresh } = useRefresh();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -52,6 +62,9 @@ export default function ChatPanel({ open, onClose }: Props) {
         ...prev,
         { role: "assistant", text: data.reply, toolCalls: data.tool_calls_made },
       ]);
+      if (data.tool_calls_made.some((t) => MUTATING_TOOLS.has(t))) {
+        triggerRefresh();
+      }
     } catch (e: any) {
       setMessages((prev) => [
         ...prev,

@@ -3,10 +3,12 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import type { UseCaseListResponse, UseCaseStatus, Company } from "../api/types";
 import StatusBadge, { STATUS_CONFIG } from "../components/StatusBadge";
+import { useRefresh } from "../context/RefreshContext";
 
 export default function UseCaseListPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { refreshKey } = useRefresh();
 
   const [data, setData] = useState<UseCaseListResponse | null>(null);
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -49,7 +51,7 @@ export default function UseCaseListPage() {
       .then(setData)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [search, status, companyId, page]);
+  }, [search, status, companyId, page, refreshKey]);
 
   return (
     <div>
