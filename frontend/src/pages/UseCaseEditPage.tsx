@@ -83,6 +83,16 @@ export default function UseCaseEditPage() {
     }
   }
 
+  async function handleRestore() {
+    setError("");
+    try {
+      const updated = await api.patch<UseCase>(`/use-cases/${id}/restore`, {});
+      setUc(updated);
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
   if (loading) return <p className="text-gray-500">Laden...</p>;
   if (!uc) return <div className="bg-red-50 text-red-700 px-4 py-2 rounded-md text-sm">{error}</div>;
 
@@ -126,7 +136,14 @@ export default function UseCaseEditPage() {
                 ))}
               </>
             )}
-            {uc.status !== "archived" && (
+            {uc.status === "archived" ? (
+              <button
+                onClick={handleRestore}
+                className="ml-auto px-3 py-1 text-sm rounded-md border border-green-300 text-green-600 hover:bg-green-50 transition-colors"
+              >
+                Wiederherstellen
+              </button>
+            ) : (
               <button
                 onClick={handleArchive}
                 className="ml-auto px-3 py-1 text-sm rounded-md border border-red-300 text-red-600 hover:bg-red-50 transition-colors"
