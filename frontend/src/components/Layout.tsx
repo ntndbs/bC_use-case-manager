@@ -3,9 +3,11 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ChatPanel from "./ChatPanel";
 
+const ROLE_LEVEL: Record<string, number> = { reader: 0, maintainer: 1, admin: 2 };
+
 const NAV_ITEMS = [
   { to: "/", label: "Use Cases" },
-  { to: "/upload", label: "Upload" },
+  { to: "/upload", label: "Upload", minRole: "maintainer" },
 ];
 
 export default function Layout() {
@@ -21,7 +23,9 @@ export default function Layout() {
             BadenCampus UCM
           </Link>
           <div className="flex gap-4">
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.filter(
+              (item) => !item.minRole || (user && ROLE_LEVEL[user.role] >= ROLE_LEVEL[item.minRole])
+            ).map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
