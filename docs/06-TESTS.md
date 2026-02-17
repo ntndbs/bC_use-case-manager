@@ -42,9 +42,9 @@
 | B3 | Upload ohne Datei | POST ohne file-Feld | 422 | ✅ | |
 | B4 | Upload falsche Extension | .pdf statt .txt hochladen | 400 oder 422 | ✅ | |
 | B5 | Upload leere t.txt | leere .txt Datei hochladen | 400 oder 422, keine Use Cases erkennen | 🛑 | 500 Internal Server Error |
-| B5 | Re-Extraktion | `POST /api/transcripts/{id}/extract` (Maintainer) | 201, neue Use Cases erzeugt | ✅ | |
-| B6 | Transkripte auflisten | `GET /api/transcripts/` | 200, Liste der Transkripte | ✅ | |
-| B7 | Transkript-Detail | `GET /api/transcripts/{id}` | 200, inkl. content-Feld | ✅ | |
+| B6 | Re-Extraktion | `POST /api/transcripts/{id}/extract` (Maintainer) | 201, neue Use Cases erzeugt | ✅ | |
+| B7 | Transkripte auflisten | `GET /api/transcripts/` | 200, Liste der Transkripte | ✅ | |
+| B8 | Transkript-Detail | `GET /api/transcripts/{id}` | 200, inkl. content-Feld | ✅ | |
 
 ### C) Use Case CRUD (E2)
 
@@ -208,14 +208,14 @@ Anmerkungen: ___________
 
 | Kategorie | Gesamt | OK | FAIL | Offen |
 |-----------|--------|------|------|-------|
-| A) Auth | 7 | -- | -- | 7 |
-| B) Upload & Extraktion | 7 | -- | -- | 7 |
-| C) Use Case CRUD | 10 | -- | -- | 10 |
-| D) Chat / Agent | 6 | -- | -- | 6 |
-| E) Frontend | 9 | -- | -- | 9 |
-| F) Token-Sicherheit | 5 | -- | -- | 5 |
-| G) RBAC API | 6 | -- | -- | 6 |
-| H) Social Engineering | 6 | -- | -- | 6 |
+| A) Auth | 7 | 6 | 0 | 1 |
+| B) Upload & Extraktion | 8 | 7 | 1 | 0 |
+| C) Use Case CRUD | 10 | 9 | 1 | 0 |
+| D) Chat / Agent | 6 | 6 | 0 | 0 |
+| E) Frontend | 10 | 8 | 2 | 0 |
+| F) Token-Sicherheit | 5 | 0 | 1 | 4 |
+| G) RBAC API | 6 | 6 | 0 | 6 |
+| H) Social Engineering | 7 | 6 | 1 | 0 |
 | I) Extraktionsqualität | 7 | -- | -- | 7 |
 | J) Agent-Qualität | 7 | -- | -- | 7 |
 | K) Performance | 4 | -- | -- | 4 |
@@ -223,19 +223,29 @@ Anmerkungen: ___________
 
 ### Abgeleitete Issues / Improvements
 
-| Prio | Typ | Titel | Quelle | Beschreibung |
-|------|-----|-------|--------|--------------|
-| Hoch | Security | Rate Limiting Login-Endpoint | F4 | Kein Brute-Force-Schutz vorhanden. Empfehlung: slowapi o.ä. |
-| Hoch | Security | JWT_SECRET Produktions-Check | F5 | Default-Wert "change-me-in-production" darf nicht deployt werden |
-| Hoch | Feature | Audit-Log für mutierende Aktionen | H4 | Wer hat wann was geändert/archiviert? Wichtig für Nachvollziehbarkeit |
-| Mittel | UX | Bestätigungsdialog Bulk-Aktionen (Chat) | H4 | Admin kann alles archivieren ohne Warnung |s
-| Mittel | Security | Passwort-Validierung | A1 | Aktuell kein Constraint auf Passwort-Länge/Komplexität |
-| Mittel | Bug | Upload-Link in Navbar für Reader sichtbar | E4 | NAV_ITEMS zeigt Upload immer; Redirect erst auf der Seite |
-| Mittel | Feature | Agent: Pagination bei vielen UCs | D2 | `list_use_cases` liefert max 20; bei mehr UCs unvollständig |
-| Niedrig | UX | Token-Refresh-Mechanismus | A7 | Nach 24h muss man sich neu einloggen; kein Refresh-Token |
-| Niedrig | Security | Prompt-Injection-Schutz Extraktion | H5 | Transkript-Inhalt könnte LLM-Verhalten beeinflussen |
-| Niedrig | UX | Auto-Logout bei 401 in Frontend | A6 | `client.ts` leitet bei abgelaufenem Token nicht automatisch zu /login |
-| Niedrig | Feature | Admin-Panel: Rollenvergabe | E6-UC8 | Admin kann User-Rollen aktuell nicht über UI ändern |
+| Issue | Prio | Typ | Titel | Quelle | Beschreibung |
+|-----|------|-----|-------|--------|--------------|
+| #57 | Must | Security | Rate Limiting Login-Endpoint | F4 | Kein Brute-Force-Schutz vorhanden. Empfehlung: slowapi o.ä. |
+| #58 | Must | Bug | Archivierte Use Cases wiederherstellen | F5 | Archivierte Use Cases können nicht über Agenten/Tools wiederhergestellt werden |
+| #59 | Must | Imrpovement | Systemprompts | H6 | Systemprompts müssen überarbeitet und verfeinert werden, Einführung Guardrails (siehe unten) |
+| #60 | Should | UX | Bestätigungsdialog Bulk-Aktionen (Chat) | H4 | Admin kann alles archivieren ohne Warnung |
+| #61 | Should | Security | Passwort-Validierung | A1 | Aktuell kein Constraint auf Passwort-Länge/Komplexität |
+| #62 | Should | Bug | Upload-Link in Navbar für Reader sichtbar | E4 | NAV_ITEMS zeigt Upload immer; Redirect erst auf der Seite |
+| #63 | Could | UX | Token-Refresh-Mechanismus | A7 | Nach 24h muss man sich neu einloggen; kein Refresh-Token |
+| #64 | Could | Security | Prompt-Injection-Schutz Extraktion | H6 | Transkript-Inhalt könnte LLM-Verhalten beeinflussen |
+| #65 | Could | UX | Auto-Logout bei 401 in Frontend | A6 | `client.ts` leitet bei abgelaufenem Token nicht automatisch zu /login |
+
+| Issue | Prio | Titel | Kategorie | Beschreibung |
+|-----|------|-------|--------|--------------|
+| #75 | Must | Use Case löschen | Use Case sollte unwiderruflich gelöscht werden können | 
+| #67 | Must | Audit-Log für mutierende Aktionen | Security | Wer hat wann was geändert/archiviert? Wichtig für Nachvollziehbarkeit |
+| #70 | Must | Einführung Guardrails | Sicherheit | Einführung Guardrails, bspw. zum Unterbinden von Offtopic-Gesprächen (E7) |
+| #68 | Should | Registration Page | Registration | Aktuell ist Registrierung nur über API möglich |
+| #69 | Should | Firma anlegen | Transkription | Anlage neuer Firma und Branche ermöglichen |
+| #71 | Should | Use Case bewerten | Use Case | Use Cases bewerten und priorisieren |
+| #74 | Should | Use Case Status Management überarbeiten | Use Case | Statuswechsel zwischen In Bewertung und Abgeschlossen sollte erlaubt werden |
+| #73 | Should | Transkript über Chat Hochladen | Chat | txt Files hochladen ermöglichen |
+| #72 | Could | Admin-Panel: Rollenvergabe | RBAC | Admin kann User-Rollen aktuell nicht über UI ändern |
 
 ---
 

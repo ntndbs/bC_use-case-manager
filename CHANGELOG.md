@@ -38,7 +38,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M2 - Use Case CRUD API ✅🚧
+## M2 - Use Case CRUD API ✅
 > **Ziel:** Vollständige REST-API für Use Cases
 | Task | Status | Issue |
 |------|--------|-------|
@@ -54,7 +54,7 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 
 ---
 
-## M3 - Agent mit Tools ✅🚧
+## M3 - Agent mit Tools ✅
 > **Ziel:** Chat-Interface mit funktionierenden Tools
 | Task | Status | Issue |
 |------|--------|-------|
@@ -111,13 +111,32 @@ Fortschrtit dokumentiert nach Meilensteinen. Jeder Meilenstein entspricht einem 
 ---
 
 ## TEST SPRINT ##
-Big test performed. Results see ./docs/06-TESTS.md
-
-Issue list: todo
+Big E2E-test performed. Results see ./docs/06-TESTS.md
 
 ---
 
-## M6 - Polish & Abgabe 🚧
+## M6 - Issues & Improvements 🔲🚧
+| Task | Status | Issue |
+|------|--------|-------|
+
+---
+
+## M7 - Additional Features 🔲
+| Task | Status | Issue |
+|------|--------|-------|
+|#57 Rate Limiting Login-Endpoint | 🔲 | #TBD |
+|#58 Archivierte Use Cases wiederherstellen | 🔲 | #TBD |
+|#59 Systemprompts verbessern | 🔲 | #TBD |
+|#60 Bulk Changes prüfen | 🔲 | #TBD |
+|#61 Passwort Validierung | 🔲 | #TBD |
+|#62 Upload-Link in Nav Bar für Reader | 🔲 | #TBD |
+|#63 Token-Refresh Mechanismus | 🔲 | #TBD |
+|#64 Prompt-Injection Schutz Extraktion | 🔲 | #TBD |
+|#65 Auto-Logout bei 401 in Frontend | 🔲 | #TBD |
+
+---
+
+## M8 - Polish & Abgabe 🔲
 > **Ziel:** Abgabe-ready, Demo in 3 Minuten möglich
 | Task | Status | Issue |
 |------|--------|-------|
@@ -134,4 +153,12 @@ Issue list: todo
 ---
 
 ## Abgeschlossene Meilensteine
-_Werden hier dokumentiert, sobald abgeschlossen._
+- M0 - Projektsetup & Dokumentation -  Alle Docs vorhanden, Issues angelegt, ready for code.
+- M1 - Kern-Flow E2E (ohne UI) - `curl` Upload → Use Cases in DB sichtbar via `sqlite3`
+- M2 - Use Case CRUD API
+- M3 - Agent mit Tools
+- M4 - Frontend Kern
+- M5 - Auth & RBAC
+- M6 - Issues & Improvements
+- M7 - Additional Features
+- M8 - Polish & Abgabe

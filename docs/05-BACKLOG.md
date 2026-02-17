@@ -289,4 +289,26 @@ Als [Rolle] möchte ich [Funktion], damit [Nutzen].
 7c. [E7-UC3] Input Validation | Must | Pydantic-Schemas für alle Endpoints
 7d. [E7-UC4] Health Check | Should | GET /health gibt Status zurück
 
+8. **[Epic] E8: Issues & Improvements** (epic, must, agent, backend, frontend)
+8a. [#57] Rate Limiting Login-Endpoint | Must | Kein Brute-Force-Schutz vorhanden
+8b. [#58] Archivierte Use Cases wiederherstellen | Must | Archivierte Use Cases können nicht über Agenten/Tools wiederhergestellt werden
+8c. [#59] Systemprompts verbessern | Must | Systemprompts müssen überarbeitet und verfeinert werden, Einführung Guardrails (siehe unten)
+8d. [#60] Bestätigungsdialog Bulk-Aktionen (Chat) | Should | Admin kann alles archivieren ohne Warnung
+8e. [#61] Passwort-Validierung | Should | Aktuell kein Constraint auf Passwort-Länge/Komplexität
+8f. [#62] Upload-Link in Navbar für Reader sichtbar | Should | NAV_ITEMS zeigt Upload immer; Redirect erst auf der Seite
+8g. [#63] Token-Refresh-Mechanismus | Must | Nach 24h muss man sich neu einloggen; kein Refresh-Token
+8h. [#64] Prompt-Injection-Schutz Extraktion | Must | Transkript-Inhalt könnte LLM-Verhalten beeinflussen
+8i. [#65] Auto-Logout bei 401 in Frontend | Must | client.ts leitet bei abgelaufenem Token nicht automatisch zu /login
+
+9. **[Epic] E9: Additional Features** (epic, must, agent, backend, frontend)
+9a. [E9-UC9, #75] Use Case löschen | Must | Use Case unwiderruflich löschen
+9b. [E9-UC1, #67] Audit-Log für mutierende Aktionen | Must | Wer hat wann was geändert/archiviert? Wichtig für Nachvollziehbarkeit
+9c. [E9-UC4, #70] Einführung Guardrails | Must | Einführung Guardrails, bspw. zum Unterbinden von Offtopic-Gesprächen (E7)
+9d. [E9-UC2, #68] Registration Page | Should | Aktuell ist Registrierung nur über API möglich
+9e. [E9-UC3, #69] Firma anlegen | Should | Anlage neuer Firma und Branche ermöglichen
+9f. [E9-UC5, #71] Use Case bewerten | Should | Use Cases bewerten und priorisieren
+9g. [E9-UC8, #74] Use Case Status Management überarbeiten | Should | Use Cases Status wechsel von In Bearbeitung zu Abgeschlossen erlauben
+9h. [E9-UC7, #73] Transkript über Chat hochladen | Should | txt File Upload ermöglichen
+9i. [E9-UC6, #72] Admin-Panel: Rollenvergabe | Could | Admin kann User-Rollen aktuell nicht über UI ändern
+
 ---
