@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
-import type { UseCaseListResponse, UseCaseStatus, Company } from "../api/types";
+import type { UseCaseListResponse, Company } from "../api/types";
 import StatusBadge, { STATUS_CONFIG } from "../components/StatusBadge";
 import { useRefresh } from "../context/RefreshContext";
 

@@ -333,6 +333,45 @@ register_tool(
 )
 
 
+# ---------- restore_use_case ----------
+
+async def _restore_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.ADMIN):
+        return err
+    uc = await db.get(UseCase, args["use_case_id"])
+    if not uc:
+        return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
+
+    if uc.status != UseCaseStatusEnum.ARCHIVED:
+        return {"error": f"Use Case ist nicht archiviert (aktueller Status: '{uc.status.value}')."}
+
+    uc.status = UseCaseStatusEnum.NEW
+    await db.commit()
+    await db.refresh(uc)
+
+    return {"id": uc.id, "title": uc.title, "status": uc.status.value, "message": "Use Case wiederhergestellt."}
+
+
+register_tool(
+    "restore_use_case",
+    {
+        "type": "function",
+        "function": {
+            "name": "restore_use_case",
+            "description": "Stelle einen archivierten Use Case wieder her (setzt Status auf 'new').",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "use_case_id": {"type": "integer", "description": "Die ID des Use Cases"},
+                },
+                "required": ["use_case_id"],
+            },
+        },
+    },
+    _restore_use_case,
+)
+
+
 # ---------- E3-UC8: analyze_transcript ----------
 
 async def _analyze_transcript(args: dict, db: AsyncSession, user=None) -> dict:

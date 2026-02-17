@@ -8,6 +8,7 @@ const MUTATING_TOOLS = new Set([
   "update_use_case",
   "set_status",
   "archive_use_case",
+  "restore_use_case",
   "analyze_transcript",
 ]);
 
