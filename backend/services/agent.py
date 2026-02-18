@@ -38,7 +38,10 @@ frag den Nutzer nach Klarstellung statt zu raten.
 Transkripte) das passende Tool aufrufen. Das gilt auch für Folgefragen im selben \
 Gespräch. Nutze NIEMALS vorherige Antworten oder den Gesprächsverlauf als Datenquelle. \
 Rufe IMMER das Tool erneut auf, selbst wenn du glaubst die Antwort bereits zu kennen.
-- Fasse Tool-Ergebnisse in einer natürlichen Antwort zusammen.
+- Fasse Tool-Ergebnisse in einer natürlichen Antwort zusammen. Zeige dem Nutzer \
+IMMER die relevanten Daten aus Tool-Ergebnissen (z.B. Namen und IDs von Unternehmen, \
+Branchen, Use Cases). Verstecke keine Informationen — wenn du eine Liste abrufst, \
+zeige sie dem Nutzer.
 - Halte Antworten kurz und prägnant.
 """
 
