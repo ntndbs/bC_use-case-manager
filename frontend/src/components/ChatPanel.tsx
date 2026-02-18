@@ -10,9 +10,12 @@ const MUTATING_TOOLS = new Set([
   "archive_use_case",
   "restore_use_case",
   "analyze_transcript",
+  "save_transcript",
   "create_company",
   "create_industry",
 ]);
+
+const MAX_FILE_SIZE = 512_000; // 500 KB
 
 interface Message {
   role: "user" | "assistant";
@@ -35,8 +38,10 @@ export default function ChatPanel({ open, onClose }: Props) {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [sessionId] = useState(() => generateSessionId());
+  const [attachedFile, setAttachedFile] = useState<{ name: string; content: string } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-scroll on new messages
   useEffect(() => {
@@ -48,19 +53,48 @@ export default function ChatPanel({ open, onClose }: Props) {
     if (open) inputRef.current?.focus();
   }, [open]);
 
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = ""; // reset so same file can be selected again
+
+    if (!file.name.endsWith(".txt")) {
+      alert("Nur .txt-Dateien werden unterstützt.");
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      alert("Datei ist zu groß (max. 500 KB).");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setAttachedFile({ name: file.name, content: reader.result as string });
+    };
+    reader.readAsText(file, "utf-8");
+  }
+
   async function handleSend() {
     const text = input.trim();
     if (!text || sending) return;
 
+    const displayText = attachedFile ? `${text}\n📎 ${attachedFile.name}` : text;
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", text }]);
+    setMessages((prev) => [...prev, { role: "user", text: displayText }]);
     setSending(true);
 
+    const body: Record<string, string> = {
+      message: text,
+      session_id: sessionId,
+    };
+    if (attachedFile) {
+      body.file_content = attachedFile.content;
+      body.file_name = attachedFile.name;
+    }
+    setAttachedFile(null);
+
     try {
-      const data = await api.post<ChatResponse>("/chat/", {
-        message: text,
-        session_id: sessionId,
-      });
+      const data = await api.post<ChatResponse>("/chat/", body);
       setMessages((prev) => [
         ...prev,
         { role: "assistant", text: data.reply, toolCalls: data.tool_calls_made },
@@ -148,6 +182,22 @@ export default function ChatPanel({ open, onClose }: Props) {
 
         {/* Input */}
         <div className="border-t border-gray-200 px-4 py-3">
+          {/* Attached file badge */}
+          {attachedFile && (
+            <div className="flex items-center gap-2 mb-2 px-2 py-1 bg-blue-50 rounded-md text-sm text-blue-700">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
+              </svg>
+              <span className="truncate flex-1">{attachedFile.name}</span>
+              <button
+                onClick={() => setAttachedFile(null)}
+                className="text-blue-400 hover:text-blue-600 shrink-0"
+              >
+                &times;
+              </button>
+            </div>
+          )}
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -155,6 +205,24 @@ export default function ChatPanel({ open, onClose }: Props) {
             }}
             className="flex gap-2"
           >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".txt"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={sending}
+              className="px-2 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-40 transition-colors"
+              title="Datei anhängen (.txt)"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
+              </svg>
+            </button>
             <input
               ref={inputRef}
               type="text"
