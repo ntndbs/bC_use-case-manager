@@ -10,6 +10,8 @@ const MUTATING_TOOLS = new Set([
   "archive_use_case",
   "restore_use_case",
   "analyze_transcript",
+  "create_company",
+  "create_industry",
 ]);
 
 interface Message {
