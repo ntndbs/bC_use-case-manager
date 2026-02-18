@@ -204,3 +204,20 @@ async def restore_use_case(
     await db.commit()
     await db.refresh(use_case)
     return use_case
+
+
+# ---------- E9-UC9: Permanently delete use case ----------
+
+@router.delete("/{use_case_id}/permanent", status_code=204)
+async def permanently_delete_use_case(
+    use_case_id: int,
+    db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.ADMIN)),
+):
+    """Permanently delete a use case from the database (irreversible)."""
+    use_case = await db.get(UseCase, use_case_id)
+    if not use_case:
+        raise HTTPException(status_code=404, detail="Use case not found")
+
+    await db.delete(use_case)
+    await db.commit()

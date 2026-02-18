@@ -4,11 +4,14 @@ import { api } from "../api/client";
 import type { UseCaseListResponse, Company } from "../api/types";
 import StatusBadge, { STATUS_CONFIG } from "../components/StatusBadge";
 import { useRefresh } from "../context/RefreshContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function UseCaseListPage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { refreshKey } = useRefresh();
+  const { refreshKey, triggerRefresh } = useRefresh();
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   const [data, setData] = useState<UseCaseListResponse | null>(null);
   const [companies, setCompanies] = useState<Company[]>([]);
@@ -52,6 +55,17 @@ export default function UseCaseListPage() {
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, [search, status, companyId, page, refreshKey]);
+
+  async function handlePermanentDelete(e: React.MouseEvent, ucId: number) {
+    e.stopPropagation();
+    if (!window.confirm("Use Case endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.")) return;
+    try {
+      await api.del(`/use-cases/${ucId}/permanent`);
+      triggerRefresh();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  }
 
   return (
     <div>
@@ -113,6 +127,7 @@ export default function UseCaseListPage() {
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 font-medium">Company</th>
                   <th className="px-4 py-3 font-medium">Erstellt</th>
+                  {isAdmin && <th className="px-4 py-3 font-medium w-10"></th>}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -133,6 +148,19 @@ export default function UseCaseListPage() {
                     <td className="px-4 py-3 text-gray-500">
                       {new Date(uc.created_at).toLocaleDateString("de-DE")}
                     </td>
+                    {isAdmin && (
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={(e) => handlePermanentDelete(e, uc.id)}
+                          className="text-gray-400 hover:text-red-600 transition-colors"
+                          title="Endgültig löschen"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

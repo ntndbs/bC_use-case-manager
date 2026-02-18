@@ -93,6 +93,17 @@ export default function UseCaseEditPage() {
     }
   }
 
+  async function handlePermanentDelete() {
+    if (!window.confirm("Use Case endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.")) return;
+    setError("");
+    try {
+      await api.del(`/use-cases/${id}/permanent`);
+      navigate("/");
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
   if (loading) return <p className="text-gray-500">Laden...</p>;
   if (!uc) return <div className="bg-red-50 text-red-700 px-4 py-2 rounded-md text-sm">{error}</div>;
 
@@ -149,6 +160,14 @@ export default function UseCaseEditPage() {
                 className="ml-auto px-3 py-1 text-sm rounded-md border border-red-300 text-red-600 hover:bg-red-50 transition-colors"
               >
                 Archivieren
+              </button>
+            )}
+            {user?.role === "admin" && (
+              <button
+                onClick={handlePermanentDelete}
+                className="px-3 py-1 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 transition-colors"
+              >
+                Endgültig löschen
               </button>
             )}
           </div>
