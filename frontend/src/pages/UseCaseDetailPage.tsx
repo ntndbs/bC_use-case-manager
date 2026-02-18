@@ -5,11 +5,13 @@ import type { UseCase, Company } from "../api/types";
 import StatusBadge from "../components/StatusBadge";
 import StarRating from "../components/StarRating";
 import { useAuth } from "../context/AuthContext";
+import { useRefresh } from "../context/RefreshContext";
 
 export default function UseCaseDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { refreshKey, triggerRefresh } = useRefresh();
   const canEdit = user && (user.role === "maintainer" || user.role === "admin");
   const [uc, setUc] = useState<UseCase | null>(null);
   const [companyName, setCompanyName] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export default function UseCaseDetailPage() {
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, refreshKey]);
 
   async function handleRate(field: string, value: number) {
     if (!uc) return;
@@ -37,6 +39,7 @@ export default function UseCaseDetailPage() {
     try {
       const updated = await api.patch<UseCase>(`/use-cases/${uc.id}`, { [field]: value });
       setUc(updated);
+      triggerRefresh();
     } catch {
       setUc(prev);
     }
