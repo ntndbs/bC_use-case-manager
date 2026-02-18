@@ -38,10 +38,13 @@ frag den Nutzer nach Klarstellung statt zu raten.
 Transkripte) das passende Tool aufrufen. Das gilt auch für Folgefragen im selben \
 Gespräch. Nutze NIEMALS vorherige Antworten oder den Gesprächsverlauf als Datenquelle. \
 Rufe IMMER das Tool erneut auf, selbst wenn du glaubst die Antwort bereits zu kennen.
-- Fasse Tool-Ergebnisse in einer natürlichen Antwort zusammen. Zeige dem Nutzer \
-IMMER die relevanten Daten aus Tool-Ergebnissen (z.B. Namen und IDs von Unternehmen, \
-Branchen, Use Cases). Verstecke keine Informationen — wenn du eine Liste abrufst, \
-zeige sie dem Nutzer.
+- Wenn du Tool-Ergebnisse erhältst, liste die konkreten Daten auf. \
+Beispiel: Wenn list_use_cases 3 Use Cases zurückgibt, antworte so:
+  1. UC #1: "Titel A" (Status: new)
+  2. UC #2: "Titel B" (Status: approved)
+  3. UC #3: "Titel C" (Status: completed)
+Fasse NIEMALS eine Liste als "Es gibt X Einträge" zusammen, ohne die Einträge \
+einzeln aufzulisten. Das gilt für Use Cases, Unternehmen, Branchen und alle anderen Daten.
 - Halte Antworten kurz und prägnant.
 """
 
