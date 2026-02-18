@@ -35,6 +35,17 @@ export default function UserManagementPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  async function handleDelete(userId: number) {
+    if (!window.confirm("Benutzer endgültig löschen? Diese Aktion kann nicht rückgängig gemacht werden.")) return;
+    setError("");
+    try {
+      await api.del(`/auth/users/${userId}`);
+      setUsers((u) => u.filter((x) => x.id !== userId));
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
   async function handleRoleChange(userId: number, newRole: string) {
     setError("");
     const prev = users;
@@ -66,6 +77,7 @@ export default function UserManagementPage() {
                 <th className="px-4 py-3 font-medium">E-Mail</th>
                 <th className="px-4 py-3 font-medium">Rolle</th>
                 <th className="px-4 py-3 font-medium">Registriert</th>
+                <th className="px-4 py-3 font-medium w-10"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -93,6 +105,19 @@ export default function UserManagementPage() {
                   </td>
                   <td className="px-4 py-3 text-gray-500">
                     {new Date(u.created_at).toLocaleDateString("de-DE")}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {u.id !== user?.id && (
+                      <button
+                        onClick={() => handleDelete(u.id)}
+                        className="text-gray-400 hover:text-red-600 transition-colors"
+                        title="Benutzer löschen"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
