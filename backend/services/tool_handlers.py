@@ -202,7 +202,11 @@ async def _update_use_case(args: dict, db: AsyncSession, user=None, session_id=N
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
 
-    updatable = ["title", "description", "stakeholders", "expected_benefit"]
+    updatable = [
+        "title", "description", "stakeholders", "expected_benefit",
+        "rating_effort", "rating_benefit", "rating_feasibility",
+        "rating_data_availability", "rating_strategic_relevance",
+    ]
     for field in updatable:
         if field in args:
             setattr(uc, field, args[field])
@@ -219,7 +223,7 @@ register_tool(
         "type": "function",
         "function": {
             "name": "update_use_case",
-            "description": "Aktualisiere Felder eines Use Cases (Titel, Beschreibung, Stakeholder, Nutzen).",
+            "description": "Aktualisiere Felder eines Use Cases (Titel, Beschreibung, Stakeholder, Nutzen, Bewertungen). Bewertungen sind jeweils 1-5 Sterne für: Aufwand, Nutzen, Machbarkeit, Datenverfügbarkeit, Strategische Relevanz.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -235,6 +239,11 @@ register_tool(
                         "description": "Neue Stakeholder-Liste",
                     },
                     "expected_benefit": {"type": "string", "description": "Neuer erwarteter Nutzen"},
+                    "rating_effort": {"type": "integer", "description": "Bewertung Aufwand (1-5)", "minimum": 1, "maximum": 5},
+                    "rating_benefit": {"type": "integer", "description": "Bewertung Nutzen (1-5)", "minimum": 1, "maximum": 5},
+                    "rating_feasibility": {"type": "integer", "description": "Bewertung Machbarkeit (1-5)", "minimum": 1, "maximum": 5},
+                    "rating_data_availability": {"type": "integer", "description": "Bewertung Datenverfügbarkeit (1-5)", "minimum": 1, "maximum": 5},
+                    "rating_strategic_relevance": {"type": "integer", "description": "Bewertung Strategische Relevanz (1-5)", "minimum": 1, "maximum": 5},
                 },
                 "required": ["use_case_id"],
             },
