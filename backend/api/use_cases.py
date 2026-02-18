@@ -25,7 +25,7 @@ router = APIRouter(prefix="/use-cases", tags=["use-cases"])
 
 ALLOWED_TRANSITIONS: dict[UseCaseStatus, set[UseCaseStatus]] = {
     UseCaseStatus.NEW: {UseCaseStatus.IN_REVIEW},
-    UseCaseStatus.IN_REVIEW: {UseCaseStatus.APPROVED, UseCaseStatus.NEW},
+    UseCaseStatus.IN_REVIEW: {UseCaseStatus.APPROVED, UseCaseStatus.COMPLETED, UseCaseStatus.NEW},
     UseCaseStatus.APPROVED: {UseCaseStatus.IN_PROGRESS, UseCaseStatus.IN_REVIEW},
     UseCaseStatus.IN_PROGRESS: {UseCaseStatus.COMPLETED, UseCaseStatus.APPROVED},
     UseCaseStatus.COMPLETED: {UseCaseStatus.ARCHIVED},

@@ -24,7 +24,7 @@ def _check_role(user, min_role: Role) -> dict | None:
 # Valid status transitions (reuse from API layer)
 ALLOWED_TRANSITIONS: dict[UseCaseStatusEnum, set[UseCaseStatusEnum]] = {
     UseCaseStatusEnum.NEW: {UseCaseStatusEnum.IN_REVIEW},
-    UseCaseStatusEnum.IN_REVIEW: {UseCaseStatusEnum.APPROVED, UseCaseStatusEnum.NEW},
+    UseCaseStatusEnum.IN_REVIEW: {UseCaseStatusEnum.APPROVED, UseCaseStatusEnum.COMPLETED, UseCaseStatusEnum.NEW},
     UseCaseStatusEnum.APPROVED: {UseCaseStatusEnum.IN_PROGRESS, UseCaseStatusEnum.IN_REVIEW},
     UseCaseStatusEnum.IN_PROGRESS: {UseCaseStatusEnum.COMPLETED, UseCaseStatusEnum.APPROVED},
     UseCaseStatusEnum.COMPLETED: {UseCaseStatusEnum.ARCHIVED},

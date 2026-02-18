@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 
 const ALLOWED_TRANSITIONS: Record<UseCaseStatus, UseCaseStatus[]> = {
   new: ["in_review"],
-  in_review: ["approved", "new"],
+  in_review: ["approved", "completed", "new"],
   approved: ["in_progress", "in_review"],
   in_progress: ["completed", "approved"],
   completed: ["archived"],
