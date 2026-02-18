@@ -8,6 +8,7 @@ const ROLE_LEVEL: Record<string, number> = { reader: 0, maintainer: 1, admin: 2 
 const NAV_ITEMS = [
   { to: "/", label: "Use Cases" },
   { to: "/upload", label: "Upload", minRole: "maintainer" },
+  { to: "/users", label: "User", minRole: "admin" },
 ];
 
 export default function Layout() {

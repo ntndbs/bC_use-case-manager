@@ -8,6 +8,7 @@ import UseCaseDetailPage from "./pages/UseCaseDetailPage";
 import UseCaseEditPage from "./pages/UseCaseEditPage";
 import UploadPage from "./pages/UploadPage";
 import RegisterPage from "./pages/RegisterPage";
+import UserManagementPage from "./pages/UserManagementPage";
 
 function AppRoutes() {
   const { user, loading } = useAuth();
@@ -34,6 +35,7 @@ function AppRoutes() {
           <Route path="/use-cases/:id" element={<UseCaseDetailPage />} />
           <Route path="/use-cases/:id/edit" element={<UseCaseEditPage />} />
           <Route path="/upload" element={<UploadPage />} />
+          <Route path="/users" element={<UserManagementPage />} />
         </Route>
         <Route path="/login" element={<Navigate to="/" replace />} />
       </Routes>

@@ -4,10 +4,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.dependencies import get_current_user
+from pydantic import BaseModel
+
+from core.dependencies import get_current_user, require_role
 from core.security import create_access_token, hash_password, verify_password
 from db.database import get_db
-from db.models import User
+from db.models import User, Role
 from schemas.user import UserCreate, UserLogin, UserResponse, Token
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -49,4 +51,42 @@ async def login(payload: UserLogin, db: AsyncSession = Depends(get_db)):
 @router.get("/me", response_model=UserResponse)
 async def current_user(user: User = Depends(get_current_user)):
     """Return the currently authenticated user."""
+    return user
+
+
+# ---------- Admin: User management ----------
+
+
+@router.get("/users", response_model=list[UserResponse])
+async def list_users(
+    db: AsyncSession = Depends(get_db),
+    _user: User = Depends(require_role(Role.ADMIN)),
+):
+    """List all users (admin only)."""
+    result = await db.execute(select(User).order_by(User.email))
+    return result.scalars().all()
+
+
+class RoleUpdate(BaseModel):
+    role: Role
+
+
+@router.patch("/users/{user_id}", response_model=UserResponse)
+async def update_user_role(
+    user_id: int,
+    body: RoleUpdate,
+    db: AsyncSession = Depends(get_db),
+    current: User = Depends(require_role(Role.ADMIN)),
+):
+    """Update a user's role (admin only)."""
+    if current.id == user_id:
+        raise HTTPException(status_code=400, detail="Cannot change your own role")
+
+    user = await db.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.role = body.role
+    await db.commit()
+    await db.refresh(user)
     return user
