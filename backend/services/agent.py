@@ -27,6 +27,7 @@ Du hilfst Nutzern dabei, Use Cases aus Workshop-Transkripten zu verwalten.
 Deine Fähigkeiten:
 - Use Cases auflisten, anzeigen, erstellen, bearbeiten, Status ändern, archivieren
 - Transkripte analysieren und Use Cases daraus extrahieren
+- Angehängte Transkript-Dateien speichern und auswerten
 - Unternehmen auflisten
 
 Regeln:
@@ -43,6 +44,19 @@ MAX_TOOL_ROUNDS = 10
 
 # In-memory conversation storage (keyed by session_id)
 _sessions: dict[str, list[dict]] = {}
+
+# Temporary file storage for chat uploads (keyed by session_id)
+_file_store: dict[str, dict] = {}
+
+
+def store_file(session_id: str, filename: str, content: str) -> None:
+    """Store an uploaded file for later use by tools."""
+    _file_store[session_id] = {"filename": filename, "content": content}
+
+
+def get_file(session_id: str) -> dict | None:
+    """Retrieve and remove the stored file for a session."""
+    return _file_store.pop(session_id, None)
 
 
 def _get_history(session_id: str) -> list[dict]:
@@ -95,7 +109,7 @@ async def run_agent(
                 logger.info("Tool call: %s(%s)", fn_name, fn_args)
                 tools_called.append(fn_name)
 
-                result = await execute_tool(fn_name, fn_args, db, user)
+                result = await execute_tool(fn_name, fn_args, db, user, session_id)
 
                 messages.append({
                     "role": "tool",

@@ -34,7 +34,7 @@ ALLOWED_TRANSITIONS: dict[UseCaseStatusEnum, set[UseCaseStatusEnum]] = {
 
 # ---------- E3-UC2: list_use_cases ----------
 
-async def _list_use_cases(args: dict, db: AsyncSession, user=None) -> dict:
+async def _list_use_cases(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     query = select(UseCase)
 
     if args.get("company_id"):
@@ -97,7 +97,7 @@ register_tool(
 
 # ---------- E3-UC3: get_use_case ----------
 
-async def _get_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+async def _get_use_case(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     uc = await db.get(UseCase, args["use_case_id"])
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
@@ -138,7 +138,7 @@ register_tool(
 
 # ---------- E3-UC4: create_use_case ----------
 
-async def _create_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+async def _create_use_case(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.MAINTAINER):
         return err
     company = await db.get(Company, args["company_id"])
@@ -195,7 +195,7 @@ register_tool(
 
 # ---------- E3-UC5: update_use_case ----------
 
-async def _update_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+async def _update_use_case(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.MAINTAINER):
         return err
     uc = await db.get(UseCase, args["use_case_id"])
@@ -246,7 +246,7 @@ register_tool(
 
 # ---------- E3-UC6: set_status ----------
 
-async def _set_status(args: dict, db: AsyncSession, user=None) -> dict:
+async def _set_status(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.MAINTAINER):
         return err
     uc = await db.get(UseCase, args["use_case_id"])
@@ -296,7 +296,7 @@ register_tool(
 
 # ---------- E3-UC7: archive_use_case ----------
 
-async def _archive_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+async def _archive_use_case(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.ADMIN):
         return err
     uc = await db.get(UseCase, args["use_case_id"])
@@ -335,7 +335,7 @@ register_tool(
 
 # ---------- restore_use_case ----------
 
-async def _restore_use_case(args: dict, db: AsyncSession, user=None) -> dict:
+async def _restore_use_case(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.ADMIN):
         return err
     uc = await db.get(UseCase, args["use_case_id"])
@@ -374,7 +374,7 @@ register_tool(
 
 # ---------- E3-UC8: analyze_transcript ----------
 
-async def _analyze_transcript(args: dict, db: AsyncSession, user=None) -> dict:
+async def _analyze_transcript(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.MAINTAINER):
         return err
     transcript = await db.get(Transcript, args["transcript_id"])
@@ -404,8 +404,11 @@ async def _analyze_transcript(args: dict, db: AsyncSession, user=None) -> dict:
         await db.refresh(uc)
 
     return {
-        "message": f"{len(use_cases)} Use Cases aus Transkript {transcript.id} extrahiert.",
-        "use_cases": [{"id": uc.id, "title": uc.title} for uc in use_cases],
+        "message": f"{len(use_cases)} Use Cases aus Transkript {transcript.id} extrahiert. Liste sie dem Nutzer auf.",
+        "use_cases": [
+            {"id": uc.id, "title": uc.title, "description": uc.description[:150]}
+            for uc in use_cases
+        ],
     }
 
 
@@ -415,7 +418,7 @@ register_tool(
         "type": "function",
         "function": {
             "name": "analyze_transcript",
-            "description": "Analysiere ein Transkript und extrahiere Use Cases daraus mittels KI.",
+            "description": "Analysiere ein Transkript und extrahiere Use Cases daraus mittels KI. Liste die extrahierten Use Cases dem Nutzer immer einzeln auf.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -431,7 +434,7 @@ register_tool(
 
 # ---------- E3-UC10: list_companies ----------
 
-async def _list_companies(args: dict, db: AsyncSession, user=None) -> dict:
+async def _list_companies(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     query = select(Company).order_by(Company.name)
     result = await db.execute(query)
     companies = result.scalars().all()
@@ -464,7 +467,7 @@ register_tool(
 
 # ---------- E9-UC11: list_industries ----------
 
-async def _list_industries(args: dict, db: AsyncSession, user=None) -> dict:
+async def _list_industries(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     result = await db.execute(select(Industry).order_by(Industry.name))
     industries = result.scalars().all()
 
@@ -496,7 +499,7 @@ register_tool(
 
 # ---------- E9-UC11: create_industry ----------
 
-async def _create_industry(args: dict, db: AsyncSession, user=None) -> dict:
+async def _create_industry(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.MAINTAINER):
         return err
 
@@ -536,7 +539,7 @@ register_tool(
 
 # ---------- E9-UC11: create_company ----------
 
-async def _create_company(args: dict, db: AsyncSession, user=None) -> dict:
+async def _create_company(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
     if err := _check_role(user, Role.MAINTAINER):
         return err
 
@@ -583,4 +586,64 @@ register_tool(
         },
     },
     _create_company,
+)
+
+
+# ---------- E9-UC7: save_transcript ----------
+
+async def _save_transcript(args: dict, db: AsyncSession, user=None, session_id=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
+
+    if not session_id:
+        return {"error": "Kein Session-Kontext verfügbar."}
+
+    from services.agent import get_file
+
+    file_data = get_file(session_id)
+    if not file_data:
+        return {"error": "Keine angehängte Datei gefunden. Bitte zuerst eine .txt-Datei anhängen."}
+
+    company = await db.get(Company, args["company_id"])
+    if not company:
+        return {"error": f"Unternehmen mit ID {args['company_id']} nicht gefunden."}
+
+    transcript = Transcript(
+        filename=file_data["filename"],
+        content=file_data["content"],
+        company_id=args["company_id"],
+    )
+    db.add(transcript)
+    await db.commit()
+    await db.refresh(transcript)
+
+    return {
+        "transcript_id": transcript.id,
+        "message": f"Transkript '{file_data['filename']}' gespeichert (ID {transcript.id}). Nutze jetzt analyze_transcript um Use Cases zu extrahieren.",
+    }
+
+
+register_tool(
+    "save_transcript",
+    {
+        "type": "function",
+        "function": {
+            "name": "save_transcript",
+            "description": (
+                "Speichere das angehängte Transkript in der Datenbank. "
+                "WICHTIG: Frage den Nutzer IMMER zuerst nach der Firma. "
+                "Nutze list_companies, um die verfügbaren Firmen aufzulisten und dem Nutzer zur Auswahl zu präsentieren. "
+                "Führe dieses Tool NICHT aus, ohne dass der Nutzer die Firma bestätigt hat. "
+                "Rufe danach analyze_transcript auf, um Use Cases zu extrahieren."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "company_id": {"type": "integer", "description": "ID des Unternehmens, dem das Transkript zugeordnet wird"},
+                },
+                "required": ["company_id"],
+            },
+        },
+    },
+    _save_transcript,
 )
