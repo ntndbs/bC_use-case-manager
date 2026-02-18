@@ -38,6 +38,7 @@ ALLOWED_TRANSITIONS: dict[UseCaseStatus, set[UseCaseStatus]] = {
 @router.get("/", response_model=UseCaseListResponse)
 async def list_use_cases(
     company_id: int | None = None,
+    industry_id: int | None = None,
     status: UseCaseStatus | None = None,
     search: str | None = None,
     page: int = Query(1, ge=1),
@@ -50,6 +51,10 @@ async def list_use_cases(
 
     if company_id is not None:
         query = query.where(UseCase.company_id == company_id)
+    if industry_id is not None:
+        query = query.join(Company, UseCase.company_id == Company.id).where(
+            Company.industry_id == industry_id
+        )
     if status is not None:
         query = query.where(UseCase.status == status)
     if search:

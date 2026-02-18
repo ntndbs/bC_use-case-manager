@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
-import type { UseCaseListResponse, Company } from "../api/types";
+import type { UseCaseListResponse, Company, Industry } from "../api/types";
 import StatusBadge, { STATUS_CONFIG } from "../components/StatusBadge";
 import StarRating from "../components/StarRating";
 import { useRefresh } from "../context/RefreshContext";
@@ -16,6 +16,7 @@ export default function UseCaseListPage() {
 
   const [data, setData] = useState<UseCaseListResponse | null>(null);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -23,6 +24,7 @@ export default function UseCaseListPage() {
   const search = searchParams.get("search") || "";
   const status = searchParams.get("status") || "";
   const companyId = searchParams.get("company_id") || "";
+  const industryId = searchParams.get("industry_id") || "";
   const page = Number(searchParams.get("page") || "1");
 
   function setFilter(key: string, value: string) {
@@ -38,6 +40,7 @@ export default function UseCaseListPage() {
 
   useEffect(() => {
     api.get<Company[]>("/companies/").then(setCompanies).catch(() => {});
+    api.get<Industry[]>("/industries/").then(setIndustries).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -48,6 +51,7 @@ export default function UseCaseListPage() {
     if (search) params.set("search", search);
     if (status) params.set("status", status);
     if (companyId) params.set("company_id", companyId);
+    if (industryId) params.set("industry_id", industryId);
     params.set("page", String(page));
 
     api
@@ -55,7 +59,7 @@ export default function UseCaseListPage() {
       .then(setData)
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
-  }, [search, status, companyId, page, refreshKey]);
+  }, [search, status, companyId, industryId, page, refreshKey]);
 
   async function handlePermanentDelete(e: React.MouseEvent, ucId: number) {
     e.stopPropagation();
@@ -102,6 +106,18 @@ export default function UseCaseListPage() {
           {companies.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
+            </option>
+          ))}
+        </select>
+        <select
+          value={industryId}
+          onChange={(e) => setFilter("industry_id", e.target.value)}
+          className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Alle Branchen</option>
+          {industries.map((ind) => (
+            <option key={ind.id} value={ind.id}>
+              {ind.name}
             </option>
           ))}
         </select>
