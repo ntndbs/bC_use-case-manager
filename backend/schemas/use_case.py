@@ -1,7 +1,7 @@
 """Pydantic schemas for UseCase."""
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, computed_field
 
 from db.models.use_case import UseCaseStatus
 
@@ -33,6 +33,11 @@ class UseCaseUpdate(BaseModel):
     stakeholders: list[Stakeholder] | None = None
     expected_benefit: str | None = None
     status: UseCaseStatus | None = None
+    rating_effort: int | None = Field(None, ge=1, le=5)
+    rating_benefit: int | None = Field(None, ge=1, le=5)
+    rating_feasibility: int | None = Field(None, ge=1, le=5)
+    rating_data_availability: int | None = Field(None, ge=1, le=5)
+    rating_strategic_relevance: int | None = Field(None, ge=1, le=5)
 
 
 class UseCaseResponse(UseCaseBase):
@@ -44,7 +49,21 @@ class UseCaseResponse(UseCaseBase):
     created_by_id: int | None = None
     created_at: datetime
     updated_at: datetime
-    
+    rating_effort: int | None = None
+    rating_benefit: int | None = None
+    rating_feasibility: int | None = None
+    rating_data_availability: int | None = None
+    rating_strategic_relevance: int | None = None
+
+    @computed_field
+    @property
+    def rating_average(self) -> float | None:
+        values = [v for v in (
+            self.rating_effort, self.rating_benefit, self.rating_feasibility,
+            self.rating_data_availability, self.rating_strategic_relevance,
+        ) if v is not None]
+        return round(sum(values) / len(values), 1) if values else None
+
     model_config = ConfigDict(from_attributes=True)
 
 

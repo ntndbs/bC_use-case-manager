@@ -90,3 +90,21 @@ async def update_user_role(
     await db.commit()
     await db.refresh(user)
     return user
+
+
+@router.delete("/users/{user_id}", status_code=204)
+async def delete_user(
+    user_id: int,
+    db: AsyncSession = Depends(get_db),
+    current: User = Depends(require_role(Role.ADMIN)),
+):
+    """Permanently delete a user (admin only)."""
+    if current.id == user_id:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+
+    user = await db.get(User, user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    await db.delete(user)
+    await db.commit()

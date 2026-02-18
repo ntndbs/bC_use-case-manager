@@ -10,6 +10,12 @@ export interface UseCase {
   created_by_id: number | null;
   created_at: string;
   updated_at: string;
+  rating_effort: number | null;
+  rating_benefit: number | null;
+  rating_feasibility: number | null;
+  rating_data_availability: number | null;
+  rating_strategic_relevance: number | null;
+  rating_average: number | null;
 }
 
 export type UseCaseStatus =

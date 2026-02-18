@@ -3,7 +3,7 @@
 from datetime import datetime
 from enum import Enum
 from typing import Any
-from sqlalchemy import String, Text, DateTime, ForeignKey, func, JSON
+from sqlalchemy import Integer, String, Text, DateTime, ForeignKey, func, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.database import Base
@@ -31,6 +31,13 @@ class UseCase(Base):
     expected_benefit: Mapped[str | None] = mapped_column(Text, nullable=True)
     status: Mapped[UseCaseStatus] = mapped_column(default=UseCaseStatus.NEW)
     
+    # Ratings (1-5, nullable)
+    rating_effort: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rating_benefit: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rating_feasibility: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rating_data_availability: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rating_strategic_relevance: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
     # Foreign Keys
     company_id: Mapped[int] = mapped_column(ForeignKey("companies.id"), nullable=False)
     transcript_id: Mapped[int | None] = mapped_column(ForeignKey("transcripts.id"), nullable=True)

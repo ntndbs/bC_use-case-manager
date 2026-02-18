@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import type { UseCaseListResponse, Company } from "../api/types";
 import StatusBadge, { STATUS_CONFIG } from "../components/StatusBadge";
+import StarRating from "../components/StarRating";
 import { useRefresh } from "../context/RefreshContext";
 import { useAuth } from "../context/AuthContext";
 
@@ -126,6 +127,7 @@ export default function UseCaseListPage() {
                   <th className="px-4 py-3 font-medium">Titel</th>
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 font-medium">Company</th>
+                  <th className="px-4 py-3 font-medium">Bewertung</th>
                   <th className="px-4 py-3 font-medium">Erstellt</th>
                   {isAdmin && <th className="px-4 py-3 font-medium w-10"></th>}
                 </tr>
@@ -144,6 +146,16 @@ export default function UseCaseListPage() {
                     </td>
                     <td className="px-4 py-3 text-gray-600">
                       {companies.find((c) => c.id === uc.company_id)?.name || `#${uc.company_id}`}
+                    </td>
+                    <td className="px-4 py-3">
+                      {uc.rating_average != null ? (
+                        <div className="flex items-center gap-1.5">
+                          <StarRating value={Math.round(uc.rating_average)} readonly />
+                          <span className="text-xs text-gray-500">{uc.rating_average.toFixed(1)}</span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">–</span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-gray-500">
                       {new Date(uc.created_at).toLocaleDateString("de-DE")}

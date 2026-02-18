@@ -6,7 +6,7 @@ Import this module to register all tools with the tool registry.
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import UseCase, UseCaseStatus, Company, Transcript, Role
+from db.models import UseCase, UseCaseStatus, Company, Industry, Transcript, Role
 from db.models.use_case import UseCaseStatus as UseCaseStatusEnum
 from services.tools import register_tool
 from services.extraction import extract_use_cases, ExtractionError
@@ -459,4 +459,128 @@ register_tool(
         },
     },
     _list_companies,
+)
+
+
+# ---------- E9-UC11: list_industries ----------
+
+async def _list_industries(args: dict, db: AsyncSession, user=None) -> dict:
+    result = await db.execute(select(Industry).order_by(Industry.name))
+    industries = result.scalars().all()
+
+    return {
+        "industries": [
+            {"id": i.id, "name": i.name, "description": i.description}
+            for i in industries
+        ],
+    }
+
+
+register_tool(
+    "list_industries",
+    {
+        "type": "function",
+        "function": {
+            "name": "list_industries",
+            "description": "Liste alle verfügbaren Branchen auf. Nutze dieses Tool BEVOR du eine Firma anlegst, um die passende Branche zu finden.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+            },
+        },
+    },
+    _list_industries,
+)
+
+
+# ---------- E9-UC11: create_industry ----------
+
+async def _create_industry(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
+
+    name = args["name"].strip()
+    existing = await db.execute(select(Industry).where(Industry.name == name))
+    if existing.scalar_one_or_none():
+        return {"error": f"Branche '{name}' existiert bereits."}
+
+    industry = Industry(name=name, description=args.get("description"))
+    db.add(industry)
+    await db.commit()
+    await db.refresh(industry)
+
+    return {"id": industry.id, "name": industry.name, "message": "Branche angelegt."}
+
+
+register_tool(
+    "create_industry",
+    {
+        "type": "function",
+        "function": {
+            "name": "create_industry",
+            "description": "Lege eine neue Branche an.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string", "description": "Name der Branche"},
+                    "description": {"type": "string", "description": "Optionale Beschreibung der Branche"},
+                },
+                "required": ["name"],
+            },
+        },
+    },
+    _create_industry,
+)
+
+
+# ---------- E9-UC11: create_company ----------
+
+async def _create_company(args: dict, db: AsyncSession, user=None) -> dict:
+    if err := _check_role(user, Role.MAINTAINER):
+        return err
+
+    name = args["name"].strip()
+    industry_id = args["industry_id"]
+
+    industry = await db.get(Industry, industry_id)
+    if not industry:
+        return {"error": f"Branche mit ID {industry_id} nicht gefunden."}
+
+    existing = await db.execute(select(Company).where(Company.name == name))
+    if existing.scalar_one_or_none():
+        return {"error": f"Firma '{name}' existiert bereits."}
+
+    company = Company(name=name, industry_id=industry_id)
+    db.add(company)
+    await db.commit()
+    await db.refresh(company)
+
+    return {
+        "id": company.id,
+        "name": company.name,
+        "industry_id": company.industry_id,
+        "industry_name": industry.name,
+        "message": "Firma angelegt.",
+    }
+
+
+register_tool(
+    "create_company",
+    {
+        "type": "function",
+        "function": {
+            "name": "create_company",
+            "description": "Lege eine neue Firma an. WICHTIG: Frage den Nutzer IMMER zuerst nach der Branche. Nutze vorher list_industries, um die verfügbaren Branchen aufzulisten und dem Nutzer zur Auswahl zu präsentieren. Lege die Firma NICHT an, ohne dass der Nutzer die Branche bestätigt hat.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string", "description": "Name der Firma"},
+                    "industry_id": {"type": "integer", "description": "ID der Branche"},
+                },
+                "required": ["name", "industry_id"],
+            },
+        },
+    },
+    _create_company,
 )

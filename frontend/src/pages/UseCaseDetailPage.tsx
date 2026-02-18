@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
 import type { UseCase } from "../api/types";
 import StatusBadge from "../components/StatusBadge";
+import StarRating from "../components/StarRating";
 import { useAuth } from "../context/AuthContext";
 
 export default function UseCaseDetailPage() {
@@ -23,9 +24,29 @@ export default function UseCaseDetailPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  async function handleRate(field: string, value: number) {
+    if (!uc) return;
+    const prev = uc;
+    setUc({ ...uc, [field]: value });
+    try {
+      const updated = await api.patch<UseCase>(`/use-cases/${uc.id}`, { [field]: value });
+      setUc(updated);
+    } catch {
+      setUc(prev);
+    }
+  }
+
   if (loading) return <p className="text-gray-500">Laden...</p>;
   if (error) return <div className="bg-red-50 text-red-700 px-4 py-2 rounded-md text-sm">{error}</div>;
   if (!uc) return null;
+
+  const ratingCategories = [
+    { key: "rating_effort", label: "Aufwand" },
+    { key: "rating_benefit", label: "Nutzen" },
+    { key: "rating_feasibility", label: "Machbarkeit" },
+    { key: "rating_data_availability", label: "Datenverfügbarkeit" },
+    { key: "rating_strategic_relevance", label: "Strategische Relevanz" },
+  ] as const;
 
   return (
     <div>
@@ -95,6 +116,29 @@ export default function UseCaseDetailPage() {
               {new Date(uc.updated_at).toLocaleString("de-DE")}
             </p>
           </Field>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide">Bewertung</h2>
+            {uc.rating_average != null && (
+              <span className="text-sm font-semibold text-amber-600">
+                &#8960; {uc.rating_average.toFixed(1)}
+              </span>
+            )}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {ratingCategories.map(({ key, label }) => (
+              <div key={key} className="flex items-center justify-between gap-2">
+                <span className="text-sm text-gray-700">{label}</span>
+                <StarRating
+                  value={uc[key]}
+                  onChange={canEdit ? (v) => handleRate(key, v) : undefined}
+                  readonly={!canEdit}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
