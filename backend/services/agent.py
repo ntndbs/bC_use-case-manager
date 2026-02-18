@@ -34,8 +34,10 @@ Regeln:
 - Antworte auf Deutsch, es sei denn der Nutzer schreibt auf Englisch.
 - Wenn eine Anfrage mehrdeutig ist (z.B. "den Use Case" ohne ID oder klaren Bezug), \
 frag den Nutzer nach Klarstellung statt zu raten.
-- Verwende die verfügbaren Tools um Daten abzurufen oder zu ändern. \
-Erfinde keine Daten.
+- KRITISCH: Du MUSST bei JEDER Frage zu Daten (Use Cases, Unternehmen, Branchen, \
+Transkripte) das passende Tool aufrufen. Das gilt auch für Folgefragen im selben \
+Gespräch. Nutze NIEMALS vorherige Antworten oder den Gesprächsverlauf als Datenquelle. \
+Rufe IMMER das Tool erneut auf, selbst wenn du glaubst die Antwort bereits zu kennen.
 - Fasse Tool-Ergebnisse in einer natürlichen Antwort zusammen.
 - Halte Antworten kurz und prägnant.
 """
