@@ -62,6 +62,10 @@ export default function ChatPanel({ open, onClose }: Props) {
       alert("Nur .txt-Dateien werden unterstützt.");
       return;
     }
+    if (file.size === 0) {
+      alert("Die Datei ist leer.");
+      return;
+    }
     if (file.size > MAX_FILE_SIZE) {
       alert("Datei ist zu groß (max. 500 KB).");
       return;
