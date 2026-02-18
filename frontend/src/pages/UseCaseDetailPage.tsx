@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
-import type { UseCase } from "../api/types";
+import type { UseCase, Company } from "../api/types";
 import StatusBadge from "../components/StatusBadge";
 import StarRating from "../components/StarRating";
 import { useAuth } from "../context/AuthContext";
@@ -12,14 +12,20 @@ export default function UseCaseDetailPage() {
   const { user } = useAuth();
   const canEdit = user && (user.role === "maintainer" || user.role === "admin");
   const [uc, setUc] = useState<UseCase | null>(null);
+  const [companyName, setCompanyName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     setLoading(true);
-    api
-      .get<UseCase>(`/use-cases/${id}`)
-      .then(setUc)
+    Promise.all([
+      api.get<UseCase>(`/use-cases/${id}`),
+      api.get<Company[]>("/companies/"),
+    ])
+      .then(([ucData, companies]) => {
+        setUc(ucData);
+        setCompanyName(companies.find((c) => c.id === ucData.company_id)?.name ?? null);
+      })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
   }, [id]);
@@ -98,7 +104,7 @@ export default function UseCaseDetailPage() {
           </Field>
 
           <Field label="Unternehmen">
-            <p className="text-gray-700">ID #{uc.company_id}</p>
+            <p className="text-gray-700">{companyName ? `${companyName} (ID #${uc.company_id})` : `ID #${uc.company_id}`}</p>
           </Field>
 
           <Field label="Transkript">
