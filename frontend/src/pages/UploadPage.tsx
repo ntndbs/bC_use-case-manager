@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { api } from "../api/client";
-import type { Company } from "../api/types";
+import type { Company, Industry } from "../api/types";
 import { useAuth } from "../context/AuthContext";
 
 interface UploadResult {
@@ -20,15 +20,92 @@ export default function UploadPage() {
   }
 
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [industries, setIndustries] = useState<Industry[]>([]);
   const [companyId, setCompanyId] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<UploadResult | null>(null);
 
-  useEffect(() => {
+  // New company form
+  const [showNewCompany, setShowNewCompany] = useState(false);
+  const [newCompanyName, setNewCompanyName] = useState("");
+  const [selectedIndustryId, setSelectedIndustryId] = useState("");
+  const [showNewIndustry, setShowNewIndustry] = useState(false);
+  const [newIndustryName, setNewIndustryName] = useState("");
+  const [newIndustryDesc, setNewIndustryDesc] = useState("");
+  const [creating, setCreating] = useState(false);
+
+  function loadCompanies() {
     api.get<Company[]>("/companies/").then(setCompanies).catch(() => {});
+  }
+
+  useEffect(() => {
+    loadCompanies();
+    api.get<Industry[]>("/industries/").then(setIndustries).catch(() => {});
   }, []);
+
+  function handleCompanySelect(value: string) {
+    if (value === "__new__") {
+      setShowNewCompany(true);
+      setCompanyId("");
+    } else {
+      setShowNewCompany(false);
+      setCompanyId(value);
+    }
+  }
+
+  function handleIndustrySelect(value: string) {
+    if (value === "__new__") {
+      setShowNewIndustry(true);
+      setSelectedIndustryId("");
+    } else {
+      setShowNewIndustry(false);
+      setSelectedIndustryId(value);
+    }
+  }
+
+  async function handleCreateCompany() {
+    setError("");
+    setCreating(true);
+    try {
+      let industryId = selectedIndustryId;
+
+      // Create new industry first if needed
+      if (showNewIndustry && newIndustryName.trim()) {
+        const ind = await api.post<{ id: number; name: string }>("/industries/", {
+          name: newIndustryName.trim(),
+          description: newIndustryDesc.trim() || null,
+        });
+        industryId = String(ind.id);
+        setIndustries((prev) => [...prev, { id: ind.id, name: ind.name, description: newIndustryDesc.trim() || null }]);
+        setShowNewIndustry(false);
+        setNewIndustryName("");
+        setNewIndustryDesc("");
+      }
+
+      if (!industryId) {
+        setError("Bitte eine Branche auswählen oder anlegen.");
+        return;
+      }
+
+      // Create company
+      const comp = await api.post<{ id: number; name: string; industry_id: number }>("/companies/", {
+        name: newCompanyName.trim(),
+        industry_id: Number(industryId),
+      });
+
+      setCompanies((prev) => [...prev, { id: comp.id, name: comp.name, industry_id: comp.industry_id }]);
+      setCompanyId(String(comp.id));
+      setShowNewCompany(false);
+      setNewCompanyName("");
+      setSelectedIndustryId("");
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setCreating(false);
+    }
+  }
 
   async function handleUpload() {
     if (!file || !companyId) return;
@@ -66,16 +143,79 @@ export default function UploadPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Unternehmen</label>
             <select
-              value={companyId}
-              onChange={(e) => setCompanyId(e.target.value)}
+              value={showNewCompany ? "__new__" : companyId}
+              onChange={(e) => handleCompanySelect(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Bitte wählen...</option>
               {companies.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
+              <option value="__new__">+ Neue Firma</option>
             </select>
           </div>
+
+          {/* Inline: New Company Form */}
+          {showNewCompany && (
+            <div className="border border-blue-200 bg-blue-50 rounded-md p-4 space-y-3">
+              <p className="text-sm font-medium text-blue-800">Neue Firma anlegen</p>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Firmenname</label>
+                <input
+                  type="text"
+                  value={newCompanyName}
+                  onChange={(e) => setNewCompanyName(e.target.value)}
+                  placeholder="z.B. Stadtwerke Beispielstadt GmbH"
+                  className="w-full border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Branche</label>
+                <select
+                  value={showNewIndustry ? "__new__" : selectedIndustryId}
+                  onChange={(e) => handleIndustrySelect(e.target.value)}
+                  className="w-full border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Bitte wählen...</option>
+                  {industries.map((i) => (
+                    <option key={i.id} value={i.id}>{i.name}</option>
+                  ))}
+                  <option value="__new__">+ Neue Branche</option>
+                </select>
+              </div>
+
+              {/* Inline: New Industry Form */}
+              {showNewIndustry && (
+                <div className="border border-green-200 bg-green-50 rounded-md p-3 space-y-2">
+                  <p className="text-xs font-medium text-green-800">Neue Branche anlegen</p>
+                  <input
+                    type="text"
+                    value={newIndustryName}
+                    onChange={(e) => setNewIndustryName(e.target.value)}
+                    placeholder="Branchenname"
+                    className="w-full border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <input
+                    type="text"
+                    value={newIndustryDesc}
+                    onChange={(e) => setNewIndustryDesc(e.target.value)}
+                    placeholder="Beschreibung (optional)"
+                    className="w-full border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              )}
+
+              <button
+                onClick={handleCreateCompany}
+                disabled={creating || !newCompanyName.trim() || (!selectedIndustryId && !(showNewIndustry && newIndustryName.trim()))}
+                className="w-full px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-40 transition-colors"
+              >
+                {creating ? "Wird angelegt..." : "Firma anlegen"}
+              </button>
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

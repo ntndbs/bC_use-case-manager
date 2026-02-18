@@ -33,6 +33,12 @@ export interface Company {
   industry_id: number;
 }
 
+export interface Industry {
+  id: number;
+  name: string;
+  description: string | null;
+}
+
 export interface ChatResponse {
   reply: string;
   session_id: string;
