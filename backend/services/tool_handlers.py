@@ -604,6 +604,9 @@ async def _save_transcript(args: dict, db: AsyncSession, user=None, session_id=N
     if not file_data:
         return {"error": "Keine angehängte Datei gefunden. Bitte zuerst eine .txt-Datei anhängen."}
 
+    if not file_data["content"].strip():
+        return {"error": "Die angehängte Datei ist leer."}
+
     company = await db.get(Company, args["company_id"])
     if not company:
         return {"error": f"Unternehmen mit ID {args['company_id']} nicht gefunden."}

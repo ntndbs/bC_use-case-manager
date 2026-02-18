@@ -71,6 +71,8 @@ async def upload_transcript(
 
     # Read content
     content = await file.read()
+    if not content or not content.strip():
+        raise HTTPException(status_code=400, detail="File is empty")
     try:
         content_str = content.decode("utf-8-sig")
     except UnicodeDecodeError:

@@ -113,13 +113,13 @@ export default function UseCaseDetailPage() {
 
           <Field label="Erstellt am">
             <p className="text-gray-700">
-              {new Date(uc.created_at).toLocaleString("de-DE")}
+              {new Date(uc.created_at).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
             </p>
           </Field>
 
           <Field label="Zuletzt geändert">
             <p className="text-gray-700">
-              {new Date(uc.updated_at).toLocaleString("de-DE")}
+              {new Date(uc.updated_at).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
             </p>
           </Field>
         </div>

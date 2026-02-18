@@ -104,7 +104,7 @@ export default function UserManagementPage() {
                     </select>
                   </td>
                   <td className="px-4 py-3 text-gray-500">
-                    {new Date(u.created_at).toLocaleDateString("de-DE")}
+                    {new Date(u.created_at).toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })}
                   </td>
                   <td className="px-4 py-3 text-center">
                     {u.id !== user?.id && (
