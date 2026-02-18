@@ -34,14 +34,30 @@ function generateSessionId() {
 
 export default function ChatPanel({ open, onClose }: Props) {
   const { triggerRefresh } = useRefresh();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = sessionStorage.getItem("chat_messages");
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
-  const [sessionId] = useState(() => generateSessionId());
+  const [sessionId] = useState(() => {
+    const saved = sessionStorage.getItem("chat_session_id");
+    if (saved) return saved;
+    const id = generateSessionId();
+    sessionStorage.setItem("chat_session_id", id);
+    return id;
+  });
   const [attachedFile, setAttachedFile] = useState<{ name: string; content: string } | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Persist messages to sessionStorage
+  useEffect(() => {
+    sessionStorage.setItem("chat_messages", JSON.stringify(messages));
+  }, [messages]);
 
   // Auto-scroll on new messages
   useEffect(() => {
