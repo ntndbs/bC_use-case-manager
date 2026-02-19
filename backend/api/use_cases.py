@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.dependencies import get_current_user, require_role
 from db.database import get_db
 from db.models import UseCase, Company, User, Role
-from db.models.use_case import UseCaseStatus
+from db.models.use_case import UseCaseStatus, ALLOWED_TRANSITIONS
 from schemas.use_case import (
     UseCaseCreate,
     UseCaseUpdate,
@@ -20,17 +20,6 @@ from schemas.use_case import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/use-cases", tags=["use-cases"])
-
-# ---------- E2-UC5: Valid status transitions ----------
-
-ALLOWED_TRANSITIONS: dict[UseCaseStatus, set[UseCaseStatus]] = {
-    UseCaseStatus.NEW: {UseCaseStatus.IN_REVIEW},
-    UseCaseStatus.IN_REVIEW: {UseCaseStatus.APPROVED, UseCaseStatus.COMPLETED, UseCaseStatus.NEW},
-    UseCaseStatus.APPROVED: {UseCaseStatus.IN_PROGRESS, UseCaseStatus.IN_REVIEW},
-    UseCaseStatus.IN_PROGRESS: {UseCaseStatus.COMPLETED, UseCaseStatus.APPROVED},
-    UseCaseStatus.COMPLETED: {UseCaseStatus.ARCHIVED},
-    UseCaseStatus.ARCHIVED: set(),  # restore via dedicated endpoint (UC7)
-}
 
 
 # ---------- E2-UC1: List use cases with filters ----------

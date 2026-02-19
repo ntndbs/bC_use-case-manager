@@ -19,6 +19,16 @@ class UseCaseStatus(str, Enum):
     ARCHIVED = "archived"
 
 
+ALLOWED_TRANSITIONS: dict[UseCaseStatus, set[UseCaseStatus]] = {
+    UseCaseStatus.NEW: {UseCaseStatus.IN_REVIEW},
+    UseCaseStatus.IN_REVIEW: {UseCaseStatus.APPROVED, UseCaseStatus.COMPLETED, UseCaseStatus.NEW},
+    UseCaseStatus.APPROVED: {UseCaseStatus.IN_PROGRESS, UseCaseStatus.IN_REVIEW},
+    UseCaseStatus.IN_PROGRESS: {UseCaseStatus.COMPLETED, UseCaseStatus.APPROVED},
+    UseCaseStatus.COMPLETED: {UseCaseStatus.ARCHIVED},
+    UseCaseStatus.ARCHIVED: set(),
+}
+
+
 class UseCase(Base):
     """Use Case extracted from workshops or created manually."""
     

@@ -7,7 +7,7 @@ from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.models import UseCase, UseCaseStatus, Company, Industry, Transcript, Role
-from db.models.use_case import UseCaseStatus as UseCaseStatusEnum
+from db.models.use_case import UseCaseStatus as UseCaseStatusEnum, ALLOWED_TRANSITIONS
 from services.tools import register_tool
 from services.extraction import extract_use_cases, ExtractionError
 
@@ -20,16 +20,6 @@ def _check_role(user, min_role: Role) -> dict | None:
         return {"error": "Nicht authentifiziert."}
     if _ROLE_LEVEL.get(user.role, -1) < _ROLE_LEVEL[min_role]:
         return {"error": f"Keine Berechtigung. Benötigte Rolle: {min_role.value}"}
-
-# Valid status transitions (reuse from API layer)
-ALLOWED_TRANSITIONS: dict[UseCaseStatusEnum, set[UseCaseStatusEnum]] = {
-    UseCaseStatusEnum.NEW: {UseCaseStatusEnum.IN_REVIEW},
-    UseCaseStatusEnum.IN_REVIEW: {UseCaseStatusEnum.APPROVED, UseCaseStatusEnum.COMPLETED, UseCaseStatusEnum.NEW},
-    UseCaseStatusEnum.APPROVED: {UseCaseStatusEnum.IN_PROGRESS, UseCaseStatusEnum.IN_REVIEW},
-    UseCaseStatusEnum.IN_PROGRESS: {UseCaseStatusEnum.COMPLETED, UseCaseStatusEnum.APPROVED},
-    UseCaseStatusEnum.COMPLETED: {UseCaseStatusEnum.ARCHIVED},
-    UseCaseStatusEnum.ARCHIVED: set(),
-}
 
 
 # ---------- E3-UC2: list_use_cases ----------
