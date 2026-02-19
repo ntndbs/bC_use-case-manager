@@ -78,7 +78,7 @@
 | Database | SQLite | 3 | Zero-Config, ausreichend für Prototyp |
 | Auth | python-jose, passlib | - | JWT-Handling, Password-Hashing (bcrypt) |
 | HTTP Client | httpx | - | Async-Support für OpenRouter-Calls |
-| Testing | pytest | - | Standard für Python |
+| Testing | pytest + pytest-asyncio | - | Standard für Python, async-Support für FastAPI |
 
 ### Frontend
 | Komponente | Technologie | Version | Begründung |
@@ -463,6 +463,51 @@ docker-compose exec backend python -m app.seed
 # 4. Öffnen
 # Backend: http://localhost:8000/docs
 # Frontend: http://localhost:3000
+```
+
+---
+
+## Testing-Architektur
+
+### Stack
+| Komponente | Technologie | Begründung |
+|------------|-------------|------------|
+| Test-Runner | pytest | Standard für Python, umfangreiches Plugin-Ecosystem |
+| Async-Support | pytest-asyncio | Ermöglicht `async def` Tests für FastAPI |
+| HTTP-Client | httpx AsyncClient | Async-fähiger Test-Client via `ASGITransport` |
+| Test-DB | SQLite In-Memory | Schnell, isoliert, kein Cleanup nötig |
+
+### Testaufbau
+```
+backend/tests/
+├── __init__.py
+├── conftest.py          # Fixtures: DB, Client, Seed-Daten, Auth-Helper
+├── test_auth.py         # Auth-Endpoints (Register, Login, RBAC)
+└── test_use_cases.py    # Use Case CRUD + Status-Workflow
+```
+
+### Fixture-Konzept
+```
+┌──────────────────┐
+│   db_session     │  In-Memory SQLite, create_all / drop_all pro Test
+├──────────────────┤
+│   client         │  httpx AsyncClient mit Dependency-Override auf db_session
+├──────────────────┤
+│   seed_users     │  Je ein User pro Rolle (reader, maintainer, admin)
+├──────────────────┤
+│   seed_data      │  Industry + Company + UseCase + Users
+└──────────────────┘
+```
+
+- **Isolation:** Jeder Test bekommt eine frische In-Memory-DB (`create_all` vor, `drop_all` nach dem Test)
+- **Dependency Override:** `app.dependency_overrides[get_db]` ersetzt die Produktions-DB durch die Test-Session
+- **Auth-Helper:** `auth_header(user)` erzeugt JWT-Header für beliebige Test-User
+- **Kein externer State:** Keine Dateien, kein Netzwerk, keine Seiteneffekte
+
+### Ausführung
+```bash
+cd backend
+python -m pytest tests/ -v
 ```
 
 ---
