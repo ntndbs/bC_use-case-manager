@@ -17,7 +17,7 @@ export default function Layout() {
   const [chatOpen, setChatOpen] = useState(true);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col">
       <nav className="bg-white border-b border-gray-200 px-6 py-3">
         <div className="flex items-center gap-8">
           <Link to="/" className="text-lg font-bold text-gray-900">
