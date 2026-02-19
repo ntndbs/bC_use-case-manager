@@ -69,8 +69,11 @@ async def upload_transcript(
     if not file.filename.endswith(".txt"):
         raise HTTPException(status_code=400, detail="Only .txt files are supported")
 
-    # Read content
-    content = await file.read()
+    # Read content (max 512 KB)
+    max_size = 512 * 1024
+    content = await file.read(max_size + 1)
+    if len(content) > max_size:
+        raise HTTPException(status_code=400, detail="File too large (max 500 KB)")
     if not content or not content.strip():
         raise HTTPException(status_code=400, detail="File is empty")
     try:
