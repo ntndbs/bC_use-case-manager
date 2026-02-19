@@ -13,8 +13,14 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   });
 
   if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.detail || `HTTP ${res.status}`);
+    let detail = "";
+    try {
+      const body = await res.json();
+      detail = body.detail || "";
+    } catch (parseErr) {
+      console.warn(`Failed to parse error response for ${path}:`, parseErr);
+    }
+    throw new Error(detail || `HTTP ${res.status}`);
   }
 
   if (res.status === 204) return undefined as T;
