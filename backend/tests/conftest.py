@@ -9,7 +9,7 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 
 from db.database import Base, get_db
-from db.models import User, Role
+from db.models import User, Role, Industry, Company, UseCase
 from core.security import hash_password, create_access_token
 from main import app
 
@@ -81,3 +81,34 @@ def auth_header(user: User) -> dict[str, str]:
     """Generate a Bearer token header for a user."""
     token = create_access_token(user.id, user.email, user.role.value)
     return {"Authorization": f"Bearer {token}"}
+
+
+@pytest_asyncio.fixture
+async def seed_data(db_session: AsyncSession, seed_users: dict[str, User]) -> dict:
+    """Create industry, company, and a use case for testing."""
+    industry = Industry(name="IT")
+    db_session.add(industry)
+    await db_session.flush()
+
+    company = Company(name="TestCorp", industry_id=industry.id)
+    db_session.add(company)
+    await db_session.flush()
+
+    uc = UseCase(
+        title="Test Use Case",
+        description="A test use case description.",
+        company_id=company.id,
+        status="new",
+    )
+    db_session.add(uc)
+    await db_session.commit()
+
+    for obj in (industry, company, uc):
+        await db_session.refresh(obj)
+
+    return {
+        "industry": industry,
+        "company": company,
+        "use_case": uc,
+        "users": seed_users,
+    }
