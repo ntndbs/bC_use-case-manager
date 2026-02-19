@@ -8,17 +8,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.models import UseCase, UseCaseStatus, Company, Industry, Transcript, Role
 from db.models.use_case import UseCaseStatus as UseCaseStatusEnum, ALLOWED_TRANSITIONS
+from core.dependencies import ROLE_LEVEL
 from services.tools import register_tool
 from services.extraction import extract_use_cases, ExtractionError
-
-_ROLE_LEVEL = {Role.READER: 0, Role.MAINTAINER: 1, Role.ADMIN: 2}
 
 
 def _check_role(user, min_role: Role) -> dict | None:
     """Return error dict if user lacks the required role, else None."""
     if not user:
         return {"error": "Nicht authentifiziert."}
-    if _ROLE_LEVEL.get(user.role, -1) < _ROLE_LEVEL[min_role]:
+    if ROLE_LEVEL.get(user.role, -1) < ROLE_LEVEL[min_role]:
         return {"error": f"Keine Berechtigung. Benötigte Rolle: {min_role.value}"}
 
 

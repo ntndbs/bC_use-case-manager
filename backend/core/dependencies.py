@@ -13,7 +13,7 @@ from db.models import User, Role
 security_scheme = HTTPBearer()
 
 # Role hierarchy: ADMIN > MAINTAINER > READER
-_ROLE_LEVEL = {
+ROLE_LEVEL = {
     Role.READER: 0,
     Role.MAINTAINER: 1,
     Role.ADMIN: 2,
@@ -42,7 +42,7 @@ def require_role(min_role: Role):
     """Dependency factory: ensures current user has at least `min_role`."""
 
     async def _check(user: User = Depends(get_current_user)) -> User:
-        if _ROLE_LEVEL.get(user.role, -1) < _ROLE_LEVEL[min_role]:
+        if ROLE_LEVEL.get(user.role, -1) < ROLE_LEVEL[min_role]:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Requires role {min_role.value} or higher",
