@@ -3,22 +3,17 @@
 import json
 import logging
 
-from openai import AsyncOpenAI
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import get_settings
 from db.models import User
+from services.llm import client as _client
 from services.tools import TOOL_DEFINITIONS, execute_tool
 import services.tool_handlers  # noqa: F401 — registers all tools on import
 
 logger = logging.getLogger(__name__)
 
 settings = get_settings()
-
-_client = AsyncOpenAI(
-    base_url=settings.openrouter_base_url,
-    api_key=settings.openrouter_api_key,
-)
 
 SYSTEM_PROMPT = """\
 Du bist ein hilfreicher Assistent für das BadenCampus Use-Case-Management-System.

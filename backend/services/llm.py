@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 settings = get_settings()
 
-_client = AsyncOpenAI(
+client = AsyncOpenAI(
     base_url=settings.openrouter_base_url,
     api_key=settings.openrouter_api_key,
 )
@@ -39,7 +39,7 @@ async def chat_completion(
 
     logger.info("LLM request: model=%s, messages=%d", model, len(messages))
 
-    response = await _client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=temperature,
