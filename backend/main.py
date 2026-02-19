@@ -2,11 +2,13 @@
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import get_settings
-from db.database import init_db
+from db.database import get_db, init_db
 from api.auth import router as auth_router
 from api.transcripts import router as transcripts_router
 from api.use_cases import router as use_cases_router
@@ -51,6 +53,10 @@ app.include_router(industries_router, prefix="/api")
 
 
 @app.get("/health")
-async def health_check():
-    """Health check endpoint."""
-    return {"status": "healthy", "app": settings.app_name}
+async def health_check(db: AsyncSession = Depends(get_db)):
+    """Health check endpoint with DB connectivity verification."""
+    try:
+        await db.execute(text("SELECT 1"))
+    except Exception:
+        return {"status": "unhealthy", "app": settings.app_name, "db": "unreachable"}
+    return {"status": "healthy", "app": settings.app_name, "db": "ok"}
