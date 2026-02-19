@@ -143,15 +143,15 @@ export default function UseCaseListPage() {
       ) : data && data.data.length > 0 ? (
         <>
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <table className="w-full text-sm">
+            <table className="w-full text-sm table-fixed">
               <thead className="bg-gray-50 text-gray-600 text-left">
                 <tr>
-                  <th className="px-4 py-3 font-medium">ID</th>
+                  <th className="px-4 py-3 font-medium w-16">ID</th>
                   <th className="px-4 py-3 font-medium">Titel</th>
-                  <th className="px-4 py-3 font-medium">Status</th>
-                  <th className="px-4 py-3 font-medium">Company</th>
-                  <th className="px-4 py-3 font-medium">Bewertung</th>
-                  <th className="px-4 py-3 font-medium">Erstellt</th>
+                  <th className="px-4 py-3 font-medium w-32">Status</th>
+                  <th className="px-4 py-3 font-medium w-48">Unternehmen</th>
+                  <th className="px-4 py-3 font-medium w-40">Bewertung</th>
+                  <th className="px-4 py-3 font-medium w-28">Erstellt</th>
                   {isAdmin && <th className="px-4 py-3 font-medium w-10"></th>}
                 </tr>
               </thead>

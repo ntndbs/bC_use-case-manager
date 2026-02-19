@@ -133,7 +133,7 @@ export default function ChatPanel() {
   }
 
   return (
-    <aside className="w-96 border-l border-gray-200 bg-white flex flex-col shrink-0">
+    <aside className="w-[480px] border-l border-gray-200 bg-white flex flex-col shrink-0">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <h2 className="text-sm font-semibold text-gray-900">KI-Assistent</h2>

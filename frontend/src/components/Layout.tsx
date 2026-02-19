@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ChatPanel from "./ChatPanel";
@@ -13,6 +14,7 @@ const NAV_ITEMS = [
 export default function Layout() {
   const location = useLocation();
   const { user, logout } = useAuth();
+  const [chatOpen, setChatOpen] = useState(true);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -39,6 +41,16 @@ export default function Layout() {
             ))}
           </div>
           <div className="ml-auto flex items-center gap-3">
+            <button
+              onClick={() => setChatOpen((o) => !o)}
+              className={`text-sm px-3 py-1.5 rounded-md transition-colors ${
+                chatOpen
+                  ? "bg-blue-100 text-blue-700 font-medium"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+              }`}
+            >
+              KI-Chat
+            </button>
             {user && (
               <>
                 <span className="text-xs text-gray-500">
@@ -58,12 +70,12 @@ export default function Layout() {
 
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 overflow-y-auto px-6 py-6">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <Outlet />
           </div>
         </main>
 
-        <ChatPanel />
+        {chatOpen && <ChatPanel />}
       </div>
     </div>
   );
