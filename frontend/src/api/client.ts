@@ -1,4 +1,4 @@
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "/api";
 const TOKEN_KEY = "ucm_token";
 
 function authHeaders(): Record<string, string> {
