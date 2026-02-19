@@ -19,8 +19,8 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite+aiosqlite:///./data/app.db"
     
-    # Auth
-    jwt_secret: str = "change-me-in-production"
+    # Auth — JWT_SECRET MUST be set in .env (min 32 chars)
+    jwt_secret: str = ""
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 1440  # 24 hours
     
@@ -41,7 +41,17 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
+_WEAK_SECRETS = {"", "change-me-in-production", "dev-secret-change-later", "secret", "development"}
+
+
 @lru_cache
 def get_settings() -> Settings:
-    """Cached settings instance."""
-    return Settings()
+    """Cached settings instance with startup validation."""
+    settings = Settings()
+    if settings.jwt_secret in _WEAK_SECRETS or len(settings.jwt_secret) < 32:
+        raise RuntimeError(
+            "JWT_SECRET is missing or too weak. "
+            "Set a random secret with at least 32 characters in .env. "
+            "Generate one with: python -c \"import secrets; print(secrets.token_hex(32))\""
+        )
+    return settings
