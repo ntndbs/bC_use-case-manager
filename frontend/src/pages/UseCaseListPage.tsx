@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../api/client";
 import type { UseCaseListResponse, Company, Industry } from "../api/types";
@@ -19,6 +19,8 @@ export default function UseCaseListPage() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchInput, setSearchInput] = useState(searchParams.get("search") || "");
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   // Filter state from URL params
   const search = searchParams.get("search") || "";
@@ -81,8 +83,13 @@ export default function UseCaseListPage() {
         <input
           type="text"
           placeholder="Suche..."
-          value={search}
-          onChange={(e) => setFilter("search", e.target.value)}
+          value={searchInput}
+          onChange={(e) => {
+            const val = e.target.value;
+            setSearchInput(val);
+            if (debounceRef.current) clearTimeout(debounceRef.current);
+            debounceRef.current = setTimeout(() => setFilter("search", val), 300);
+          }}
           className="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <select
