@@ -118,12 +118,6 @@ Big E2E-test performed. Results see ./docs/06-TESTS.md
 ## M6 - Issues & Improvements 🔲🚧
 | Task | Status | Issue |
 |------|--------|-------|
-
----
-
-## M7 - Additional Features 🔲
-| Task | Status | Issue |
-|------|--------|-------|
 |#57 Rate Limiting Login-Endpoint | 🔲 | #TBD |
 |#58 Archivierte Use Cases wiederherstellen | 🔲 | #TBD |
 |#59 Systemprompts verbessern | 🔲 | #TBD |
@@ -133,6 +127,23 @@ Big E2E-test performed. Results see ./docs/06-TESTS.md
 |#63 Token-Refresh Mechanismus | 🔲 | #TBD |
 |#64 Prompt-Injection Schutz Extraktion | 🔲 | #TBD |
 |#65 Auto-Logout bei 401 in Frontend | 🔲 | #TBD |
+
+**Checkpoint:** Relevante Bugs gefixt und Improvements umgesetzt
+
+---
+
+## M7 - Additional Features 🔲
+| Task | Status | Issue |
+|------|--------|-------|
+| #75 Use Case löschen | 🔲 | #TBD |
+| #67 Audit-Log für mutierende Aktionen | 🔲 | #TBD |
+| #70 Einführung Guardrails | 🔲 | #TBD |
+| #68 Registration Page | 🔲 | #TBD |
+| #69 Firma anlegen | 🔲 | #TBD |
+| #71 Use Case bewerten | 🔲 | #TBD |
+| #74 Use Case Status Management überarbeiten |🔲 | #TBD | 
+| #73 Transkript über Chat hochladen | 🔲 | #TBD |
+| #72 Admin Panel: Rollennvergave | 🔲 | #TBD |
 
 ---
 
