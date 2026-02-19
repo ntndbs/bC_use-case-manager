@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ChatPanel from "./ChatPanel";
@@ -14,12 +13,11 @@ const NAV_ITEMS = [
 export default function Layout() {
   const location = useLocation();
   const { user, logout } = useAuth();
-  const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <nav className="bg-white border-b border-gray-200 px-6 py-3">
-        <div className="max-w-7xl mx-auto flex items-center gap-8">
+        <div className="flex items-center gap-8">
           <Link to="/" className="text-lg font-bold text-gray-900">
             BadenCampus UCM
           </Link>
@@ -41,12 +39,6 @@ export default function Layout() {
             ))}
           </div>
           <div className="ml-auto flex items-center gap-3">
-            <button
-              onClick={() => setChatOpen(true)}
-              className="text-sm px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
-            >
-              KI-Chat
-            </button>
             {user && (
               <>
                 <span className="text-xs text-gray-500">
@@ -64,11 +56,15 @@ export default function Layout() {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-6 py-6">
-        <Outlet />
-      </main>
+      <div className="flex flex-1 overflow-hidden">
+        <main className="flex-1 overflow-y-auto px-6 py-6">
+          <div className="max-w-5xl mx-auto">
+            <Outlet />
+          </div>
+        </main>
 
-      <ChatPanel open={chatOpen} onClose={() => setChatOpen(false)} />
+        <ChatPanel />
+      </div>
     </div>
   );
 }

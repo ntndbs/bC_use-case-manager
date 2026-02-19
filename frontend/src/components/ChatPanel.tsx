@@ -23,16 +23,11 @@ interface Message {
   toolCalls?: string[];
 }
 
-interface Props {
-  open: boolean;
-  onClose: () => void;
-}
-
 function generateSessionId() {
   return `s-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export default function ChatPanel({ open, onClose }: Props) {
+export default function ChatPanel() {
   const { triggerRefresh } = useRefresh();
   const [messages, setMessages] = useState<Message[]>(() => {
     try {
@@ -64,10 +59,10 @@ export default function ChatPanel({ open, onClose }: Props) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Focus input when panel opens
+  // Focus input on mount
   useEffect(() => {
-    if (open) inputRef.current?.focus();
-  }, [open]);
+    inputRef.current?.focus();
+  }, []);
 
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -127,10 +122,10 @@ export default function ChatPanel({ open, onClose }: Props) {
       if (data.tool_calls_made.some((t) => MUTATING_TOOLS.has(t))) {
         triggerRefresh();
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: `Fehler: ${e.message}` },
+        { role: "assistant", text: `Fehler: ${e instanceof Error ? e.message : "Unbekannter Fehler"}` },
       ]);
     } finally {
       setSending(false);
@@ -138,148 +133,125 @@ export default function ChatPanel({ open, onClose }: Props) {
   }
 
   return (
-    <>
-      {/* Backdrop */}
-      {open && (
-        <div
-          className="fixed inset-0 bg-black/20 z-40"
-          onClick={onClose}
-        />
-      )}
+    <aside className="w-96 border-l border-gray-200 bg-white flex flex-col shrink-0">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
+        <h2 className="text-sm font-semibold text-gray-900">KI-Assistent</h2>
+        {messages.length > 0 && (
+          <button
+            onClick={handleClear}
+            className="text-gray-400 hover:text-red-500 p-1 transition-colors"
+            title="Chat leeren"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+          </button>
+        )}
+      </div>
 
-      {/* Panel */}
-      <div
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white border-l border-gray-200 shadow-xl z-50 flex flex-col transition-transform duration-200 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-          <h2 className="text-sm font-semibold text-gray-900">KI-Assistent</h2>
-          <div className="flex items-center gap-1">
-            {messages.length > 0 && (
-              <button
-                onClick={handleClear}
-                className="text-gray-400 hover:text-red-500 p-1 transition-colors"
-                title="Chat leeren"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-              </button>
-            )}
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+        {messages.length === 0 && (
+          <p className="text-sm text-gray-400 text-center mt-8">
+            Stell dem Agenten eine Frage, z.B.<br />
+            &ldquo;Welche Use Cases gibt es?&rdquo;
+          </p>
+        )}
+
+        {messages.map((msg, i) => (
+          <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+            <div
+              className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
+                msg.role === "user"
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-800"
+              }`}
+            >
+              <p className="whitespace-pre-wrap">{msg.text}</p>
+              {msg.toolCalls && msg.toolCalls.length > 0 && (
+                <div className="mt-2 pt-2 border-t border-gray-200/50">
+                  <p className="text-xs text-gray-500">
+                    Tools: {msg.toolCalls.join(", ")}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+
+        {sending && (
+          <div className="flex justify-start">
+            <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm text-gray-500">
+              Denkt nach...
+            </div>
+          </div>
+        )}
+
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input */}
+      <div className="border-t border-gray-200 px-4 py-3">
+        {/* Attached file badge */}
+        {attachedFile && (
+          <div className="flex items-center gap-2 mb-2 px-2 py-1 bg-blue-50 rounded-md text-sm text-blue-700">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
+            </svg>
+            <span className="truncate flex-1">{attachedFile.name}</span>
             <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-lg leading-none"
+              onClick={() => setAttachedFile(null)}
+              className="text-blue-400 hover:text-blue-600 shrink-0"
             >
               &times;
             </button>
           </div>
-        </div>
+        )}
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-          {messages.length === 0 && (
-            <p className="text-sm text-gray-400 text-center mt-8">
-              Stell dem Agenten eine Frage, z.B.<br />
-              &ldquo;Welche Use Cases gibt es?&rdquo;
-            </p>
-          )}
-
-          {messages.map((msg, i) => (
-            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div
-                className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
-                  msg.role === "user"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                <p className="whitespace-pre-wrap">{msg.text}</p>
-                {msg.toolCalls && msg.toolCalls.length > 0 && (
-                  <div className="mt-2 pt-2 border-t border-gray-200/50">
-                    <p className="text-xs text-gray-500">
-                      Tools: {msg.toolCalls.join(", ")}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-
-          {sending && (
-            <div className="flex justify-start">
-              <div className="bg-gray-100 rounded-lg px-3 py-2 text-sm text-gray-500">
-                Denkt nach...
-              </div>
-            </div>
-          )}
-
-          <div ref={bottomRef} />
-        </div>
-
-        {/* Input */}
-        <div className="border-t border-gray-200 px-4 py-3">
-          {/* Attached file badge */}
-          {attachedFile && (
-            <div className="flex items-center gap-2 mb-2 px-2 py-1 bg-blue-50 rounded-md text-sm text-blue-700">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
-              </svg>
-              <span className="truncate flex-1">{attachedFile.name}</span>
-              <button
-                onClick={() => setAttachedFile(null)}
-                className="text-blue-400 hover:text-blue-600 shrink-0"
-              >
-                &times;
-              </button>
-            </div>
-          )}
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSend();
-            }}
-            className="flex gap-2"
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSend();
+          }}
+          className="flex gap-2"
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".txt"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={sending}
+            className="px-2 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-40 transition-colors"
+            title="Datei anhängen (.txt)"
           >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".txt"
-              onChange={handleFileSelect}
-              className="hidden"
-            />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={sending}
-              className="px-2 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-40 transition-colors"
-              title="Datei anhängen (.txt)"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
-              </svg>
-            </button>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Nachricht eingeben..."
-              disabled={sending}
-              className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-            />
-            <button
-              type="submit"
-              disabled={sending || !input.trim()}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-40 transition-colors"
-            >
-              Senden
-            </button>
-          </form>
-        </div>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
+            </svg>
+          </button>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Nachricht eingeben..."
+            disabled={sending}
+            className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+          />
+          <button
+            type="submit"
+            disabled={sending || !input.trim()}
+            className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-40 transition-colors"
+          >
+            Senden
+          </button>
+        </form>
       </div>
-    </>
+    </aside>
   );
 }
