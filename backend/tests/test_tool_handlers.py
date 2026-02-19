@@ -1,15 +1,17 @@
-"""Unit tests for _check_role() in tool handlers (#173).
+"""Unit tests for tool handlers (#173, #174).
 
-Tests the role-checking function directly with different roles,
-verifying that READER < MAINTAINER < ADMIN hierarchy is enforced.
+Tests _check_role() role hierarchy and _create_use_case() handler
+directly without going through the HTTP layer.
 """
 
 import pytest
+import pytest_asyncio
 
 from dataclasses import dataclass
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import Role
-from services.tool_handlers import _check_role
+from db.models import Role, Industry, Company
+from services.tool_handlers import _check_role, _create_use_case
 
 
 @dataclass
@@ -104,3 +106,63 @@ class TestCheckRoleAdmin:
         user = _make_user(Role.ADMIN)
         result = _check_role(user, Role.ADMIN)
         assert result is None
+
+
+# ────────────────────────── _create_use_case() Tests ──────────────────────────
+
+
+@pytest_asyncio.fixture
+async def company_in_db(db_session: AsyncSession) -> Company:
+    """Seed an industry + company for create_use_case tests."""
+    industry = Industry(name="IT")
+    db_session.add(industry)
+    await db_session.flush()
+    company = Company(name="TestCorp", industry_id=industry.id)
+    db_session.add(company)
+    await db_session.commit()
+    await db_session.refresh(company)
+    return company
+
+
+@pytest.mark.asyncio
+async def test_create_use_case_success(db_session: AsyncSession, company_in_db: Company):
+    """Maintainer can create a use case via the tool handler."""
+    user = _make_user(Role.MAINTAINER)
+    args = {
+        "title": "KI-Chatbot",
+        "description": "Ein Chatbot für den Kundenservice.",
+        "company_id": company_in_db.id,
+    }
+    result = await _create_use_case(args, db_session, user=user)
+    assert "error" not in result
+    assert result["id"] is not None
+    assert result["title"] == "KI-Chatbot"
+    assert result["status"] == "new"
+
+
+@pytest.mark.asyncio
+async def test_create_use_case_missing_company(db_session: AsyncSession, company_in_db: Company):
+    """Creating a use case with a non-existent company returns an error."""
+    user = _make_user(Role.MAINTAINER)
+    args = {
+        "title": "Test",
+        "description": "Test description",
+        "company_id": 9999,
+    }
+    result = await _create_use_case(args, db_session, user=user)
+    assert "error" in result
+    assert "9999" in result["error"]
+
+
+@pytest.mark.asyncio
+async def test_create_use_case_as_reader_blocked(db_session: AsyncSession, company_in_db: Company):
+    """Reader cannot create a use case via the tool handler."""
+    user = _make_user(Role.READER)
+    args = {
+        "title": "Should fail",
+        "description": "Reader should not be able to create.",
+        "company_id": company_in_db.id,
+    }
+    result = await _create_use_case(args, db_session, user=user)
+    assert "error" in result
+    assert "berechtigung" in result["error"].lower()
