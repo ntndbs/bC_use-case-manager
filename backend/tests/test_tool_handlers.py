@@ -10,8 +10,8 @@ import pytest_asyncio
 from dataclasses import dataclass
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.models import Role, Industry, Company
-from services.tool_handlers import _check_role, _create_use_case
+from db.models import Role, Industry, Company, UseCase
+from services.tool_handlers import _check_role, _create_use_case, _set_status
 
 
 @dataclass
@@ -164,5 +164,75 @@ async def test_create_use_case_as_reader_blocked(db_session: AsyncSession, compa
         "company_id": company_in_db.id,
     }
     result = await _create_use_case(args, db_session, user=user)
+    assert "error" in result
+    assert "berechtigung" in result["error"].lower()
+
+
+# ────────────────────────── _set_status() Tests ──────────────────────────
+
+
+@pytest_asyncio.fixture
+async def use_case_in_db(db_session: AsyncSession, company_in_db: Company) -> UseCase:
+    """Seed a use case with status NEW."""
+    uc = UseCase(
+        title="Status Test UC",
+        description="For status transition tests.",
+        company_id=company_in_db.id,
+        status="new",
+    )
+    db_session.add(uc)
+    await db_session.commit()
+    await db_session.refresh(uc)
+    return uc
+
+
+@pytest.mark.asyncio
+async def test_set_status_valid_transition(db_session: AsyncSession, use_case_in_db: UseCase):
+    """NEW -> IN_REVIEW is a valid transition."""
+    user = _make_user(Role.MAINTAINER)
+    result = await _set_status(
+        {"use_case_id": use_case_in_db.id, "new_status": "in_review"},
+        db_session,
+        user=user,
+    )
+    assert "error" not in result
+    assert result["status"] == "in_review"
+
+
+@pytest.mark.asyncio
+async def test_set_status_invalid_transition(db_session: AsyncSession, use_case_in_db: UseCase):
+    """NEW -> COMPLETED is not allowed."""
+    user = _make_user(Role.MAINTAINER)
+    result = await _set_status(
+        {"use_case_id": use_case_in_db.id, "new_status": "completed"},
+        db_session,
+        user=user,
+    )
+    assert "error" in result
+    assert "ungültig" in result["error"].lower()
+
+
+@pytest.mark.asyncio
+async def test_set_status_not_found(db_session: AsyncSession, company_in_db: Company):
+    """Setting status on a non-existent use case returns an error."""
+    user = _make_user(Role.MAINTAINER)
+    result = await _set_status(
+        {"use_case_id": 9999, "new_status": "in_review"},
+        db_session,
+        user=user,
+    )
+    assert "error" in result
+    assert "9999" in result["error"]
+
+
+@pytest.mark.asyncio
+async def test_set_status_as_reader_blocked(db_session: AsyncSession, use_case_in_db: UseCase):
+    """Reader cannot change status."""
+    user = _make_user(Role.READER)
+    result = await _set_status(
+        {"use_case_id": use_case_in_db.id, "new_status": "in_review"},
+        db_session,
+        user=user,
+    )
     assert "error" in result
     assert "berechtigung" in result["error"].lower()
