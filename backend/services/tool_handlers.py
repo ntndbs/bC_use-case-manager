@@ -516,7 +516,7 @@ register_tool(
         "type": "function",
         "function": {
             "name": "list_industries",
-            "description": "Liste alle verfügbaren Branchen auf. Nutze dieses Tool BEVOR du eine Firma anlegst, um die passende Branche zu finden.",
+            "description": "Liste alle verfügbaren Branchen auf. Zeige dem Nutzer IMMER alle Branchen mit ID und Name einzeln auf. Nutze dieses Tool BEVOR du eine Firma anlegst.",
             "parameters": {
                 "type": "object",
                 "properties": {},
@@ -613,7 +613,7 @@ register_tool(
         "type": "function",
         "function": {
             "name": "create_company",
-            "description": "Lege eine neue Firma an. WICHTIG: Frage den Nutzer IMMER zuerst nach der Branche. Nutze vorher list_industries, um die verfügbaren Branchen aufzulisten und dem Nutzer zur Auswahl zu präsentieren. Lege die Firma NICHT an, ohne dass der Nutzer die Branche bestätigt hat.",
+            "description": "Lege eine neue Firma an. WICHTIG: Frage den Nutzer IMMER zuerst nach der Branche. Nutze vorher list_industries und liste dem Nutzer ALLE verfügbaren Branchen mit ID und Name einzeln auf. Lege die Firma NICHT an, ohne dass der Nutzer die Branche bestätigt hat.",
             "parameters": {
                 "type": "object",
                 "properties": {
