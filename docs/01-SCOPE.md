@@ -27,11 +27,11 @@ Ein zentrales System, das:
 | Z1 | Transkript-Upload + automatische Use-Case-Extraktion via LLM | Must |
 | Z2 | Strukturierte Erfassung: Titel, Beschreibung, Stakeholder, Nutzen | Must |
 | Z3 | Zuordnung zu Unternehmen + Branche | Must |
-| Z4 | Use Case CRUD (Create, Read, Update, Archive) | Must |
+| Z4 | Use Case CRUD (Create, Read, Update, (Archive,) Delete) | Must |
 | Z5 | Status-Management mit definiertem Statusmodell | Must |
 | Z6 | Agent/Chat als primäre Interaktionsform | Must |
 | Z7 | Web-UI für Übersicht und manuelle Verwaltung | Must |
-| Z8 | Authentifizierung (Login) | Must |
+| Z8 | Registrierung und Authentifizierung (Login) | Must |
 | Z9 | Rollenbasierte Berechtigungen (Reader, Maintainer, Admin) | Must |
 | Z10 | RBAC gilt für UI UND Agent konsistent | Must |
 
@@ -39,12 +39,12 @@ Ein zentrales System, das:
 
 | ID | Ziel | Priorität |
 |----|------|-----------|
-| NZ1 | Lokal startbar mit 1-2 Kommandos | Must |
-| NZ2 | Saubere README mit Setup-Anleitung | Must |
-| NZ3 | Dokumentierte Architektur und Entscheidungen | Must |
-| NZ4 | Robuste LLM-Ausgaben (Schema-Validierung, Retry) | Must |
-| NZ5 | Strukturiertes Logging für LLM- und Tool-Calls | Must |
-| NZ6 | Keine Secrets im Repository | Must |
+| NFZ1 | Lokal startbar mit 1-2 Kommandos | Must |
+| NFZ2 | Saubere README mit Setup-Anleitung | Must |
+| NFZ3 | Dokumentierte Architektur und Entscheidungen | Must |
+| NFZ4 | Robuste LLM-Ausgaben (Schema-Validierung, Retry) | Must |
+| NFZ5 | Strukturiertes Logging für LLM- und Tool-Calls | Must |
+| NFZ6 | Keine Secrets im Repository | Must |
 
 ---
 
@@ -56,7 +56,7 @@ Folgende Features sind in der Aufgabenstellung erwähnt, aber **explizit nicht T
 |---------|-----------|---------------------------|
 | Use-Case-Beziehungen / Abhängigkeiten | Should-Have | Erfordert komplexe Datenmodellierung + UI |
 | Branchenübergreifende Intelligenz | Should-Have | Benötigt Embedding-Infrastruktur / Similarity Search |
-| Bewertungs- und Priorisierungssystem | Should-Have | Zusätzliches Datenmodell + Bewertungs-UI |
+| ~~Bewertungs- und Priorisierungssystem~~ | ~~Should-Have~~ | **Nachträglich umgesetzt** — 5 Bewertungsdimensionen (1-5) + Durchschnitt |
 | Roadmap-Generierung | Nice-to-Have | Abhängig von Priorisierung; hohe Komplexität |
 | Visualisierungen / Graphen / Dashboards | Nice-to-Have | Hoher UI-Aufwand; kein E2E-Mehrwert |
 | Multi-Transkript-Deduplizierung | Nice-to-Have | Edge Case; erfordert Similarity Matching |
@@ -75,13 +75,14 @@ Der Prototyp ist erfolgreich, wenn folgende Demo in **unter 3 Minuten** durchfü
 | Schritt | Aktion | Erwartetes Ergebnis |
 |---------|--------|---------------------|
 | 1 | Login als Maintainer | Zugang zum System |
-| 2 | Transkript hochladen | Datei wird angenommen |
+| 2 | Transkript hochladen (UI oder Chat) | Datei wird angenommen, Use Cases automatisch extrahiert |
 | 3 | Use Cases ansehen | Extrahierte Use Cases in Liste sichtbar |
 | 4 | Agent fragen: "Zeige alle Use Cases" | Agent antwortet mit Liste |
 | 5 | Agent: "Setze Use Case #1 auf In Bewertung" | Status wird geändert |
 | 6 | UI prüfen | Statusänderung ist sichtbar |
-| 7 | Als Reader einloggen | Anderer Zugang |
-| 8 | Versuch zu editieren | Wird verhindert (UI + Agent) |
+| 7 | Use Case bewerten (1-5 Sterne) | Bewertung wird gespeichert, Durchschnitt berechnet |
+| 8 | Als Reader einloggen | Anderer Zugang |
+| 9 | Versuch zu editieren | Wird verhindert (UI + Agent) |
 
 ---
 
