@@ -39,8 +39,8 @@ export default function UseCaseListPage() {
   }
 
   useEffect(() => {
-    api.get<Company[]>("/companies/").then(setCompanies).catch(() => {});
-    api.get<Industry[]>("/industries/").then(setIndustries).catch(() => {});
+    api.get<Company[]>("/companies/").then(setCompanies).catch((e) => console.warn("Failed to load companies:", e));
+    api.get<Industry[]>("/industries/").then(setIndustries).catch((e) => console.warn("Failed to load industries:", e));
   }, []);
 
   useEffect(() => {

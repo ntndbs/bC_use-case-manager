@@ -37,12 +37,12 @@ export default function UploadPage() {
   const [creating, setCreating] = useState(false);
 
   function loadCompanies() {
-    api.get<Company[]>("/companies/").then(setCompanies).catch(() => {});
+    api.get<Company[]>("/companies/").then(setCompanies).catch((e) => console.warn("Failed to load companies:", e));
   }
 
   useEffect(() => {
     loadCompanies();
-    api.get<Industry[]>("/industries/").then(setIndustries).catch(() => {});
+    api.get<Industry[]>("/industries/").then(setIndustries).catch((e) => console.warn("Failed to load industries:", e));
   }, []);
 
   function handleCompanySelect(value: string) {
