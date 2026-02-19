@@ -16,8 +16,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-    } catch (err: any) {
-      setError(err.message || "Login fehlgeschlagen");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Login fehlgeschlagen");
     } finally {
       setLoading(false);
     }

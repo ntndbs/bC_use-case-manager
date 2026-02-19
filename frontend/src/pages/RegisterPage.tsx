@@ -23,8 +23,8 @@ export default function RegisterPage() {
     try {
       await api.post("/auth/register", { email, password });
       navigate("/login");
-    } catch (err: any) {
-      setError(err.message || "Registrierung fehlgeschlagen");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Registrierung fehlgeschlagen");
     } finally {
       setLoading(false);
     }

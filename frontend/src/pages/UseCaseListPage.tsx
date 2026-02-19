@@ -69,8 +69,8 @@ export default function UseCaseListPage() {
     try {
       await api.del(`/use-cases/${ucId}/permanent`);
       triggerRefresh();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Unbekannter Fehler");
     }
   }
 
