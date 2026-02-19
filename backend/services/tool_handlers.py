@@ -202,10 +202,17 @@ async def _update_use_case(args: dict, db: AsyncSession, user=None, session_id=N
     if not uc:
         return {"error": f"Use Case mit ID {args['use_case_id']} nicht gefunden."}
 
-    updatable = [
-        "title", "description", "stakeholders", "expected_benefit",
+    rating_fields = {
         "rating_effort", "rating_benefit", "rating_feasibility",
         "rating_data_availability", "rating_strategic_relevance",
+    }
+    for key in rating_fields:
+        if key in args and not (isinstance(args[key], int) and 1 <= args[key] <= 5):
+            return {"error": f"Ungültiger Wert für {key}: muss zwischen 1 und 5 liegen."}
+
+    updatable = [
+        "title", "description", "stakeholders", "expected_benefit",
+        *rating_fields,
     ]
     for field in updatable:
         if field in args:
