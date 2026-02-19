@@ -153,8 +153,12 @@ async def _create_use_case(args: dict, db: AsyncSession, user=None, session_id=N
         expected_benefit=args.get("expected_benefit"),
     )
     db.add(uc)
-    await db.commit()
-    await db.refresh(uc)
+    try:
+        await db.commit()
+        await db.refresh(uc)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Erstellen des Use Cases."}
 
     return {"id": uc.id, "title": uc.title, "status": uc.status.value, "message": "Use Case erstellt."}
 
@@ -218,8 +222,12 @@ async def _update_use_case(args: dict, db: AsyncSession, user=None, session_id=N
         if field in args:
             setattr(uc, field, args[field])
 
-    await db.commit()
-    await db.refresh(uc)
+    try:
+        await db.commit()
+        await db.refresh(uc)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Aktualisieren des Use Cases."}
 
     return {"id": uc.id, "title": uc.title, "status": uc.status.value, "message": "Use Case aktualisiert."}
 
@@ -279,8 +287,12 @@ async def _set_status(args: dict, db: AsyncSession, user=None, session_id=None) 
         }
 
     uc.status = new_status
-    await db.commit()
-    await db.refresh(uc)
+    try:
+        await db.commit()
+        await db.refresh(uc)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Ändern des Status."}
 
     return {"id": uc.id, "title": uc.title, "status": uc.status.value, "message": "Status geändert."}
 
@@ -323,8 +335,12 @@ async def _archive_use_case(args: dict, db: AsyncSession, user=None, session_id=
         return {"error": "Use Case ist bereits archiviert."}
 
     uc.status = UseCaseStatusEnum.ARCHIVED
-    await db.commit()
-    await db.refresh(uc)
+    try:
+        await db.commit()
+        await db.refresh(uc)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Archivieren des Use Cases."}
 
     return {"id": uc.id, "title": uc.title, "status": uc.status.value, "message": "Use Case archiviert."}
 
@@ -362,8 +378,12 @@ async def _restore_use_case(args: dict, db: AsyncSession, user=None, session_id=
         return {"error": f"Use Case ist nicht archiviert (aktueller Status: '{uc.status.value}')."}
 
     uc.status = UseCaseStatusEnum.NEW
-    await db.commit()
-    await db.refresh(uc)
+    try:
+        await db.commit()
+        await db.refresh(uc)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Wiederherstellen des Use Cases."}
 
     return {"id": uc.id, "title": uc.title, "status": uc.status.value, "message": "Use Case wiederhergestellt."}
 
@@ -415,9 +435,13 @@ async def _analyze_transcript(args: dict, db: AsyncSession, user=None, session_i
         db.add(uc)
         use_cases.append(uc)
 
-    await db.commit()
-    for uc in use_cases:
-        await db.refresh(uc)
+    try:
+        await db.commit()
+        for uc in use_cases:
+            await db.refresh(uc)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Speichern der extrahierten Use Cases."}
 
     return {
         "message": f"{len(use_cases)} Use Cases aus Transkript {transcript.id} extrahiert. Liste sie dem Nutzer auf.",
@@ -526,8 +550,12 @@ async def _create_industry(args: dict, db: AsyncSession, user=None, session_id=N
 
     industry = Industry(name=name, description=args.get("description"))
     db.add(industry)
-    await db.commit()
-    await db.refresh(industry)
+    try:
+        await db.commit()
+        await db.refresh(industry)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Anlegen der Branche."}
 
     return {"id": industry.id, "name": industry.name, "message": "Branche angelegt."}
 
@@ -572,8 +600,12 @@ async def _create_company(args: dict, db: AsyncSession, user=None, session_id=No
 
     company = Company(name=name, industry_id=industry_id)
     db.add(company)
-    await db.commit()
-    await db.refresh(company)
+    try:
+        await db.commit()
+        await db.refresh(company)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Anlegen der Firma."}
 
     return {
         "id": company.id,
@@ -633,8 +665,12 @@ async def _save_transcript(args: dict, db: AsyncSession, user=None, session_id=N
         company_id=args["company_id"],
     )
     db.add(transcript)
-    await db.commit()
-    await db.refresh(transcript)
+    try:
+        await db.commit()
+        await db.refresh(transcript)
+    except Exception:
+        await db.rollback()
+        return {"error": "Datenbankfehler beim Speichern des Transkripts."}
 
     return {
         "transcript_id": transcript.id,
