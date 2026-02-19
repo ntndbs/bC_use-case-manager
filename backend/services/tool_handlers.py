@@ -141,6 +141,7 @@ async def _create_use_case(args: dict, db: AsyncSession, user=None, session_id=N
         company_id=args["company_id"],
         stakeholders=args.get("stakeholders"),
         expected_benefit=args.get("expected_benefit"),
+        created_by_id=user.id if user else None,
     )
     db.add(uc)
     try:
@@ -421,6 +422,7 @@ async def _analyze_transcript(args: dict, db: AsyncSession, user=None, session_i
             expected_benefit=item.expected_benefit,
             company_id=transcript.company_id,
             transcript_id=transcript.id,
+            created_by_id=user.id if user else None,
         )
         db.add(uc)
         use_cases.append(uc)
