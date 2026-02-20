@@ -31,12 +31,12 @@ cp .env.example .env       # OPENROUTER_API_KEY + JWT_SECRET setzen
 
 # 2. Backend
 cd backend
-python -m venv venv && source venv/Scripts/activate   # Windows
+python -m venv venv
+source venv/Scripts/activate       # Bash (Git Bash, WSL)
+# .\venv\Scripts\Activate.ps1     # PowerShell
 pip install -r ../requirements.txt
 python seed.py             # Stammdaten laden (einmalig)
 uvicorn main:app --reload  # http://localhost:8000/docs
-
--->
 
 # 3. Frontend (neues Terminal)
 cd frontend
