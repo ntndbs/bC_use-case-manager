@@ -1,0 +1,218 @@
+================================================================================
+WORKSHOP-TRANSKRIPT
+================================================================================
+Unternehmen: Klinikum Schwarzwald
+Branche:     Gesundheitswesen
+Datum:       12.02.2026
+Ort:         BadenCampus, Freiburg
+
+Teilnehmer:
+- Prof. Dr. Hans-Peter Gruber (Ärztlicher Direktor)
+- Petra Langner (Pflegedienstleiterin)
+- Dr. Florian Roth (Leiter Radiologie)
+- Sabine Weiß (Leiterin Patientenaufnahme)
+
+Moderation: Lisa Berger (BadenCampus)
+================================================================================
+
+[00:00:00 - Begrüßung und Vorstellungsrunde]
+
+Lisa Berger: Herzlich willkommen am BadenCampus. Heute geht es darum,
+konkrete KI-Anwendungsfälle für das Klinikum Schwarzwald zu erarbeiten.
+Ich freue mich auf einen produktiven Workshop. Professor Gruber, möchten
+Sie beginnen?
+
+Prof. Dr. Hans-Peter Gruber: Ja, gerne. Ich bin Hans-Peter Gruber,
+seit drei Jahren ärztlicher Direktor am Klinikum Schwarzwald. Wir
+sind ein Haus der Schwerpunktversorgung mit 450 Betten, 1.200
+Mitarbeitern und behandeln rund 22.000 stationäre Patienten pro Jahr.
+Unsere größten Herausforderungen sind der massive Fachkräftemangel in
+der Pflege, steigende Dokumentationsanforderungen und der wirtschaftliche
+Druck. Ich erhoffe mir von KI, dass wir Entlastung schaffen - vor allem
+für unsere Pflegekräfte und Ärzte, damit die sich auf die Patienten
+konzentrieren können.
+
+Petra Langner: Petra Langner, Pflegedienstleitung. Ich bin verantwortlich
+für 480 Pflegekräfte. Unser größtes Problem ist die Personalplanung.
+Wir haben chronischen Personalmangel, hohe Krankenstände und müssen
+trotzdem die Mindestbesetzung auf allen Stationen sicherstellen. Aktuell
+plane ich das mit einer Mischung aus Excel und Bauchgefühl. An manchen
+Tagen telefoniere ich morgens zwei Stunden, um Ausfälle zu kompensieren.
+
+Dr. Florian Roth: Florian Roth, Leiter der Radiologie. Wir machen
+pro Jahr etwa 60.000 Bildgebungen - Röntgen, CT, MRT. Das Nadelöhr
+ist die Befundung. Meine Radiologen schreiben pro Tag 40 bis 50
+Befunde, und die Wartezeiten auf Befunde liegen teilweise bei drei
+Tagen. Bei Notfällen geht es natürlich schneller, aber die elektiven
+Untersuchungen stauen sich.
+
+Sabine Weiß: Sabine Weiß, ich leite die Patientenaufnahme. Bei uns
+kommen pro Tag etwa 60 stationäre Aufnahmen zusammen, plus die
+ambulanten Patienten. Das Problem ist die Dokumentation. Für jeden
+Patienten müssen wir Stammdaten erfassen, Versicherungsdaten prüfen,
+Einwilligungen einholen, Vorbefunde zusammensuchen. Das dauert im
+Schnitt 25 Minuten pro Patient und ist fehleranfällig.
+
+[00:12:00 - Problemdiskussion / Status Quo]
+
+Lisa Berger: Frau Langner, können Sie das Problem mit der
+Personalplanung genauer beschreiben?
+
+Petra Langner: Wir haben 28 Stationen und Funktionsbereiche. Jede
+Station hat eigene Anforderungen: Intensivstation braucht andere
+Qualifikationen als die Chirurgie. Dann gibt es gesetzliche
+Personaluntergrenzen, die wir einhalten müssen. Tarifvertragliche
+Regelungen zu Schichtzeiten. Wünsche der Mitarbeiter. Und dann
+kommen noch die ungeplanten Ausfälle dazu - im Winter haben wir
+Krankenstände von bis zu 12 Prozent.
+
+Prof. Dr. Gruber: Das führt dazu, dass Stationen manchmal
+unterbesetzt sind, was die Arbeitsbelastung für die verbleibenden
+Pflegekräfte erhöht. Das wiederum führt zu mehr Krankschreibungen.
+Ein Teufelskreis.
+
+Petra Langner: Genau. Und die Konsequenz ist, dass wir manchmal
+Betten sperren müssen, weil wir nicht genug Personal haben. Im
+letzten Jahr haben wir deswegen geschätzt 800 Patienten nicht
+aufnehmen können. Das sind nicht nur medizinische, sondern auch
+wirtschaftliche Verluste.
+
+Lisa Berger: Herr Roth, erzählen Sie uns mehr über das Problem
+in der Radiologie.
+
+Dr. Florian Roth: Die Bildgebung ist in den letzten Jahren
+massiv gewachsen. Mehr Patienten, bessere Diagnostik, mehr
+Untersuchungen pro Fall. Aber die Anzahl der Radiologen ist
+nicht mitgewachsen. Wir sind sechs Fachärzte für 60.000
+Untersuchungen. Das bedeutet, jeder Radiologe muss pro Tag
+40 bis 50 Befunde schreiben. Bei einem CT-Thorax sitze ich
+10 bis 15 Minuten an der Befundung, gehe 200 Schnittbilder
+durch. Das ist nicht nur zeitaufwendig, sondern auch
+ermüdend. Und Ermüdung führt zu Fehlern.
+
+Prof. Dr. Gruber: Dazu kommt, dass die zuweisenden Ärzte auf
+den Stationen auf die Befunde warten, um Therapieentscheidungen
+zu treffen. Drei Tage Wartezeit auf einen Befund verlängert
+den Krankenhausaufenthalt.
+
+[00:25:00 - Ideengenerierung]
+
+Lisa Berger: Lassen Sie uns jetzt Lösungsansätze erarbeiten.
+Frau Langner, haben Sie eine Vorstellung, wie KI bei der
+Personalplanung helfen könnte?
+
+Petra Langner: Ja, absolut. Meine Idee wäre eine KI-gestützte
+Dienstplanung. Die KI berücksichtigt alle Faktoren: gesetzliche
+Vorgaben, Qualifikationen, Arbeitszeitpräferenzen, historische
+Krankheitsmuster und sogar saisonale Schwankungen. Sie erstellt
+automatisch einen optimalen Dienstplan und schlägt bei Ausfällen
+sofort Alternativen vor.
+
+Prof. Dr. Gruber: Das wäre tatsächlich ein enormer Fortschritt.
+
+Petra Langner: Die KI könnte sogar vorhersagen, an welchen Tagen
+mit erhöhten Ausfällen zu rechnen ist - zum Beispiel nach
+Feiertagen oder in der Grippesaison - und proaktiv Springerkräfte
+einplanen. Use Case: KI-basierte Dienstplanung und Ausfallprognose
+für Pflegepersonal.
+
+Lisa Berger: Wer wären die Stakeholder?
+
+Petra Langner: In erster Linie ich als Pflegedienstleitung und
+die 28 Stationsleitungen. Aber auch die Personalabteilung und
+der Betriebsrat müssten eingebunden werden.
+
+Lisa Berger: Und der erwartete Nutzen?
+
+Petra Langner: Ich schätze, wir könnten den Planungsaufwand um
+70 Prozent reduzieren. Das sind bei mir persönlich 15 Stunden
+pro Woche, die ich sinnvoller nutzen könnte. Außerdem könnten
+wir durch bessere Vorhersage von Ausfällen die Bettensperrungen
+um die Hälfte reduzieren. Bei 800 nicht aufgenommenen Patienten
+und einem durchschnittlichen Erlös von 4.500 Euro pro Fall wäre
+das ein Potenzial von 1,8 Millionen Euro pro Jahr.
+
+Dr. Florian Roth: Jetzt zu meinem Bereich. Eine Idee wäre der
+Einsatz von KI als Befundungsassistent in der Radiologie. Die KI
+analysiert die Bildgebung vorab, markiert auffällige Befunde und
+erstellt einen Entwurf des Befundtextes. Der Radiologe prüft und
+bestätigt dann nur noch. Das spart Zeit und reduziert die
+Wahrscheinlichkeit, dass etwas übersehen wird.
+
+Prof. Dr. Gruber: Das gibt es ja in einigen Häusern schon. Wie
+weit ist die Technologie?
+
+Dr. Florian Roth: Für bestimmte Fragestellungen wie Lungenrundherde
+im CT oder Frakturen im Röntgen gibt es bereits zugelassene
+KI-Systeme. Die könnten wir als Zweitbefunder einsetzen. Die KI
+ersetzt nicht den Radiologen, aber sie beschleunigt die Arbeit und
+erhöht die Sicherheit.
+
+Lisa Berger: Stakeholder und erwarteter Nutzen?
+
+Dr. Florian Roth: Stakeholder sind mein Radiologie-Team, die
+zuweisenden Ärzte auf den Stationen und die IT. Nutzen: Befundzeiten
+halbieren, von drei Tagen auf unter 24 Stunden für elektive
+Untersuchungen. Weniger übersehene Befunde, das heißt höhere
+Patientensicherheit. Und für meine Radiologen weniger Stress und
+Überstunden.
+
+Sabine Weiß: Darf ich auch noch? Ich hätte einen Anwendungsfall für
+die Patientenaufnahme. Die KI könnte uns bei der Dokumentation
+unterstützen. Konkret stelle ich mir vor: Der Patient bringt seine
+Versichertenkarte und Überweisungsschein mit. Die KI erkennt die
+Dokumente automatisch, extrahiert die relevanten Daten und befüllt
+unser Krankenhausinformationssystem. Außerdem könnte sie automatisch
+Vorbefunde aus unserem Archiv heraussuchen und dem behandelnden Arzt
+zusammenstellen.
+
+Prof. Dr. Gruber: Das wäre auch für die Ärzte eine Entlastung. Die
+verbringen aktuell viel zu viel Zeit mit Dokumentation statt mit
+Patienten.
+
+Sabine Weiß: Use Case: KI-gestützte Patientenaufnahme und automatische
+Dokumentenverarbeitung. Stakeholder wären mein Team in der Aufnahme
+und die IT-Abteilung. Der Nutzen: Aufnahmezeit von 25 auf 10 Minuten
+reduzieren, weniger Erfassungsfehler und schnellere Verfügbarkeit
+von Vorbefunden.
+
+[00:48:00 - Priorisierung]
+
+Lisa Berger: Drei sehr überzeugende Anwendungsfälle. Lassen Sie
+uns priorisieren.
+
+Prof. Dr. Gruber: Wenn ich die drei vergleiche, dann hat die
+KI-Dienstplanung den größten wirtschaftlichen Hebel. 1,8 Millionen
+Euro Potenzial ist eine klare Aussage.
+
+Petra Langner: Und es betrifft alle Stationen, also das ganze Haus.
+
+Dr. Florian Roth: Der Befundungsassistent hätte den größten Einfluss
+auf die Patientensicherheit. Aber ich verstehe, dass der
+wirtschaftliche Aspekt zuerst kommt.
+
+Prof. Dr. Gruber: Nicht nur der wirtschaftliche. Die Bettensperrungen
+haben auch einen direkten Einfluss auf die Patientenversorgung. Ich
+würde sagen: Dienstplanung als Priorität eins, Befundungsassistent
+als Priorität zwei.
+
+Sabine Weiß: Die Dokumentationsunterstützung kann als drittes kommen.
+Das ist auch technisch am einfachsten, weil es hauptsächlich um
+Texterkennung geht.
+
+Prof. Dr. Gruber: Einverstanden. So machen wir es.
+
+[00:58:00 - Abschluss]
+
+Lisa Berger: Ein hervorragendes Ergebnis. Drei konkrete
+Anwendungsfälle mit klarem Nutzen und einer sinnvollen
+Priorisierung. Ich fasse zusammen und sende Ihnen die
+Dokumentation nächste Woche.
+
+Prof. Dr. Gruber: Vielen Dank, Frau Berger. Ich bin beeindruckt,
+wie strukturiert wir heute gearbeitet haben. Die nächsten
+Schritte sind klar.
+
+================================================================================
+Ende des Transkripts
+================================================================================

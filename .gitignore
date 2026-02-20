@@ -20,6 +20,5 @@ frontend/dist/
 assets/task/*
 
 # Backend
-backend/data/upload/
 backend/data/transcripts/*
 !backend/data/transcripts/.gitkeep

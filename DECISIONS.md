@@ -1,12 +1,6 @@
 # Entscheidungen & Trade-offs
 Dokumentation aller wesentlichen Architektur- und Scope-Entscheidungen mit Begründung.
-
----
-
-## Legende
-- ✅ Entschieden
-- 🔲 Offen
-- ❌ Verworfen
+Siehe auch: [04-ARCHITECTURE.md](docs/04-ARCHITECTURE.md) für den vollständigen Tech-Stack und das Datenmodell.
 
 ---
 
@@ -79,7 +73,7 @@ Dokumentation aller wesentlichen Architektur- und Scope-Entscheidungen mit Begr�
 ### T5: Tech-Stack ✅
 **Entscheidung:**
 - Backend: Python 3.11 + FastAPI
-- Frontend: React 18 + TypeScript + Tailwind CSS
+- Frontend: React 19 + TypeScript + Tailwind CSS
 - Datenbank: SQLite (via SQLAlchemy)
 - LLM: OpenRouter API
 
@@ -92,18 +86,21 @@ Dokumentation aller wesentlichen Architektur- und Scope-Entscheidungen mit Begr�
 ---
 
 ## Scope-Entscheidungen
+Siehe auch: [01-SCOPE.md](docs/01-SCOPE.md) für Ziele und Nicht-Ziele.
+
 ### S1: MVP-Fokus auf E2E-Flow ✅
 **Entscheidung:** Working End-to-End schlägt Feature-Breite
 **Konsequenz:** Folgende Features sind explizit Out-of-Scope:
-- Use-Case-Beziehungen / Abhängigkeitsgraphen
-- Branchenübergreifende Intelligenz / Ähnlichkeitssuche
-- Bewertungs- und Priorisierungssystem
-- Roadmap-Generierung
-- Visualisierungen / Dashboards
-- Multi-Transkript-Deduplizierung
+- Use-Case-Beziehungen / Abhängigkeitsgraphen (→ E9 (#121), geplant)
+- Branchenübergreifende Intelligenz / Ähnlichkeitssuche (→ E13 (#125), geplant)
+- Roadmap-Generierung (→ E11 (#123), geplant)
+- Visualisierungen / Dashboards (→ E14 (#126), geplant)
+- Multi-Transkript-Deduplizierung (→ E12 (#124), geplant)
 - Echtzeit-Sync via WebSocket
 
-**Begründung:** Jedes dieser Features erhöht Komplexität signifikant, ohne den Kern-Wertnachweis zu verbessern.
+**Update:** Bewertungssystem (5 Dimensionen: Effort, Benefit, Feasibility, Data Availability, Strategic Relevance) wurde nachträglich implementiert — nicht mehr Out-of-Scope.
+
+**Begründung:** Jedes der verbleibenden Features erhöht Komplexität signifikant, ohne den Kern-Wertnachweis zu verbessern.
 
 ---
 
@@ -113,6 +110,8 @@ Dokumentation aller wesentlichen Architektur- und Scope-Entscheidungen mit Begr�
 - Kern-Flow (Extraktion) kann ohne Auth entwickelt werden
 - Frühe RBAC-Enforcement würde Development verlangsamen
 - Vorbereitung (Role-Enum, User-Model) ermöglicht einfaches Aktivieren
+
+**Update:** Auth & RBAC vollständig implementiert (E6 ✅). 3-Rollen-Modell (Reader, Maintainer, Admin) mit JWT-Auth auf allen Endpoints + RBAC pro Agent-Tool.
 
 ---
 
@@ -124,14 +123,13 @@ Dokumentation aller wesentlichen Architektur- und Scope-Entscheidungen mit Begr�
 | A3 | OpenRouter ist verfügbar und stabil | Fallback: Manuelles Use-Case-Anlegen |
 | A4 | Kein Multi-User gleichzeitig | Keine Concurrency-Konflikte |
 | A5 | Transkripte sind <50k Tokens | Sonst: Chunking erforderlich |
-| A6 | 5-15 Use Cases pro Transkript | Pagination bei Bedarf |
+| A6 | 1-15 Use Cases pro Transkript | Pagination bei Bedarf |
 
 ---
 
-## Offene Entscheidungen
-_Werden während der Implementierung ergänzt._
-| ID | Thema | Optionen | Status |
-|----|-------|----------|--------|
-| O1 | LLM-Modell für Extraktion | Haiku vs. Sonnet | 🔲 |
-| O2 | Chat-UI Position | Sidebar vs. Modal vs. eigene Seite | 🔲 |
-| O3 | Status-Übergangsregeln | Frei vs. eingeschränkt | 🔲 |
+## Entschiedene Design-Fragen
+| ID | Thema | Entscheidung | Begründung |
+|----|-------|-------------|------------|
+| O1 | LLM-Modell | Claude 3 Haiku via OpenRouter | Schnell, günstig, ausreichend für Extraktion |
+| O2 | Chat-UI Position | Sidebar (rechts, ausklappbar) | Immer erreichbar, blockiert nicht die Hauptansicht |
+| O3 | Status-Übergänge | Eingeschränkt (definierte Transitions) | Verhindert ungültige Zustände, z.B. `new → completed` |

@@ -1,0 +1,203 @@
+================================================================================
+WORKSHOP-TRANSKRIPT
+================================================================================
+Unternehmen: Müller Maschinenbau AG
+Branche:     Maschinenbau
+Datum:       05.02.2026
+Ort:         BadenCampus, Freiburg
+
+Teilnehmer:
+- Jürgen Müller (Geschäftsführer)
+- Claudia Becker (Leiterin Produktion)
+- Stefan Keller (Leiter Vertrieb)
+- Anne Zimmermann (Leiterin Qualitätssicherung)
+
+Moderation: Markus Vogel (BadenCampus)
+================================================================================
+
+[00:00:00 - Begrüßung und Vorstellungsrunde]
+
+Markus Vogel: Guten Morgen zusammen und willkommen am BadenCampus. Mein
+Name ist Markus Vogel, und ich moderiere heute Ihren KI-Workshop. Unser
+Ziel ist es, konkrete Anwendungsfälle zu finden, in denen künstliche
+Intelligenz Ihre Geschäftsprozesse verbessern kann. Herr Müller, möchten
+Sie anfangen?
+
+Jürgen Müller: Ja, sehr gerne. Ich bin Jürgen Müller, Geschäftsführer in
+dritter Generation. Wir sind ein mittelständischer Maschinenbauer mit
+280 Mitarbeitern und stellen Verpackungsmaschinen her, hauptsächlich
+für die Lebensmittelindustrie. Unsere Herausforderung: Der
+Wettbewerbsdruck steigt, die Kunden erwarten immer kürzere Lieferzeiten,
+und gleichzeitig wird es immer schwieriger, qualifizierte Fachkräfte zu
+finden. Ich erhoffe mir von KI ganz konkret, dass wir effizienter werden,
+ohne die Qualität zu beeinträchtigen.
+
+Claudia Becker: Claudia Becker, ich leite die Produktion. Wir haben
+drei Fertigungshallen mit insgesamt 14 CNC-Maschinen. Mein größtes
+Problem ist die Fertigungsplanung. Wir produzieren kundenindividuell,
+jede Maschine ist ein Unikat. Die Reihenfolgeplanung und
+Maschinenbelegung ist wahnsinnig komplex, und aktuell mache ich das
+zusammen mit meinem Team großteils manuell in Excel.
+
+Stefan Keller: Stefan Keller, Vertrieb. Ich habe ein Team von acht
+Leuten. Wir bearbeiten pro Jahr etwa 300 Anfragen, daraus werden
+ungefähr 80 Aufträge. Das heißt, unsere Abschlussquote liegt bei
+knapp 27 Prozent. Was mich frustriert: Die Angebotserstellung dauert
+viel zu lange. Im Schnitt brauchen wir drei Wochen für ein
+detailliertes Angebot, und bis dahin hat der Kunde manchmal schon
+beim Wettbewerber bestellt.
+
+Anne Zimmermann: Anne Zimmermann, Qualitätssicherung. Wir prüfen
+jede Maschine vor der Auslieferung in einem aufwendigen Prozess. Das
+Problem ist die visuelle Qualitätskontrolle der Schweißnähte und
+Oberflächen. Das machen aktuell erfahrene Mitarbeiter, und deren
+Wissen ist schwer zu formalisieren. Wenn einer in Rente geht, geht
+viel Know-how verloren.
+
+[00:12:00 - Problemdiskussion / Status Quo]
+
+Markus Vogel: Danke für die offenen Einblicke. Lassen Sie uns die
+Themen etwas vertiefen. Frau Becker, wie genau sieht die
+Fertigungsplanung aktuell aus?
+
+Claudia Becker: Also, wenn ein neuer Auftrag reinkommt, muss ich
+schauen: Welche Maschinen sind frei? Welche Teile müssen zuerst
+gefertigt werden? Gibt es Abhängigkeiten? Welches Material ist
+verfügbar? Das mache ich mit einer riesigen Excel-Tabelle und
+viel Erfahrung. Wenn dann eine Maschine ausfällt oder Material
+verspätet kommt, muss ich alles umplanen. Das frisst enorm viel
+Zeit.
+
+Jürgen Müller: Und die Konsequenz ist, dass wir unsere Liefertermine
+nicht immer einhalten können. Im letzten Jahr hatten wir bei 15
+Prozent der Aufträge Terminverzögerungen. Das ist für unser Image
+nicht gut.
+
+Claudia Becker: Das stimmt leider. Und das liegt nicht daran, dass
+mein Team schlecht arbeitet, sondern die Komplexität ist einfach
+zu hoch für manuelle Planung. Wir haben 14 Maschinen, 50 laufende
+Aufträge gleichzeitig, und jeder Auftrag hat 20 bis 40 Arbeitsgänge.
+
+Markus Vogel: Herr Keller, Sie haben die lange Angebotserstellung
+angesprochen. Was macht das so aufwendig?
+
+Stefan Keller: Jede Verpackungsmaschine ist kundenindividuell
+konfiguriert. Der Kunde sagt uns, welches Produkt verpackt werden
+soll, welche Leistung er braucht, welche Hygienestandards gelten
+und so weiter. Daraus muss mein Team dann eine technische
+Konfiguration ableiten, Stücklisten erstellen, Preise kalkulieren
+und ein Angebot schreiben. Das sind in der Regel mehrere hundert
+Positionen.
+
+Jürgen Müller: Und das Wissen, wie man konfiguriert, steckt vor
+allem in den Köpfen unserer erfahrenen Vertriebsingenieure. Zwei
+davon gehen in den nächsten drei Jahren in Rente.
+
+Stefan Keller: Genau, das ist mein größtes Risiko. Wir haben
+versucht, Konfigurationsregeln zu dokumentieren, aber das ist
+ein Fass ohne Boden. Es gibt hunderte von Kombinationsmöglichkeiten
+und Sonderfälle.
+
+[00:28:00 - Ideengenerierung]
+
+Markus Vogel: Jetzt haben wir die Schmerzpunkte klar. Lassen Sie
+uns Ideen sammeln, wie KI hier unterstützen kann.
+
+Claudia Becker: Für die Produktion wäre mein Wunschszenario
+eine KI-gestützte Fertigungsplanung. Die KI kennt alle
+Maschinenkapazitäten, laufende Aufträge, Materialverfügbarkeit
+und Mitarbeiterkapazitäten. Sie erstellt automatisch einen
+optimalen Fertigungsplan und passt ihn in Echtzeit an, wenn
+sich etwas ändert. Ein sogenannter dynamischer Fertigungsplaner.
+
+Jürgen Müller: Können Sie den Nutzen beziffern?
+
+Claudia Becker: Wenn wir die Terminverzögerungen von 15 auf 5
+Prozent senken, spart das direkt Konventionalstrafen und
+verbessert die Kundenzufriedenheit. Außerdem schätze ich, dass
+wir durch bessere Maschinenauslastung die Durchlaufzeit um
+15 bis 20 Prozent reduzieren können. In Euro: mindestens
+150.000 pro Jahr durch weniger Verzögerungen und höhere
+Kapazitätsauslastung.
+
+Stefan Keller: Für den Vertrieb wäre mein Use Case ein
+KI-gestützter Angebotskonfigurator. Der Vertriebsmitarbeiter
+gibt die Kundenanforderungen ein, und die KI schlägt eine
+technische Konfiguration vor, basierend auf ähnlichen
+vergangenen Projekten. Sie generiert automatisch eine
+Stückliste und eine erste Preiskalkulation.
+
+Anne Zimmermann: Das klingt gut. Woher käme das Wissen?
+
+Stefan Keller: Wir haben über 2.000 abgeschlossene Projekte
+in unserem ERP-System, inklusive technischer Konfiguration und
+Kalkulation. Die KI könnte auf diesem Erfahrungsschatz lernen.
+Stakeholder wäre mein Vertriebsteam und die Konstruktion.
+
+Markus Vogel: Und der erwartete Nutzen?
+
+Stefan Keller: Die Angebotserstellung von drei Wochen auf
+unter eine Woche verkürzen. Das könnte unsere Abschlussquote
+von 27 auf 35 Prozent steigern, weil wir schneller beim
+Kunden sind. Bei einem durchschnittlichen Auftragswert von
+250.000 Euro und 24 zusätzlichen Abschlüssen wäre das ein
+Mehrumsatz von 6 Millionen Euro pro Jahr.
+
+Jürgen Müller: Das wäre ein absoluter Game-Changer.
+
+Anne Zimmermann: Ich hätte auch noch einen Anwendungsfall.
+Für die Qualitätskontrolle könnte man KI-Bilderkennung
+einsetzen. Wir fotografieren heute schon alle Schweißnähte
+zur Dokumentation. Eine KI könnte diese Bilder automatisch
+analysieren und Qualitätsmängel erkennen. Use Case wäre:
+Automatisierte visuelle Qualitätskontrolle mittels KI.
+
+Claudia Becker: Das wäre auch für die Produktion wertvoll,
+weil wir Fehler früher erkennen und nicht erst bei der
+Endkontrolle.
+
+Anne Zimmermann: Genau. Der Nutzen: Erstens, konsistente
+Qualität unabhängig vom Prüfer. Zweitens, schnellere Prüfung.
+Drittens, lückenlose Dokumentation. Und viertens: Das Wissen
+unserer erfahrenen Prüfer wird in das KI-Modell übertragen und
+geht nicht verloren, wenn sie in Rente gehen. Stakeholder wäre
+mein QS-Team und die Produktion.
+
+[00:50:00 - Priorisierung]
+
+Markus Vogel: Wir haben drei starke Anwendungsfälle. Lassen
+Sie uns priorisieren.
+
+Jürgen Müller: Für mich hat der Angebotskonfigurator die
+höchste Priorität. Der Vertrieb ist unser Flaschenhals, und
+der mögliche Mehrumsatz ist enorm.
+
+Claudia Becker: Ich verstehe das, auch wenn mir die
+Fertigungsplanung natürlich am Herzen liegt. Aber der
+Konfigurator hätte wohl den größten wirtschaftlichen Impact.
+
+Stefan Keller: Die Fertigungsplanung würde ich als Nummer zwei
+sehen. Das ist operativ am dringendsten.
+
+Anne Zimmermann: Und die Qualitätskontrolle als Phase zwei?
+Wir haben da zumindest noch etwas Zeit, bevor die ersten
+Kollegen in Rente gehen.
+
+Jürgen Müller: Einverstanden. Dann starten wir mit dem
+Konfigurator, bereiten parallel die Daten für die
+Fertigungsplanung auf, und planen die Qualitätskontrolle
+für nächstes Jahr.
+
+[01:00:00 - Abschluss]
+
+Markus Vogel: Hervorragend. Sie haben drei klare
+Anwendungsfälle identifiziert, die alle einen
+nachweisbaren Geschäftsnutzen haben. BadenCampus
+begleitet Sie gerne bei den nächsten Schritten.
+
+Jürgen Müller: Vielen Dank, Herr Vogel. Das war
+ein sehr produktiver Vormittag.
+
+================================================================================
+Ende des Transkripts
+================================================================================

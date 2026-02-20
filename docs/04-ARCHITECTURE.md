@@ -2,67 +2,59 @@
 ## Systemübersicht
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                                  FRONTEND                                    │
-│                         React + TypeScript + Tailwind                        │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
-│  │ Login Page  │  │ Use Case    │  │ Use Case    │  │ Chat Panel          │ │
-│  │             │  │ List        │  │ Detail/Edit │  │ (Agent Interface)   │ │
-│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────────┘ │
-│                                      │                         │             │
-└──────────────────────────────────────┼─────────────────────────┼─────────────┘
-                                       │ HTTP/REST               │ HTTP/REST
-                                       ▼                         ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                  BACKEND                                     │
-│                            FastAPI + SQLAlchemy                              │
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────────┐│
-│  │                            API Layer (Routers)                          ││
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐      ││
-│  │  │ /auth    │ │/use-cases│ │/companies│ │/transcr. │ │ /chat    │      ││
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘      ││
-│  └─────────────────────────────────────────────────────────────────────────┘│
-│                                      │                                       │
-│  ┌───────────────────────────────────┼───────────────────────────────────┐  │
-│  │                           Service Layer                               │  │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐       │  │
-│  │  │ UseCaseService  │  │ TranscriptSvc   │  │ AgentService    │       │  │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────┘       │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                                      │                                       │
-│  ┌───────────────────────────────────┼───────────────────────────────────┐  │
-│  │                           Agent Layer                                 │  │
-│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐       │  │
-│  │  │ Tool Registry   │  │ Tool Executor   │  │ LLM Client      │       │  │
-│  │  │ (7+ Tools)      │  │ (Calling Loop)  │  │ (OpenRouter)    │       │  │
-│  │  └─────────────────┘  └─────────────────┘  └─────────────────┘       │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                                      │                                       │
-│  ┌───────────────────────────────────┼───────────────────────────────────┐  │
-│  │                           Data Layer                                  │  │
-│  │  ┌─────────────────┐  ┌─────────────────┐                            │  │
-│  │  │ SQLAlchemy ORM  │  │ Pydantic Schemas│                            │  │
-│  │  │ (Models)        │  │ (Validation)    │                            │  │
-│  │  └─────────────────┘  └─────────────────┘                            │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────┼───────────────────────────────────────┘
-                                       │
+│                                  FRONTEND                                   │
+│                       React 19 + TypeScript + Tailwind                      │
+│  ┌──────────┐ ┌─────────┐ ┌─────────┐ ┌────────┐ ┌────────┐ ┌──────────┐    │
+│  │ Login /  │ │Use Case │ │Use Case │ │Upload  │ │ User-  │ │  Chat    │    │
+│  │ Register │ │  List   │ │ Detail  │ │ Page   │ │verwalt.│ │  Panel   │    │
+│  └──────────┘ └─────────┘ └─────────┘ └────────┘ └────────┘ └──────────┘    │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │ HTTP/REST
                                        ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                                 DATABASE                                     │
-│                                  SQLite                                      │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐          │
-│  │ Industry │ │ Company  │ │ User     │ │Transcript│ │ UseCase  │          │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘          │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                       │
-                                       │ HTTPS
-                                       ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              EXTERNAL SERVICES                               │
-│                                OpenRouter API                                │
-│                          (LLM: Claude 3 Haiku)                               │
-└─────────────────────────────────────────────────────────────────────────────┘
+│                                  BACKEND                                    │
+│                            FastAPI + SQLAlchemy                             │
+│                                                                             │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                         API Layer (Routers)                            │ │
+│  │  ┌────────┐ ┌──────────┐ ┌───────────┐ ┌──────────┐ ┌────────┐         │ │
+│  │  │ /auth  │ │/use-cases│ │/companies │ │/transcr. │ │ /chat  │         │ │
+│  │  │        │ │          │ │/industries│ │          │ │        │         │ │
+│  │  └────────┘ └──────────┘ └───────────┘ └──────────┘ └────────┘         │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+│                                      │                                      │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                         Agent Layer (services/)                        │ │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐         │ │
+│  │  │ agent.py        │  │ tool_handlers.py│  │ llm.py          │         │ │
+│  │  │ (Agent Loop)    │  │ (10+ Tools)     │  │ (OpenRouter)    │         │ │
+│  │  └─────────────────┘  └─────────────────┘  └─────────────────┘         │ │
+│  │                           ┌─────────────────┐                          │ │
+│  │                           │ extraction.py   │                          │ │
+│  │                           │ (UC-Extraktion) │                          │ │
+│  │                           └─────────────────┘                          │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+│                                      │                                      │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │                         Data Layer                                     │ │
+│  │  ┌─────────────────┐  ┌─────────────────┐                              │ │
+│  │  │ SQLAlchemy ORM  │  │ Pydantic Schemas│                              │ │
+│  │  │ (models/)       │  │ (schemas/)      │                              │ │
+│  │  └─────────────────┘  └─────────────────┘                              │ │
+│  └────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────┬───────────────────────────────────────┬─────────────────┘
+                  │                                       │ HTTPS
+                  ▼                                       ▼
+┌──────────────────────────────────┐  ┌──────────────────────────────────────┐
+│           DATABASE               │  │         EXTERNAL SERVICES            │
+│            SQLite                │  │          OpenRouter API              │
+│  ┌────────┐┌────────┐┌────────┐  │  │       (LLM: Claude 3 Haiku)          │
+│  │Industry││Company ││ User   │  │  └──────────────────────────────────────┘
+│  └────────┘└────────┘└────────┘  │
+│  ┌──────────┐ ┌────────┐         │
+│  │Transcript│ │UseCase │         │
+│  └──────────┘ └────────┘         │
+└──────────────────────────────────┘
 ```
 
 ---
@@ -73,29 +65,23 @@
 |------------|-------------|---------|------------|
 | Runtime | Python | 3.11+ | Stabil, gutes LLM-Ecosystem |
 | Web Framework | FastAPI | 0.109+ | Schnell, typisiert, automatische OpenAPI-Docs |
-| ORM | SQLAlchemy | 2.0+ | Industriestandard, sauber abstrahiert |
+| ORM | SQLAlchemy | 2.0+ | Industriestandard, async-fähig via aiosqlite |
 | Validation | Pydantic | 2.0+ | Integriert mit FastAPI, strict typing |
-| Database | SQLite | 3 | Zero-Config, ausreichend für Prototyp |
+| Database | SQLite + aiosqlite | 3 | Zero-Config, async-fähig, ausreichend für Prototyp |
 | Auth | python-jose, passlib | - | JWT-Handling, Password-Hashing (bcrypt) |
-| HTTP Client | httpx | - | Async-Support für OpenRouter-Calls |
+| LLM Client | openai (AsyncOpenAI) | - | OpenAI-kompatible API für OpenRouter |
 | Testing | pytest + pytest-asyncio | - | Standard für Python, async-Support für FastAPI |
 
 ### Frontend
 | Komponente | Technologie | Version | Begründung |
 |------------|-------------|---------|------------|
-| Framework | React | 18+ | Industriestandard, große Community |
+| Framework | React | 19 | Industriestandard, große Community |
 | Language | TypeScript | 5+ | Type-Safety, bessere DX |
 | Build Tool | Vite | 5+ | Schnell, modernes Tooling |
 | Styling | Tailwind CSS | 3+ | Utility-first, schnelles Prototyping |
+| Routing | react-router-dom | 7+ | Client-Side Routing mit URL-Params |
 | HTTP Client | fetch (native) | - | Keine zusätzliche Dependency |
 | State | React Context | - | Ausreichend für MVP, kein Redux-Overhead |
-
-### Infrastructure
-| Komponente | Technologie | Begründung |
-|------------|-------------|------------|
-| Containerization | Docker + docker-compose | Einfaches lokales Setup |
-| LLM Provider | OpenRouter | Zugang zu verschiedenen Modellen |
-| LLM Model | Claude 3 Haiku | Günstig, schnell, gut für Extraktion |
 
 ---
 ## Datenmodell
@@ -146,44 +132,17 @@
 │ stakeholders (JSON)              │
 │ expected_benefit                 │
 │ status (enum)                    │
+│ rating_effort (1-5, nullable)    │
+│ rating_benefit (1-5, nullable)   │
+│ rating_feasibility (1-5, null.)  │
+│ rating_data_availability (1-5)   │
+│ rating_strategic_relevance (1-5) │
 │ company_id (FK)                  │
 │ transcript_id (FK, nullable)     │
-│ created_by (FK)                  │
+│ created_by_id (FK)               │
 │ created_at                       │
 │ updated_at                       │
 └──────────────────────────────────┘
-```
-
-### Enums
-```python
-class Role(str, Enum):
-    READER = "reader"
-    MAINTAINER = "maintainer"
-    ADMIN = "admin"
-
-class UseCaseStatus(str, Enum):
-    NEW = "new"
-    IN_REVIEW = "in_review"
-    APPROVED = "approved"
-    IN_PROGRESS = "in_progress"
-    COMPLETED = "completed"
-    ARCHIVED = "archived"
-```
-
-### Stakeholder-Struktur (JSON)
-```json
-{
-  "stakeholders": [
-    {
-      "name": "Max Müller",
-      "role": "Vertriebsleiter"
-    },
-    {
-      "name": "Anna Schmidt",
-      "role": "IT-Leiterin"
-    }
-  ]
-}
 ```
 
 ---
@@ -194,347 +153,102 @@ class UseCaseStatus(str, Enum):
 |--------|----------|--------------|------|------|
 | POST | /auth/register | User registrieren | - | - |
 | POST | /auth/login | Login, JWT erhalten | - | - |
-| GET | /auth/me | Aktueller User | ✅ | Reader+ |
-| GET | /industries | Branchen auflisten | ✅ | Reader+ |
-| GET | /companies | Unternehmen auflisten | ✅ | Reader+ |
+| GET | /auth/me | Aktueller User | ✅ | Alle |
+| GET | /auth/users | Alle User auflisten | ✅ | Admin |
+| PATCH | /auth/users/{id} | User-Rolle ändern | ✅ | Admin |
+| DELETE | /auth/users/{id} | User löschen | ✅ | Admin |
+| GET | /industries | Branchen auflisten | ✅ | Alle |
+| POST | /industries | Branche anlegen | ✅ | Maintainer+ |
+| GET | /companies | Unternehmen auflisten | ✅ | Alle |
 | POST | /companies | Unternehmen anlegen | ✅ | Maintainer+ |
-| GET | /transcripts | Transkripte auflisten | ✅ | Reader+ |
+| GET | /transcripts | Transkripte auflisten | ✅ | Alle |
+| GET | /transcripts/{id} | Transkript mit Inhalt | ✅ | Alle |
 | POST | /transcripts | Transkript hochladen + extrahieren | ✅ | Maintainer+ |
-| GET | /use-cases | Use Cases auflisten (mit Filtern) | ✅ | Reader+ |
-| GET | /use-cases/{id} | Use Case Detail | ✅ | Reader+ |
+| POST | /transcripts/{id}/extract | Use Cases erneut extrahieren | ✅ | Maintainer+ |
+| GET | /use-cases | Use Cases auflisten (mit Filtern) | ✅ | Alle |
+| GET | /use-cases/{id} | Use Case Detail | ✅ | Alle |
 | POST | /use-cases | Use Case anlegen | ✅ | Maintainer+ |
 | PATCH | /use-cases/{id} | Use Case bearbeiten | ✅ | Maintainer+ |
-| DELETE | /use-cases/{id} | Use Case archivieren | ✅ | Admin |
-| POST | /chat | Agent-Interaktion | ✅ | Reader+ (RBAC pro Tool) |
-
-### Response-Format
-```json
-{
-  "data": { ... },
-  "meta": {
-    "total": 42,
-    "page": 1,
-    "per_page": 20
-  }
-}
-```
-
-### Error-Format
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Invalid input",
-    "details": [
-      {
-        "field": "title",
-        "message": "Field is required"
-      }
-    ]
-  }
-}
-```
+| DELETE | /use-cases/{id} | Use Case archivieren (Soft Delete) | ✅ | Admin |
+| PATCH | /use-cases/{id}/restore | Archivierten Use Case wiederherstellen | ✅ | Admin |
+| DELETE | /use-cases/{id}/permanent | Use Case endgültig löschen | ✅ | Admin |
+| POST | /chat | Agent-Interaktion (inkl. optionalem Datei-Upload) | ✅ | Alle (RBAC pro Tool) |
 
 ---
 
 ## Agent-Architektur
-### Tool-Calling-Flow
-```
-┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐
-│  User    │────▶│  /chat   │────▶│  Agent   │────▶│OpenRouter│
-│  Input   │     │ Endpoint │     │  Loop    │     │   LLM    │
-└──────────┘     └──────────┘     └────┬─────┘     └────┬─────┘
-                                       │                │
-                                       │◄───────────────┘
-                                       │   Tool Call?
-                                       ▼
-                                 ┌──────────┐
-                           No ◄──┤ Decision ├──▶ Yes
-                                 └──────────┘
-                                       │
-                      ┌────────────────┴────────────────┐
-                      ▼                                  ▼
-               ┌──────────┐                       ┌──────────┐
-               │ Return   │                       │ Execute  │
-               │ Response │                       │ Tool     │
-               └──────────┘                       └────┬─────┘
-                                                       │
-                                                       ▼
-                                                 ┌──────────┐
-                                                 │ RBAC     │
-                                                 │ Check    │
-                                                 └────┬─────┘
-                                                       │
-                                         ┌─────────────┴─────────────┐
-                                         ▼                           ▼
-                                   ┌──────────┐                ┌──────────┐
-                                   │ Allowed  │                │ Denied   │
-                                   │ Execute  │                │ Error    │
-                                   └────┬─────┘                └──────────┘
-                                        │
-                                        ▼
-                                  ┌──────────┐
-                                  │ Tool     │
-                                  │ Result   │
-                                  └────┬─────┘
-                                       │
-                                       ▼
-                              ┌────────────────┐
-                              │ Loop: Send     │
-                              │ Result to LLM  │
-                              └────────────────┘
-```
+Der Agent (`services/agent.py`) implementiert eine Tool-Calling-Loop: User-Nachricht → LLM → optional Tool-Call(s) mit RBAC-Check → Ergebnis zurück an LLM → nächste Runde oder finale Antwort. Max. 10 Runden pro Request.
 
-### Tools
-| Tool | Input | Output | RBAC |
-|------|-------|--------|------|
-| list_use_cases | `{filters?: {company_id?, status?, search?}}` | `UseCase[]` | Reader+ |
-| get_use_case | `{id: int}` | `UseCase` | Reader+ |
-| create_use_case | `{title, description, company_id, ...}` | `UseCase` | Maintainer+ |
-| update_use_case | `{id, fields: {...}}` | `UseCase` | Maintainer+ |
-| set_status | `{id, status}` | `UseCase` | Maintainer+ |
-| archive_use_case | `{id}` | `{success: bool}` | Admin |
-| analyze_transcript | `{transcript_id}` | `UseCase[]` | Maintainer+ |
-| list_companies | `{}` | `Company[]` | Reader+ |
+### Tools (13 registriert)
+| Tool | Beschreibung | RBAC |
+|------|-------------|------|
+| list_use_cases | Use Cases auflisten (mit Filter) | Alle |
+| get_use_case | Einzelnen Use Case abrufen | Alle |
+| create_use_case | Use Case manuell anlegen | Maintainer+ |
+| update_use_case | Use Case bearbeiten | Maintainer+ |
+| set_status | Status-Übergang durchführen | Maintainer+ |
+| archive_use_case | Use Case archivieren (Soft Delete) | Admin |
+| restore_use_case | Archivierten Use Case wiederherstellen | Admin |
+| analyze_transcript | Use Cases aus bestehendem Transkript extrahieren | Maintainer+ |
+| list_companies | Unternehmen auflisten | Alle |
+| list_industries | Branchen auflisten | Alle |
+| create_industry | Neue Branche anlegen | Maintainer+ |
+| create_company | Neues Unternehmen anlegen | Maintainer+ |
+| save_transcript | Angehängtes Transkript speichern + extrahieren | Maintainer+ |
 
 ---
 
 ## Projektstruktur
 ```
 use-case-manager/
-├── README.md
-├── DECISIONS.md
-├── CHANGELOG.md
-├── .env.example
-├── .gitignore
-├── docker-compose.yml
-│
-├── docs/
-│   ├── 01-SCOPE.md
-│   ├── 02-RISKS.md
-│   ├── 03-DATA.md
-│   ├── 04-ARCHITECTURE.md
-│   └── 05-BACKLOG.md
+├── .env.example              # Environment-Vorlage (API-Keys etc.)
+├── requirements.txt          # Python-Dependencies
+├── docs/                     # Projektdokumentation (01-06)
+│   └── diagrams/             # Mermaid-Diagramme
 │
 ├── backend/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   ├── alembic/                    # DB Migrations (optional)
-│   │   └── ...
-│   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py                 # FastAPI App
-│   │   ├── config.py               # Settings
-│   │   ├── database.py             # DB Connection
-│   │   ├── dependencies.py         # DI (Auth, DB Session)
-│   │   │
-│   │   ├── models/                 # SQLAlchemy Models
-│   │   │   ├── __init__.py
-│   │   │   ├── industry.py
-│   │   │   ├── company.py
-│   │   │   ├── user.py
-│   │   │   ├── transcript.py
-│   │   │   └── use_case.py
-│   │   │
-│   │   ├── schemas/                # Pydantic Schemas
-│   │   │   ├── __init__.py
-│   │   │   ├── auth.py
-│   │   │   ├── industry.py
-│   │   │   ├── company.py
-│   │   │   ├── transcript.py
-│   │   │   └── use_case.py
-│   │   │
-│   │   ├── routers/                # API Endpoints
-│   │   │   ├── __init__.py
-│   │   │   ├── auth.py
-│   │   │   ├── industries.py
-│   │   │   ├── companies.py
-│   │   │   ├── transcripts.py
-│   │   │   ├── use_cases.py
-│   │   │   └── chat.py
-│   │   │
-│   │   ├── services/               # Business Logic
-│   │   │   ├── __init__.py
-│   │   │   ├── use_case_service.py
-│   │   │   └── transcript_service.py
-│   │   │
-│   │   ├── agent/                  # Agent Implementation
-│   │   │   ├── __init__.py
-│   │   │   ├── agent.py            # Main Agent Loop
-│   │   │   ├── tools.py            # Tool Definitions
-│   │   │   └── executor.py         # Tool Executor
-│   │   │
-│   │   └── llm/                    # LLM Integration
-│   │       ├── __init__.py
-│   │       ├── client.py           # OpenRouter Client
-│   │       ├── prompts.py          # System Prompts
-│   │       └── extraction.py       # Use Case Extraction
-│   │
-│   ├── tests/
-│   │   ├── __init__.py
-│   │   ├── test_auth.py
-│   │   ├── test_use_cases.py
-│   │   └── test_agent.py
-│   │
+│   ├── main.py               # FastAPI App + Startup
+│   ├── seed.py               # Stammdaten laden (Industries, Companies, Users)
+│   ├── api/                  # Router (auth, use_cases, companies, industries, transcripts, chat)
+│   ├── core/                 # Config, Dependencies, Security (JWT, RBAC)
+│   ├── db/                   # Database Connection + SQLAlchemy Models
+│   ├── schemas/              # Pydantic Request/Response Schemas
+│   ├── services/             # Agent (agent.py, llm.py, tool_handlers.py, extraction.py)
+│   ├── tests/                # pytest (auth, use_cases, permissions, tool_handlers, extraction)
 │   └── data/
-│       ├── seed/
-│       │   ├── industries.json
-│       │   ├── companies.json
-│       │   └── users.json
-│       └── app.db                  # SQLite DB (gitignored)
+│       ├── seed/             # Stammdaten-JSONs (industries, companies, users)
+│       └── upload/           # Synthetische Transkripte (.txt)
 │
-├── frontend/
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── vite.config.ts
-│   ├── tailwind.config.js
-│   ├── index.html
-│   └── src/
-│       ├── main.tsx
-│       ├── App.tsx
-│       ├── api/
-│       │   └── client.ts           # API Client
-│       ├── components/
-│       │   ├── Layout.tsx
-│       │   ├── UseCaseList.tsx
-│       │   ├── UseCaseDetail.tsx
-│       │   ├── UseCaseForm.tsx
-│       │   ├── TranscriptUpload.tsx
-│       │   └── ChatPanel.tsx
-│       ├── pages/
-│       │   ├── LoginPage.tsx
-│       │   ├── DashboardPage.tsx
-│       │   └── UseCasePage.tsx
-│       ├── context/
-│       │   └── AuthContext.tsx
-│       └── types/
-│           └── index.ts
-│
-└── data/
-    └── transcripts/
-        └── stadtwerke-workshop-2026-01.txt
+└── frontend/
+    ├── index.html
+    ├── vite.config.ts
+    └── src/
+        ├── App.tsx            # Routing
+        ├── api/               # API Client (fetch-Wrapper)
+        ├── components/        # Layout, ChatPanel, UI-Komponenten
+        ├── context/           # AuthContext, RefreshContext
+        └── pages/             # Login, Register, UseCaseList, UseCaseDetail, Upload, Admin
 ```
 
 ---
 
-## Deployment (Lokal)
-### docker-compose.yml
-```yaml
-version: '3.8'
+## Testing
+Jeder Test läuft isoliert gegen eine frische In-Memory-SQLite-DB. Auth-Helper erzeugen JWT-Header für alle drei Rollen (Reader, Maintainer, Admin).
 
-services:
-  backend:
-    build: ./backend
-    ports:
-      - "${BACKEND_PORT:-8000}:8000"
-    volumes:
-      - ./backend/data:/app/data
-    env_file:
-      - .env
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "${FRONTEND_PORT:-3000}:3000"
-    depends_on:
-      - backend
-    environment:
-      - VITE_API_URL=http://localhost:8000
-```
-
-### Startup-Sequenz
-```bash
-# 1. Environment konfigurieren
-cp .env.example .env
-# API-Key eintragen
-
-# 2. Starten
-docker-compose up --build
-
-# 3. Seed-Daten laden (einmalig)
-docker-compose exec backend python -m app.seed
-
-# 4. Öffnen
-# Backend: http://localhost:8000/docs
-# Frontend: http://localhost:3000
-```
-
----
-
-## Testing-Architektur
-
-### Stack
-| Komponente | Technologie | Begründung |
-|------------|-------------|------------|
-| Test-Runner | pytest | Standard für Python, umfangreiches Plugin-Ecosystem |
-| Async-Support | pytest-asyncio | Ermöglicht `async def` Tests für FastAPI |
-| HTTP-Client | httpx AsyncClient | Async-fähiger Test-Client via `ASGITransport` |
-| Test-DB | SQLite In-Memory | Schnell, isoliert, kein Cleanup nötig |
-
-### Testaufbau
 ```
 backend/tests/
-├── __init__.py
-├── conftest.py          # Fixtures: DB, Client, Seed-Daten, Auth-Helper
-├── test_auth.py         # Auth-Endpoints (Register, Login, RBAC)
-└── test_use_cases.py    # Use Case CRUD + Status-Workflow
-```
-
-### Fixture-Konzept
-```
-┌──────────────────┐
-│   db_session     │  In-Memory SQLite, create_all / drop_all pro Test
-├──────────────────┤
-│   client         │  httpx AsyncClient mit Dependency-Override auf db_session
-├──────────────────┤
-│   seed_users     │  Je ein User pro Rolle (reader, maintainer, admin)
-├──────────────────┤
-│   seed_data      │  Industry + Company + UseCase + Users
-└──────────────────┘
-```
-
-- **Isolation:** Jeder Test bekommt eine frische In-Memory-DB (`create_all` vor, `drop_all` nach dem Test)
-- **Dependency Override:** `app.dependency_overrides[get_db]` ersetzt die Produktions-DB durch die Test-Session
-- **Auth-Helper:** `auth_header(user)` erzeugt JWT-Header für beliebige Test-User
-- **Kein externer State:** Keine Dateien, kein Netzwerk, keine Seiteneffekte
-
-### Ausführung
-```bash
-cd backend
-python -m pytest tests/ -v
+├── conftest.py              # Fixtures: DB, Client, Seed-Daten, Auth-Helper
+├── test_auth.py             # Auth-Endpoints (Register, Login, RBAC)
+├── test_use_cases.py        # Use Case CRUD + Status-Workflow
+├── test_permissions.py      # RBAC pro Endpoint + Rolle
+├── test_tool_handlers.py    # Agent-Tools Unit-Tests
+└── test_extraction.py       # LLM-Extraktion (mit Mock)
 ```
 
 ---
 
-## Logging-Strategie
-### Format
-```json
-{
-  "timestamp": "2026-01-15T10:30:00Z",
-  "level": "INFO",
-  "logger": "app.llm.client",
-  "message": "LLM request completed",
-  "request_id": "abc-123",
-  "data": {
-    "model": "anthropic/claude-3-haiku",
-    "tokens_in": 1500,
-    "tokens_out": 500,
-    "latency_ms": 1200
-  }
-}
-```
-
-### Log-Levels
-| Level | Verwendung |
-|-------|------------|
-| DEBUG | Entwicklungs-Details |
-| INFO | LLM-Calls, Tool-Executions, wichtige Events |
-| WARNING | Retries, degraded performance |
-| ERROR | Fehler, die behandelt wurden |
-| CRITICAL | Systemfehler, die Aufmerksamkeit erfordern |
+## Logging
+Standard Python `logging` Modul. Geloggt werden:
+- LLM-Calls (Model, Anzahl Messages)
+- Tool-Ausführungen (Name, Ergebnis)
+- Fehler (LLM-Parsing, Tool-Fehler, Auth-Fehler)

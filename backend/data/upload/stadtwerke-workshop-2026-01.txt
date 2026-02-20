@@ -1,0 +1,283 @@
+================================================================================
+WORKSHOP-TRANSKRIPT
+================================================================================
+Unternehmen: Stadtwerke Musterstadt GmbH
+Branche:     Energieversorgung
+Datum:       15.01.2026
+Ort:         BadenCampus, Freiburg
+
+Teilnehmer:
+- Dr. Maria Schmidt (Geschäftsführerin)
+- Thomas Weber (Leiter IT)
+- Sandra Hoffmann (Leiterin Kundenservice)
+- Michael Braun (Teamleiter Netzplanung)
+
+Moderation: Lisa Berger (BadenCampus)
+================================================================================
+
+[00:00:00 - Begrüßung und Vorstellungsrunde]
+
+Lisa Berger: Herzlich willkommen zum KI-Workshop hier am BadenCampus. Ich freue
+mich, dass Sie heute alle dabei sind. Unser Ziel ist es, in den nächsten drei
+Stunden konkrete Anwendungsfälle für künstliche Intelligenz bei den Stadtwerken
+Musterstadt zu identifizieren. Bevor wir starten, lassen Sie uns eine kurze
+Vorstellungsrunde machen. Bitte stellen Sie sich vor und sagen Sie, was Ihre
+größte Herausforderung im Tagesgeschäft ist.
+
+Dr. Maria Schmidt: Gerne. Ich bin Maria Schmidt, seit fünf Jahren
+Geschäftsführerin der Stadtwerke Musterstadt. Wir versorgen rund 80.000
+Haushalte mit Strom, Gas und Wasser. Meine größte Herausforderung ist aktuell
+die Energiewende. Wir müssen unsere Prozesse digitalisieren und gleichzeitig
+die Kosten im Griff behalten. Ich erhoffe mir von diesem Workshop, dass wir
+ganz konkrete Ansätze finden, wo KI uns dabei helfen kann.
+
+Thomas Weber: Ich bin Thomas Weber, Leiter der IT-Abteilung. Wir sind ein
+Team von zwölf Leuten und betreuen die gesamte IT-Infrastruktur. Meine
+Herausforderung ist, dass wir sehr viele manuelle Prozesse haben, die
+eigentlich automatisiert werden könnten. Gleichzeitig haben wir einen
+Fachkräftemangel, besonders im Bereich Datenanalyse. Da erhoffe ich mir
+konkrete Ideen.
+
+Sandra Hoffmann: Sandra Hoffmann, ich leite den Kundenservice. Wir haben
+25 Mitarbeiterinnen und Mitarbeiter, die täglich etwa 400 Kundenanfragen
+bearbeiten. Das Frustrierende ist, dass ein Großteil davon Standardfragen
+sind, die sich ständig wiederholen. Meine Leute könnten ihre Zeit viel
+besser nutzen.
+
+Michael Braun: Michael Braun, Teamleiter Netzplanung. Ich bin mit meinem
+Team für die Planung und Optimierung des Strom- und Gasnetzes zuständig.
+Unsere größte Herausforderung ist die zunehmende Einspeisung aus erneuerbaren
+Energien. Photovoltaik-Anlagen, Windräder - das macht die Lastplanung
+erheblich komplexer als früher.
+
+Lisa Berger: Vielen Dank. Das sind schon sehr gute Ansatzpunkte. Lassen Sie
+uns direkt in die Problemdiskussion einsteigen.
+
+[00:08:00 - Problemdiskussion / Status Quo]
+
+Lisa Berger: Frau Hoffmann, Sie haben das Thema Kundenservice angesprochen.
+Können Sie uns das Problem genauer beschreiben?
+
+Sandra Hoffmann: Sehr gerne. Also, wir bekommen pro Tag im Durchschnitt
+400 Anfragen. Das verteilt sich ungefähr so: 30 Prozent sind Fragen zu
+Tarifen und Tarifwechseln. Dann nochmal 20 Prozent zu Rechnungen und
+Abschlagszahlungen. Etwa 15 Prozent betreffen Zählerstände und
+Zählerablesung. Und der Rest sind individuelle Anliegen wie Umzüge,
+Beschwerden oder technische Probleme.
+
+Thomas Weber: Das bestätigen auch unsere Zahlen aus dem Ticketsystem.
+Ich habe mir das mal angeschaut: Etwa 60 Prozent aller Anfragen sind
+Standardfragen, die mit den gleichen Textbausteinen beantwortet werden.
+Das ist natürlich massiv ineffizient. Unsere Mitarbeiter verbringen
+den Großteil ihrer Zeit damit, Informationen aus dem ERP-System zu
+kopieren und in E-Mails einzufügen.
+
+Sandra Hoffmann: Und das Schlimmste ist die Wartezeit. In Spitzenzeiten,
+zum Beispiel wenn die Jahresabrechnungen verschickt werden, haben wir
+Wartezeiten von bis zu 45 Minuten am Telefon. Das führt zu massiver
+Unzufriedenheit bei den Kunden.
+
+Dr. Maria Schmidt: Das spiegelt sich auch in unserer letzten
+Kundenzufriedenheitsumfrage wider. Die Erreichbarkeit war der mit
+Abstand am schlechtesten bewertete Punkt.
+
+Lisa Berger: Herr Braun, wie sieht es im Netzbereich aus?
+
+Michael Braun: Im Netzbereich haben wir eine ganz andere Problematik.
+Früher war die Lastplanung relativ einfach: morgens steigt der Verbrauch,
+abends sinkt er. Aber seit wir immer mehr PV-Anlagen im Netz haben,
+haben wir starke Schwankungen. An sonnigen Tagen speisen die PV-Anlagen
+so viel ein, dass wir teilweise Netzstabilitätsprobleme bekommen.
+
+Thomas Weber: Dazu kommt, dass wir keine vernünftige Datenbasis haben.
+Wir sammeln zwar Daten von den Smart Metern, aber die werden aktuell
+nur für die Abrechnung genutzt. Das Potenzial für Analysen liegt
+komplett brach.
+
+Michael Braun: Genau. Und die Entscheidungen in der Netzplanung
+treffen wir noch sehr viel nach Bauchgefühl und Erfahrungswerten.
+Das war früher okay, aber bei der Komplexität heute reicht das
+nicht mehr.
+
+Dr. Maria Schmidt: Was mich noch umtreibt, ist die Frage der
+Energiebeschaffung. Wir kaufen Strom am Markt ein, und da sind
+die Preise extrem volatil geworden. Wenn wir den Bedarf genauer
+vorhersagen könnten, könnten wir deutlich bessere Einkaufskonditionen
+erzielen.
+
+[00:22:00 - Ideengenerierung]
+
+Lisa Berger: Perfekt, jetzt haben wir ein gutes Bild der
+Herausforderungen. Lassen Sie uns nun konkrete Ideen entwickeln,
+wie KI hier helfen kann. Frau Hoffmann, fangen wir mit dem
+Kundenservice an.
+
+Sandra Hoffmann: Also, die offensichtlichste Idee wäre ein
+KI-gestützter Chatbot für den Kundenservice. Ich stelle mir das
+so vor: Der Kunde stellt eine Frage auf unserer Website oder per
+WhatsApp, und die KI beantwortet die Standardfragen automatisch.
+Nur wenn es komplex wird, leitet sie an einen menschlichen
+Mitarbeiter weiter.
+
+Thomas Weber: Eine Idee wäre, den Chatbot direkt an unser
+ERP-System anzubinden. Dann könnte er nicht nur allgemeine
+Fragen beantworten, sondern auch kundenspezifische Auskünfte
+geben. Zum Beispiel: "Was ist mein aktueller Abschlag?" oder
+"Wann wurde mein letzter Zählerstand erfasst?"
+
+Sandra Hoffmann: Genau. Der erwartete Nutzen wäre enorm. Ich
+schätze, wir könnten 40 bis 50 Prozent der Anfragen vollständig
+automatisieren. Das würde etwa 2 Vollzeitstellen freisetzen,
+die sich dann um komplexere Kundenanliegen und Beratung kümmern
+könnten.
+
+Dr. Maria Schmidt: Das passt auch perfekt zu unserer Strategie.
+Wir wollen den Service verbessern, nicht Personal abbauen. Die
+freiwerdende Kapazität würde in die Energieberatung fließen,
+die wir ausbauen wollen.
+
+Lisa Berger: Sehr gut, das ist ein konkreter Anwendungsfall. Lassen
+Sie mich das zusammenfassen: KI-Chatbot für automatische
+Beantwortung von Standard-Kundenanfragen zu Tarifen, Rechnungen
+und Zählerständen. Stakeholder sind Frau Hoffmann und Herr Weber.
+Erwarteter Nutzen: 40-50 Prozent Automatisierung, 2 FTE freisetzen.
+Korrekt?
+
+Sandra Hoffmann: Ja, genau so.
+
+Lisa Berger: Wunderbar. Herr Braun, Sie hatten die Netzplanung
+angesprochen. Haben Sie eine konkrete Idee?
+
+Michael Braun: Ja, auf jeden Fall. Use Case wäre eine KI-gestützte
+Lastprognose für unser Stromnetz. Die KI analysiert historische
+Verbrauchsdaten von den Smart Metern, kombiniert das mit Wetterdaten,
+Feiertagen, lokalen Events und erstellt daraus eine Vorhersage des
+Strombedarfs für die nächsten 24 bis 48 Stunden. Auf Viertelstunden-Basis.
+
+Thomas Weber: Die Daten haben wir grundsätzlich. Smart-Meter-Daten,
+Wetterdaten können wir vom DWD beziehen. Das wäre technisch machbar.
+
+Michael Braun: Stakeholder wären ich als Netzplanung und der Einkauf.
+Der konkrete Nutzen wäre dreifach: Erstens, bessere Netzstabilität durch
+vorausschauende Planung. Zweitens, bessere Einkaufskonditionen, weil wir
+den Bedarf genauer kennen. Und drittens weniger Ausgleichsenergie, die
+bekanntlich sehr teuer ist. Ich schätze das Einsparpotenzial auf
+200.000 bis 300.000 Euro pro Jahr.
+
+Dr. Maria Schmidt: Das klingt sehr vielversprechend. Die Zahl überzeugt mich.
+
+Lisa Berger: Ausgezeichnet. Wer hat noch eine Idee?
+
+Thomas Weber: Ich hätte noch etwas. Wir haben jedes Jahr das Problem mit
+der Zählerablesung. Aktuell schicken wir Karten raus, die Kunden sollen
+den Zählerstand eintragen und zurückschicken. Die Rücklaufquote liegt bei
+unter 40 Prozent. Für den Rest müssen wir schätzen oder Ableser losschicken.
+
+Sandra Hoffmann: Das ist tatsächlich auch ein großes Thema bei uns im
+Kundenservice. Viele Kunden rufen an und beschweren sich über geschätzte
+Verbräuche.
+
+Thomas Weber: Meine Idee: Eine App oder ein Web-Portal, wo Kunden einfach
+ein Foto ihres Zählers machen können. Die KI erkennt den Zählerstand
+automatisch per Bilderkennung. Keine manuelle Eingabe nötig, keine Fehler,
+sofortige Verarbeitung. Use Case: Automatische Zählerstanderfassung mittels
+KI-Bilderkennung.
+
+Michael Braun: Das wäre auch für uns in der Netzplanung interessant, weil
+wir dann viel aktuellere Verbrauchsdaten hätten.
+
+Dr. Maria Schmidt: Wer wären die Stakeholder?
+
+Thomas Weber: In erster Linie ich als IT, weil wir das technisch umsetzen
+müssten. Dann Sandra für den Kundenservice, weil die Kunden die Hauptnutzer
+wären. Und die Abrechnung natürlich.
+
+Lisa Berger: Und der erwartete Nutzen?
+
+Thomas Weber: Wir könnten die Rücklaufquote der Zählerstände von 40 auf
+über 80 Prozent steigern. Weniger Schätzungen bedeuten weniger
+Kundenbeschwerden und genauere Abrechnungen. Außerdem sparen wir die
+Kosten für manuelle Ableser ein, das sind aktuell etwa 60.000 Euro
+pro Jahr.
+
+[00:42:00 - Weitere Diskussion und Priorisierung]
+
+Lisa Berger: Wir haben jetzt drei sehr konkrete Anwendungsfälle. Gibt
+es noch weitere Ideen?
+
+Dr. Maria Schmidt: Ja, mir fällt noch etwas ein. Wir haben regelmäßig
+Störungen im Netz - Rohrbrüche, Kabelschäden, Transformatorausfälle.
+Aktuell reagieren wir immer erst, wenn die Störung schon da ist. Eine
+Idee wäre, KI für vorausschauende Wartung einzusetzen. Die KI analysiert
+Sensordaten, Alter der Leitungen, Wetterbedingungen und sagt voraus,
+wo als nächstes eine Störung auftreten könnte.
+
+Michael Braun: Das ist ein spannender Gedanke. Wir haben tatsächlich
+Sensordaten von vielen Trafo-Stationen - Temperatur, Ölstand,
+Schwingungen. Die werden momentan nur für die Überwachung genutzt,
+nicht für Prognosen.
+
+Thomas Weber: Technisch wäre das ein typisches Predictive-Maintenance-
+Szenario. Die Daten haben wir. Die Frage ist, ob genug historische
+Störungsdaten vorliegen, um ein Modell zu trainieren.
+
+Dr. Maria Schmidt: Stakeholder wären Herr Braun für die Netzplanung
+und der technische Service. Der Nutzen: Weniger ungeplante Ausfälle,
+geringere Reparaturkosten durch rechtzeitige Wartung, bessere
+Versorgungssicherheit. Ich denke, das Einsparpotenzial liegt bei
+mindestens 100.000 Euro pro Jahr, weil Notfalleinsätze deutlich
+teurer sind als geplante Wartung.
+
+Lisa Berger: Ausgezeichnet. Dann lassen Sie uns die vier
+Anwendungsfälle nochmal zusammenfassen und priorisieren.
+
+[00:55:00 - Zusammenfassung und Priorisierung]
+
+Lisa Berger: Also, wir haben folgende vier Anwendungsfälle
+identifiziert:
+
+Erstens, KI-Chatbot für den Kundenservice. Hoher Nutzen,
+technisch gut machbar, schneller ROI.
+
+Zweitens, KI-Lastprognose für das Stromnetz. Großes
+Einsparpotenzial, strategisch wichtig für die Energiewende.
+
+Drittens, automatische Zählerstanderfassung per Bilderkennung.
+Mittlerer Aufwand, hoher Kundennutzen.
+
+Viertens, Predictive Maintenance für Netzinfrastruktur.
+Strategisch wichtig, aber etwas höherer Aufwand wegen
+Datenaufbereitung.
+
+Dr. Maria Schmidt: Ich würde sagen, Priorität eins ist der
+Chatbot. Der hat den schnellsten ROI und betrifft am meisten
+Kunden. Priorität zwei die Lastprognose, weil das strategisch
+am wichtigsten ist.
+
+Michael Braun: Einverstanden. Die Zählerablesung und
+Predictive Maintenance würde ich als Phase zwei sehen.
+
+Sandra Hoffmann: Ja, das macht Sinn. Beim Chatbot können
+wir relativ schnell einen Piloten starten und den Nutzen
+nachweisen.
+
+Thomas Weber: Von der IT-Seite stimme ich zu. Der Chatbot
+ist am schnellsten realisierbar. Für die Lastprognose
+müssen wir erst die Datenpipeline aufbauen.
+
+[01:05:00 - Nächste Schritte und Abschluss]
+
+Lisa Berger: Sehr gut, dann halten wir fest: Sie starten mit
+dem KI-Chatbot als Pilotprojekt und bereiten parallel die
+Datenbasis für die Lastprognose vor. BadenCampus unterstützt
+Sie gerne bei der Umsetzung.
+
+Ich bedanke mich für den produktiven Workshop und melde mich
+nächste Woche mit einer detaillierten Zusammenfassung.
+
+Dr. Maria Schmidt: Vielen Dank, Frau Berger. Das war sehr
+hilfreich. Wir haben jetzt einen klaren Fahrplan.
+
+================================================================================
+Ende des Transkripts
+================================================================================

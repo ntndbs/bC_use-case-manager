@@ -1,0 +1,25 @@
+================================================================================
+WORKSHOP-TRANSKRIPT
+================================================================================
+Unternehmen: Stadtwerke Musterstadt GmbH
+Branche:     Energieversorgung
+Datum:       20.01.2026
+Ort:         BadenCampus, Freiburg
+
+Teilnehmer:
+- Sandra Hoffmann (Leiterin Kundenservice)
+
+Moderation: Lisa Berger (BadenCampus)
+================================================================================
+
+[00:15:00]
+
+Sandra Hoffmann: Unsere wichtigste Idee ist ein KI-Chatbot für den
+Kundenservice. Die KI soll Standard-Kundenanfragen zu Tarifen, Rechnungen
+und Zählerständen automatisch beantworten. Wir erwarten, damit 40 Prozent
+der Anfragen zu automatisieren und 2 Vollzeitstellen für komplexere
+Beratung freizusetzen.
+
+================================================================================
+Ende des Transkripts
+================================================================================
