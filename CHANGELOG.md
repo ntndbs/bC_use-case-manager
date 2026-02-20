@@ -130,7 +130,7 @@ Alle gefunden Issues & Improvements wurden (und werden im weiteren Verlauf) unte
 | Health Check | ✅ | [#54](https://github.com/ntndbs/bC_use-case-manager/issues/54) |
 | Strukturiertes Logging | 🔲 | [#51](https://github.com/ntndbs/bC_use-case-manager/issues/51) |
 | LLM Error Handling | 🔲 | [#52](https://github.com/ntndbs/bC_use-case-manager/issues/52) |
-
+| Update .env.example | ✅ | [#181](https://github.com/ntndbs/bC_use-case-manager/issues/181) |
 ---
 
 ## M7 - MVP Pilot GoLive 🚧

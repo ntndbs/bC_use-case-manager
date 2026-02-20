@@ -27,7 +27,7 @@ Admin-Panel zur Rollenverwaltung (Reader, Maintainer, Admin) mit Löschfunktion.
 ### Setup
 ```bash
 # 1. Environment konfigurieren
-cp .env.example .env       # OPENROUTER_API_KEY eintragen
+cp .env.example .env       # OPENROUTER_API_KEY + JWT_SECRET setzen
 
 # 2. Backend
 cd backend
